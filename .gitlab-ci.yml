@@ -1,9 +1,7 @@
-image: python:3.10  # Use the latest stable Python image
-
 stages:
-  - run
+  - hello
 
-run-python-script:
-  stage: run
+hello-job:
+  stage: hello
   script:
-    - python hello.py
+    - echo "Hello, World!"
