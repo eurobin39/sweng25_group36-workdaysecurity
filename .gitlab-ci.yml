@@ -1,0 +1,9 @@
+image: python:3.10  # Use the latest stable Python image
+
+stages:
+  - run
+
+run-python-script:
+  stage: run
+  script:
+    - python hello.py
