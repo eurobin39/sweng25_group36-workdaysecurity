@@ -12,6 +12,13 @@ test-job1:
   script:
     - echo "This job tests something"
 
+test-job-docker:
+  stage: test
+  tags:
+    - yaroslav-mac
+  script:
+    - echo "It is run from docker@yaroslavs mac"
+
 test-job2:
   stage: test
   tags:
