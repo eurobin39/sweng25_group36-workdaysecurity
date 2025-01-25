@@ -5,3 +5,5 @@ hello-job:
   stage: hello
   script:
     - echo "Hello, World!"
+  tags:
+    - aws-ec2-docker
