@@ -5,14 +5,14 @@ build-job:
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
 
-test-job1:
+test-job-docker-aws-ec2:
   stage: test
   tags:
-    - aws-ec2-runner
+    - aws-ec2-docker
   script:
     - echo "This job tests something"
 
-test-job-docker:
+test-job-docker-mac:
   stage: test
   tags:
     - yaroslav-mac
