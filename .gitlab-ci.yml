@@ -1,21 +1,21 @@
 build-job:
   stage: build
   tags:
-    - test
+    - aws-ec2-runner
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
 
 test-job1:
   stage: test
   tags:
-    - test
+    - aws-ec2-runner
   script:
     - echo "This job tests something"
 
 test-job2:
   stage: test
   tags:
-    - test
+    - aws-ec2-runner
   script:
     - echo "This job tests something, but takes more time than test-job1."
     - echo "After the echo commands complete, it runs the sleep command for 5 seconds"
@@ -24,6 +24,8 @@ test-job2:
 
 deploy-prod:
   stage: deploy
+  tags:
+    - aws-ec2-runner
   script:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
   environment: production
