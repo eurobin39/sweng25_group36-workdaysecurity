@@ -1,7 +1,7 @@
 build-job:
   stage: build
   tags:
-    - yaroslav-mac
+    - aws-ec2-docker
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
 
@@ -12,27 +12,17 @@ test-job-docker-aws-ec2:
   script:
     - echo "This job tests something"
 
-test-job-docker-mac:
-  stage: test
-  tags:
-    - yaroslav-mac
-  script:
-    - echo "It is run from docker@yaroslavs mac"
-
-test-job2:
-  stage: test
-  tags:
-    - aws-ec2-runner
-  script:
-    - echo "This job tests something, but takes more time than test-job1."
-    - echo "After the echo commands complete, it runs the sleep command for 5 seconds"
-    - echo "which simulates a test that runs 5 seconds longer than test-job1"
-    - sleep 5
+# test-job-docker-mac:
+#   stage: test
+#   tags:
+#     - yaroslav-mac
+#   script:
+#     - echo "It is run from docker@yaroslavs mac"
 
 deploy-prod:
   stage: deploy
   tags:
-    - aws-ec2-runner
+    - aws-ec2-docker
   script:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
   environment: production
