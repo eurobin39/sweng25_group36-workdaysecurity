@@ -3,7 +3,7 @@ build-job:
   tags:
     - aws-ec2-docker
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - echo "Hello, $GITLAB_USER_LOGIN! "
 
 test-job-docker-aws-ec2:
   stage: test
