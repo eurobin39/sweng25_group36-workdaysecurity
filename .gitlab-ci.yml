@@ -12,6 +12,15 @@ test-job-docker-aws-ec2:
   script:
     - echo "This job tests something"
 
+test-python-installed-on-runner:
+  stage: test
+  tags:
+    - aws-ec2-docker
+  script:
+    - echo "Trying to run a python script"
+    - python3 --version
+    - python3 test.py
+
 # test-job-docker-mac:
 #   stage: test
 #   tags:
