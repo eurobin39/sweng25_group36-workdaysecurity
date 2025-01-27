@@ -6,7 +6,5 @@ stages:
 run-python-script:
   stage: run
   script:
-    - apt-get update && apt-get install -y python3
     - python3 hello.py
-  tags:
-    - aws-ec2-docker
+  
