@@ -17,7 +17,7 @@ test-python-installed-on-runner:
   tags:
     - aws-ec2-docker
   script:
-    - sudo apt install python3
+    # - sudo apt install python3
     - echo "Trying to run a python script"
     - python3 --version
     - python3 test.py
