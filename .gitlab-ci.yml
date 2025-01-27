@@ -1,9 +1,11 @@
-stages:
-  - hello
+image: python:3.10  
 
-hello-job:
-  stage: hello
+stages:
+  - run
+
+run-python-script:
+  stage: run
   script:
-    - echo "Hello, World!"
+    - python hello.py
   tags:
     - aws-ec2-docker
