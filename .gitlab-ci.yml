@@ -7,4 +7,5 @@ run-python-script:
   stage: run
   script:
     - python3 hello.py
-  
+  tags:
+    - aws-ec2-docker
