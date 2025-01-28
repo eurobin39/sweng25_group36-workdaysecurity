@@ -1,0 +1,30 @@
+
+build-job:
+  stage: build
+  tags:
+    - aws-ec2-docker 
+  script:
+    - echo "Building the project on Docker in AWS EC2"
+    - docker --version 
+    - docker build -t my-app . 
+    - docker images 
+
+
+test-python-job:
+  stage: test
+  tags:
+    - aws-ec2-docker
+  script:
+    - echo "Running Python tests on Docker in AWS EC2"
+    - python3 --version 
+    - python3 ZAP/Main/main.py 
+  
+
+test-docker-container:
+  stage: test
+  tags:
+    - aws-ec2-docker
+  script:
+    - echo "Testing the Docker container"
+    - docker run --env-file .env --network host zap_scanner   
+
