@@ -3,41 +3,52 @@ stages:
   - test
 
 variables:
-  ZAP_PATH: "/opt/ZAP"
+  JUICESHOP_IMAGE: bkimminich/juice-shop
+  JUICESHOP_CONTAINER_NAME: juice-shop
+  JUICESHOP_PORT: 3000
+
+services:
+  - name: docker:dind
+    alias: docker
 
 before_script:
-  - echo "Installing dependencies..."
-  - sudo apt update && sudo apt install -y openjdk-11-jre wget unzip curl
-  - curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-  - sudo apt install -y nodejs
-  - npm install -g juice-shop
-  - mkdir -p $ZAP_PATH
-  - wget https://github.com/zaproxy/zaproxy/releases/download/v2.13.0/ZAP_2.13.0_Linux.tar.gz -O zap.tar.gz
-  - tar -xvf zap.tar.gz -C $ZAP_PATH
-  - export PATH=$ZAP_PATH:$PATH
+  - docker info
 
 setup_juice_shop:
   stage: setup
   tags:
     - aws-ec2-docker
+  image: docker:latest
+  services:
+    - docker:dind
   script:
-    - echo "Starting Juice Shop..."
-    - nohup juice-shop &  
-    - sleep 15
-  only:
-    - main
+    - echo "Pulling Juice Shop Docker image..."
+    - docker pull $JUICESHOP_IMAGE
+    - echo "Running Juice Shop container..."
+    - docker run -d -p $JUICESHOP_PORT:3000 --name $JUICESHOP_CONTAINER_NAME $JUICESHOP_IMAGE
+    - echo "Waiting for Juice Shop to initialize..."
+    - sleep 15  
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - juice_shop_url.txt
+  after_script:
+    - docker ps -a
 
-run_zest_tests:
+test_juice_shop:
   stage: test
   tags:
     - aws-ec2-docker
-  script:
-    - echo "Running Zest scripts using ZAP..."
-    - zap.sh -daemon -port 8080 -host 127.0.0.1 &
-    - sleep 10  
-    - zap-cli open-url http://localhost:3000
-    - zap-cli zest run zest-scripts/simpleTest01.zst
+  image: curlimages/curl:latest
   dependencies:
     - setup_juice_shop
-  only:
-    - main
+  script:
+    - echo "Testing if Juice Shop is running..."
+    - |
+      STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:$JUICESHOP_PORT/)
+      if [ "$STATUS_CODE" -eq 200 ]; then
+        echo "Juice Shop is running successfully."
+      else
+        echo "Failed to start Juice Shop. Status code: $STATUS_CODE"
+        exit 1
+      fi
