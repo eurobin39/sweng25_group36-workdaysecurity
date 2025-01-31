@@ -1,11 +1,43 @@
-image: python:3.10  
-
 stages:
-  - run
+  - setup
+  - test
 
-run-python-script:
-  stage: run
-  script:
-    - python3 hello.py
+variables:
+  ZAP_PATH: "/opt/ZAP"
+
+before_script:
+  - echo "Installing dependencies..."
+  - sudo apt update && sudo apt install -y openjdk-11-jre wget unzip curl
+  - curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+  - sudo apt install -y nodejs
+  - npm install -g juice-shop
+  - mkdir -p $ZAP_PATH
+  - wget https://github.com/zaproxy/zaproxy/releases/download/v2.13.0/ZAP_2.13.0_Linux.tar.gz -O zap.tar.gz
+  - tar -xvf zap.tar.gz -C $ZAP_PATH
+  - export PATH=$ZAP_PATH:$PATH
+
+setup_juice_shop:
+  stage: setup
   tags:
     - aws-ec2-docker
+  script:
+    - echo "Starting Juice Shop..."
+    - nohup juice-shop &  
+    - sleep 15
+  only:
+    - main
+
+run_zest_tests:
+  stage: test
+  tags:
+    - aws-ec2-docker
+  script:
+    - echo "Running Zest scripts using ZAP..."
+    - zap.sh -daemon -port 8080 -host 127.0.0.1 &
+    - sleep 10  
+    - zap-cli open-url http://localhost:3000
+    - zap-cli zest run zest-scripts/simpleTest01.zst
+  dependencies:
+    - setup_juice_shop
+  only:
+    - main
