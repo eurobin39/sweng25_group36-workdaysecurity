@@ -15,8 +15,8 @@ start_juice_shop:
 run_zest_tests:
   stage: test
   script:
-    - brew install --cask owasp-zap || true   
-    - zap.sh -cmd -autorun /Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/simpleTest01.zst
+    - pkill -f zap || true
+    - zap.sh -cmd -script /Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/simpleTest01.zst -scriptType zest
     - if grep -q "ALERT" ~/.ZAP/zap.log; then
         echo "Security vulnerability detected!";
       else
