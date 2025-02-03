@@ -16,7 +16,8 @@ before_script:
 
 setup_juice_shop:
   stage: setup
-  
+  tags:
+    - aws-ec2-docker
   image: docker:latest
   services:
     - docker:dind
