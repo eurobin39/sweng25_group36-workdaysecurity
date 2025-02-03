@@ -23,6 +23,6 @@ run_zest_tests:
         echo "No vulnerabilities found.";
       fi
   tags:
-    - shell
+    - tim-mac
   dependencies:
     - start_juice_shop
