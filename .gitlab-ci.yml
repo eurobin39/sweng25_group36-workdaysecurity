@@ -16,7 +16,7 @@ run_zest_tests:
   stage: test
   script:
     - brew install --cask owasp-zap || true   
-    - zap.sh -cmd -autorun zest-scripts/simpleTest01.zst
+    - zap.sh -cmd -autorun /Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/simpleTest01.zst
     - if grep -q "ALERT" ~/.ZAP/zap.log; then
         echo "Security vulnerability detected!";
       else
