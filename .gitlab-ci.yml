@@ -36,7 +36,8 @@ setup_juice_shop:
 
 test_juice_shop:
   stage: test
-  
+  tags:
+    - aws-ec2-docker
   image: curlimages/curl:latest
   dependencies:
     - setup_juice_shop
