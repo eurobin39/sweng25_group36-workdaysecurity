@@ -2,31 +2,27 @@ stages:
   - setup
   - test
 
-# Stage 1: Setup Juice Shop
+# Stage 1: Start Juice Shop
 start_juice_shop:
   stage: setup
   script:
-    - brew install node || true                
-    - git clone https://github.com/juice-shop/juice-shop.git || true
-    - cd juice-shop
-    - npm install
-    - npm start &                               
-    - sleep 20                                  
+    - npm start &                        
+    - sleep 20                           
   tags:
     - tim-mac
 
 # Stage 2: Run Zest Penetration Test
-run_simple_zest_test:
+run_zest_tests:
   stage: test
   script:
-    - brew install --cask owasp-zap || true    
+    - brew install --cask owasp-zap || true   
     - zap.sh -cmd -autorun zest-scripts/simpleTest01.zst
     - if grep -q "ALERT" ~/.ZAP/zap.log; then
-        echo "⚠️ Security vulnerability detected!";
+        echo "Security vulnerability detected!";
       else
-        echo "✅ No vulnerabilities found.";
+        echo "No vulnerabilities found.";
       fi
   tags:
-    - tim-mac
+    - shell
   dependencies:
     - start_juice_shop
