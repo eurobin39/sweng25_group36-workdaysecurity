@@ -11,7 +11,7 @@ run_zest_tests:
   script:
     - echo "We are in $CI_PROJECT_DIR..."
     - ls  
-    - zap.sh -cmd -script zest-scripts/simpleTest01.zst 
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/simpleTest01.zst"
     #- zap.sh -cmd -script zest-scripts/advancedTest01.zst -scriptType zest -scriptEngine Zest
 
     
