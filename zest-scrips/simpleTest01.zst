@@ -1,21 +1,10 @@
 {
-  "title": "Simple Juice Shop Home Test",
-  "about": "A basic test to verify that the Juice Shop home page returns a 200 status code.",
-  "enabled": true,
-  "authentication": {
-    "type": "none"
-  },
-  "requests": [
+  "zestVersion": "0.4",
+  "description": "Testing minimal Zest script",
+  "statements": [
     {
-      "url": "http://localhost:3000/",
-      "method": "GET",
-      "followRedirects": true,
-      "assertions": [
-        {
-          "type": "statusCode",
-          "expected": 200
-        }
-      ]
+      "type": "comment",
+      "comment": "Hello from a minimal Zest script!"
     }
   ]
 }
