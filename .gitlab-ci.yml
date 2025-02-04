@@ -12,7 +12,8 @@ run_zest_tests:
     - pkill -f zap || true
     - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/simpleTest02.zst"
     #- zap.sh -cmd -script zest-scripts/advancedTest01.zst -scriptType zest -scriptEngine Zest
-
+    - zap.sh -cmd -quickout /tmp/zap_report.json
+    - cat /tmp/zap_report.json
     
   tags:
     - tim-mac
