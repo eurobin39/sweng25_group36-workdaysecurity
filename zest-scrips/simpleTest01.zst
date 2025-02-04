@@ -1,7 +1,10 @@
 {
-  "title": "Simple Juice Shop Test",
-  "about": "A simple test that verifies the home page is accessible.",
+  "title": "Simple Juice Shop Home Test",
+  "about": "A basic test to verify that the Juice Shop home page returns a 200 status code.",
   "enabled": true,
+  "authentication": {
+    "type": "none"
+  },
   "requests": [
     {
       "url": "http://localhost:3000/",
