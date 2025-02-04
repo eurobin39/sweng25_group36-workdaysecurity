@@ -16,9 +16,9 @@ run_zest_tests:
   stage: test
   script:
     - pkill -f zap || true
-    - zap.sh -cmd -script /Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/simpleTest01.zst
+    - zap.sh -cmd -script /Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/simpleTest01.zst
     
-    - zap.sh -cmd -script /Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/advancedTest01.zst
+    - zap.sh -cmd -script /Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/advancedTest01.zst
     
   tags:
     - tim-mac
