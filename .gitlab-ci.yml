@@ -2,21 +2,15 @@ stages:
   - setup
   - test
 
-# Stage 1: Start Juice Shop
-start_juice_shop:
-  stage: setup
-  script:
-    - npm start &                        
-    - sleep 20                           
-  tags:
-    - tim-mac
 
-# Stage 2: Run Zest Penetration Test
+
+
+# Stage: Run Zest Penetration Test
 run_zest_tests:
   stage: test
   script:
     - echo "We are in $CI_PROJECT_DIR..."
-    - ls -l zest-scripts   
+    - ls  
     - zap.sh -cmd -script zest-scripts/simpleTest01.zst -scriptType zest -scriptEngine Zest
     - zap.sh -cmd -script zest-scripts/advancedTest01.zst -scriptType zest -scriptEngine Zest
 
