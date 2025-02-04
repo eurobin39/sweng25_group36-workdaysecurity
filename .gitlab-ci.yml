@@ -15,10 +15,11 @@ start_juice_shop:
 run_zest_tests:
   stage: test
   script:
-    - pkill -f zap || true
-    - zap.sh -cmd -script /Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/simpleTest01.zst
-    
-    - zap.sh -cmd -script /Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/advancedTest01.zst
+    - echo "We are in $CI_PROJECT_DIR..."
+    - ls -l zest-scripts   
+    - zap.sh -cmd -script zest-scripts/simpleTest01.zst -scriptType zest -scriptEngine Zest
+    - zap.sh -cmd -script zest-scripts/advancedTest01.zst -scriptType zest -scriptEngine Zest
+
     
   tags:
     - tim-mac
