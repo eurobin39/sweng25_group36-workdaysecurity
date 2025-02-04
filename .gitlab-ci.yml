@@ -17,5 +17,4 @@ run_zest_tests:
     
   tags:
     - tim-mac
-  dependencies:
-    - start_juice_shop
+  
