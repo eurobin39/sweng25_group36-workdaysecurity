@@ -1,18 +1,18 @@
 {
-    "title": "Simple Juice Shop Test",
-    "about": "A simple test that verifies the home page is accessible.",
-    "enabled": true,
-    "requests": [
+  "title": "Simple Juice Shop Test",
+  "about": "A simple test that verifies the home page is accessible.",
+  "enabled": true,
+  "requests": [
+    {
+      "url": "http://localhost:3000/",
+      "method": "GET",
+      "followRedirects": true,
+      "assertions": [
         {
-            "url": "http://localhost:3000/",
-            "method": "GET",
-            "followRedirects": true,
-            "assertions": [
-                {
-                    "type": "statusCode",
-                    "value": "200"
-                }
-            ]
+          "type": "statusCode",
+          "expected": 200
         }
-    ]
+      ]
+    }
+  ]
 }
