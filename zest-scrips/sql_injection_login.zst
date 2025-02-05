@@ -51,12 +51,8 @@
       "index": 1,
       "enabled": true,
       "elementType": "ZestRequest"
-    },
-    {
-      "elementType": "ZestActionConsoleLog",
-      "message": "Response Status Code: ${response.statusCode} | Body: ${response.body}",
-      "index": 2
     }
+   
 
   ],
   "authentication": [],
