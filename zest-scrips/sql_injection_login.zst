@@ -28,7 +28,7 @@
       "assertions": [
         {
           "rootExpression": {
-            "code": 200,
+            "code": 494,
             "not": false,
             "elementType": "ZestExpressionStatusCode"
           },
