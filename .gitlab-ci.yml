@@ -7,7 +7,7 @@ run_zest_tests:
   stage: test
   script:
     - pkill -f zap || true
-    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login.zst" -config log.level=INFO
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login.zst" -config log.level=DEBUG
     
   tags:
     - tim-mac
