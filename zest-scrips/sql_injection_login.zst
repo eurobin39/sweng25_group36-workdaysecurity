@@ -53,7 +53,6 @@
       "elementType": "ZestRequest"
     },
     {
-      // The console log action to display the response
       "elementType": "ZestActionConsoleLog",
       "message": "Response Status Code: ${response.statusCode} | Body: ${response.body}",
       "index": 2
