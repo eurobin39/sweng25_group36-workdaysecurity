@@ -56,11 +56,6 @@
       "index": 1,
       "enabled": true,
       "elementType": "ZestRequest"
-    },
-    {
-      "type": "ZestClientScript",
-      "script": "println('SQL injection test completed. Status code: ' + response.statusCode);",
-      "elementType": "ZestClientScript"
     }
   ],
   "authentication": [],
