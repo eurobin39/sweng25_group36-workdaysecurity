@@ -28,23 +28,20 @@
       "assertions": [
         {
           "rootExpression": {
-            "code": 494,
+            "code": 494,  // Intentionally incorrect to force a failure
             "not": false,
             "elementType": "ZestExpressionStatusCode"
           },
-          "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 811,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
+          "elementType": "ZestAssertion",
+          "onFail": [
+            {
+              "type": "ZestClientScript",
+              "script": "println('Assertion failed! Expected 494, got ' + response.statusCode);",
+              "elementType": "ZestClientScript"
+            }
+          ]
         }
-      ],
+      ]
       "followRedirects": false,
       "timestamp": 1738781620627,
       "cookies": [],
