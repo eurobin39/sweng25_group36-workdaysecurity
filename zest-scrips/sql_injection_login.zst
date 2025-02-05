@@ -28,7 +28,7 @@
       "assertions": [
         {
           "rootExpression": {
-            "code": 494,  // Intentionally incorrect to force a failure
+            "code": 494,  
             "not": false,
             "elementType": "ZestExpressionStatusCode"
           },
