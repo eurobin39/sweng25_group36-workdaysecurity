@@ -8,7 +8,7 @@ An automated framework that integrates security testing into development pipelin
 
 ## Documentation
 
-[Documentation](https://linktodocumentation)
+[Project Overview](https://gitlab.scss.tcd.ie/tmanea/sweng25_group36-workdaysecurity/-/wikis/uploads/65c6ca802dce25e652be98d84bad9530/Project_Overview.pdf)
 
 
 ## Authors
