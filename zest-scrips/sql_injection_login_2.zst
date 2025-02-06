@@ -51,6 +51,32 @@
       "index": 1,
       "enabled": true,
       "elementType": "ZestRequest"
+    },
+    {
+      "rootExpression": {
+        "code": 200,
+        "not": false,
+        "elementType": "ZestExpressionStatusCode"
+      },
+      "ifStatements": [
+        {
+          "message": "Successfully Injected",
+          "index": 3,
+          "enabled": true,
+          "elementType": "ZestActionPrint"
+        }
+      ],
+      "elseStatements": [
+        {
+          "message": "Passed, no injection",
+          "index": 4,
+          "enabled": true,
+          "elementType": "ZestActionPrint"
+        }
+      ],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestConditional"
     }
   ],
   "authentication": [],
