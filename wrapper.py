@@ -28,17 +28,17 @@ def start_zap():
 def load_and_run_script(zap):
     print("Loading script...", flush=True)
     try:
-        response = zap.script.load(scriptName=SCRIPT_NAME,
-                                   scriptType=SCRIPT_TYPE,
-                                   scriptEngine=SCRIPT_ENGINE,
-                                   fileName=SCRIPT_FILE)
+        response = zap.script.load(scriptname=SCRIPT_NAME,
+                                   scripttype=SCRIPT_TYPE,
+                                   scriptengine=SCRIPT_ENGINE,
+                                   filename=SCRIPT_FILE)
         print("Load response:", response, flush=True)
     except Exception as e:
         print("Error loading script:", e, flush=True)
     
     print("Running script...", flush=True)
     try:
-        response = zap.script.run(scriptName=SCRIPT_NAME)
+        response = zap._request("JSON/script/action/run/", {"scriptName": SCRIPT_NAME})
         print("Run response:", response, flush=True)
     except Exception as e:
         print("Error running script:", e, flush=True)
