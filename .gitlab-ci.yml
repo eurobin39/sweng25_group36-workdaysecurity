@@ -6,4 +6,4 @@ run_zest_tests:
   tags:
     - tim-mac
   script:
-    - python3 wrapper.py
+    - python3 -u wrapper.py
