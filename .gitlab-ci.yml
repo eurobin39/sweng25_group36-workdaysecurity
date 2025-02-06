@@ -1,14 +1,21 @@
 stages:
-
   - test
 
-# Stage: Run Zest Penetration Test
 run_zest_tests:
   stage: test
-  script:
-    - pkill -f zap || true
-    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login.zst" -config log.level=DEBUG
-    
   tags:
     - tim-mac
-  
+  script:
+    - pkill -f zap || true
+
+    - echo "Starting OWASP ZAP in daemon mode..."
+    - zap.sh -daemon -config api.disablekey=true -config log.level=DEBUG &
+    - sleep 15
+
+    - echo "Loading Zest script..."
+    - zap-cli script load "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login.zst" --type zest --name sql_injection_login
+
+    - echo "Running Zest script..."
+    - zap-cli script run sql_injection_login
+
+    - zap-cli script remove sql_injection_login
