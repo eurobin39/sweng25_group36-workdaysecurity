@@ -6,22 +6,4 @@ run_zest_tests:
   tags:
     - tim-mac
   script:
-    - pkill -f zap || true
-
-    - echo "Exporting PATH..."
-    - export PATH="/Users/timothytay/opt/anaconda3/bin/:$PATH"
-    
-    - echo "Checking zap-cli location..."
-    - which zap-cli
-
-    - echo "Starting OWASP ZAP in daemon mode..."
-    - zap.sh -daemon -config api.disablekey=true -config log.level=DEBUG &
-    - sleep 20
-
-    - echo "Loading Zest script..."
-    - zap-cli script load "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login.zst" --type zest --name sql_injection_login
-
-    - echo "Running Zest script..."
-    - zap-cli script run sql_injection_login
-
-    - zap-cli script remove sql_injection_login
+    - python wrapper.py
