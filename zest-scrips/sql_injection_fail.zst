@@ -1,7 +1,7 @@
 {
   "about": "This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/",
   "zestVersion": "0.8",
-  "title": "sql_injection_login_2",
+  "title": "sql_fail",
   "description": "",
   "prefix": "http://localhost:3000/rest/user",
   "type": "StandAlone",
@@ -14,21 +14,21 @@
   "statements": [
     {
       "url": "http://localhost:3000/rest/user/login",
-      "data": "{\"email\":\"asdasd\",\"password\":\"asdasd\"}",
+      "data": "{\"email\":\"asd\",\"password\":\"asd\"}",
       "method": "POST",
-      "headers": "Content-Type: application/json\r\ncontent-length: 43\r\nOrigin: http://localhost:3000\r\nPriority: u\u003d0\r\n",
+      "headers": "Content-Type: application/json\r\nContent-Length: 32\r\nOrigin: http://localhost:3000\r\nPriority: u\u003d0\r\n",
       "response": {
         "url": "http://localhost:3000/rest/user/login",
-        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 811\r\nETag: W/\"32b-AsIO5PvtpV0blKrvWauV5QoI3iI\"\r\nVary: Accept-Encoding\r\nDate: Thu, 06 Feb 2025 22:56:29 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
-        "body": "{\"authentication\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MSwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImFkbWluQGp1aWNlLXNoLm9wIiwicGFzc3dvcmQiOiIwMTkyMDIzYTdiYmQ3MzI1MDUxNmYwNjlkZjE4YjUwMCIsInJvbGUiOiJhZG1pbiIsImRlbHV4ZVRva2VuIjoiIiwibGFzdExvZ2luSXAiOiIxMjcuMC4wLjEiLCJwcm9maWxlSW1hZ2UiOiJhc3NldHMvcHVibGljL2ltYWdlcy91cGxvYWRzL2RlZmF1bHRBZG1pbi5wbmciLCJ0b3RwU2VjcmV0IjoiIiwiaXNBY3RpdmUiOnRydWUsImNyZWF0ZWRBdCI6IjIwMjUtMDItMDUgMTU6NTQ6MDMuNjIwICswMDowMCIsInVwZGF0ZWRBdCI6IjIwMjUtMDItMDUgMTg6NDI6MzEuODM0ICswMDowMCIsImRlbGV0ZWRBdCI6bnVsbH0sImlhdCI6MTczODg4MjU4OX0.uGM8gKaQuAb0r1W1m8HZq9tXblKN2OQzu7NGVTbiE-TWqPFwJTuoEuGoC78-gx0dND4CSH8cmtaDfXqGIziURJoWKRItWZRYAAZw1A3LalA9l0-cLDsWuknpgKQg4RAfxM0dmtJIKIzVw8NDGD13StShC7n96nbnS1Nk-NF73vM\",\"bid\":1,\"umail\":\"admin@juice-sh.op\"}}",
-        "statusCode": 200,
-        "responseTimeInMs": 53,
+        "headers": "HTTP/1.1 401 Unauthorized\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: text/html; charset\u003dutf-8\r\nContent-Length: 26\r\nETag: W/\"1a-ARJvVK+smzAF3QQve2mDSG+3Eus\"\r\nVary: Accept-Encoding\r\nDate: Thu, 06 Feb 2025 23:47:18 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "Invalid email or password.",
+        "statusCode": 401,
+        "responseTimeInMs": 23,
         "elementType": "ZestResponse"
       },
       "assertions": [
         {
           "rootExpression": {
-            "code": 200,
+            "code": 401,
             "not": false,
             "elementType": "ZestExpressionStatusCode"
           },
@@ -36,7 +36,7 @@
         },
         {
           "rootExpression": {
-            "length": 811,
+            "length": 26,
             "approx": 1,
             "variableName": "response.body",
             "not": false,
@@ -46,7 +46,7 @@
         }
       ],
       "followRedirects": false,
-      "timestamp": 1738882589448,
+      "timestamp": 1738885638969,
       "cookies": [],
       "index": 1,
       "enabled": true,
@@ -60,16 +60,23 @@
       },
       "ifStatements": [
         {
-          "message": "Successfully Injected",
+          "message": "Injected",
           "index": 3,
           "enabled": true,
           "elementType": "ZestActionPrint"
+        },
+        {
+          "message": "Fail, injected successfully",
+          "priority": "HIGH",
+          "index": 4,
+          "enabled": true,
+          "elementType": "ZestActionFail"
         }
       ],
       "elseStatements": [
         {
-          "message": "Passed, no injection",
-          "index": 4,
+          "message": "Not Injected",
+          "index": 5,
           "enabled": true,
           "elementType": "ZestActionPrint"
         }
