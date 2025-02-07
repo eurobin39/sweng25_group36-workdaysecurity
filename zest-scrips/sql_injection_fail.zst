@@ -54,7 +54,7 @@
     },
     {
       "rootExpression": {
-        "code": 200,
+        "code": 401,
         "not": false,
         "elementType": "ZestExpressionStatusCode"
       },
