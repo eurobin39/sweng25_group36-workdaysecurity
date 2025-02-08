@@ -14,7 +14,7 @@ start_juice_shop:
     - euro-mac
   script:
     - echo "Starting Juice Shop..."
-    - docker run -d --name juice-shop -p 80:3000 bkimminich/juice-shop
+    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
     - sleep 10  # 서비스 시작 대기
 
 # 2️⃣ OWASP ZAP 실행 (Juice Shop 타겟)
