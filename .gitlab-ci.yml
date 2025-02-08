@@ -65,4 +65,20 @@ grafana_visualization:
   tags:
     - euro-mac
   script:
-    - echo "Grafana is now visualizing the security scan data from PostgreSQL."
+    - echo "Stopping any existing Grafana container..."
+    - docker stop grafana || true
+    - docker rm grafana || true
+    - echo "Starting Grafana with PostgreSQL as its database..."
+    - docker run -d --name=grafana \
+        -p 4000:3000 \
+        -v grafana_data:/var/lib/grafana \
+        -e GF_DATABASE_TYPE=postgres \
+        -e GF_DATABASE_HOST=host.docker.internal:5432 \
+        -e GF_DATABASE_USER=eurobae \
+        -e GF_DATABASE_PASSWORD=eurobea0309 \
+        -e GF_DATABASE_NAME=ZAP_DB \
+        grafana/grafana
+
+
+
+
