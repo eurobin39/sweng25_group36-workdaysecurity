@@ -77,6 +77,7 @@ grafana_visualization:
         -e GF_DATABASE_USER=eurobae 
         -e GF_DATABASE_PASSWORD=$DB_PASSWORD 
         -e GF_DATABASE_NAME=$DB_NAME 
+        -e GF_INSTALL_PLUGINS=grafana-postgresql-datasource
         grafana/grafana
 
 
