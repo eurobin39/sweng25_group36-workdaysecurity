@@ -13,9 +13,12 @@ start_juice_shop:
   tags:
     - euro-mac
   script:
+    - echo "Checking if Juice Shop is already running..."
+    - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
     - echo "Starting Juice Shop..."
     - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
-    - sleep 10  # 서비스 시작 대기
+    - sleep 10
+    - docker ps  
 
 # 2️⃣ OWASP ZAP 실행 (Juice Shop 타겟)
 zap_scan:
