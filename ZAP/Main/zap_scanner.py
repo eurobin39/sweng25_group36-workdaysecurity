@@ -12,8 +12,14 @@ class ZapScanner:
 
     def start_scan(self, target_url):
         print(f"Starting scan for {target_url}")
-        self.zap.urlopen(target_url)  # access to URL
-        scan_id = self.zap.ascan.scan(target_url)  # start Active Scan
+        self.zap.urlopen(target_url) 
+        scan_id = self.zap.ascan.scan(target_url)
+        print(f"Scan started. Scan ID: {scan_id}")
+
+        
+        if not scan_id.isdigit():
+            raise ValueError(f"Invalid scan ID received: {scan_id}")
+
         while int(self.zap.ascan.status(scan_id)) < 100:
             print(f"Scan progress: {self.zap.ascan.status(scan_id)}%")
         print("Scan completed!")

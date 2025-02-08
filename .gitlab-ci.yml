@@ -1,30 +1,50 @@
+stages:
+  - start_services
+  - security_scan
+  - save_results
+  - visualize
 
-build-job:
-  stage: build
-  tags:
-    - aws-ec2-docker 
+# 1️⃣ Juice Shop 실행 (로컬에서 실행됨)
+start_juice_shop:
+  image: docker:latest
+  stage: start_services
+  services:
+    - docker:dind
   script:
-    - echo "Building the project on Docker in AWS EC2"
-    - docker --version 
-    - docker build -t my-app . 
-    - docker images 
+    - echo "Starting Juice Shop..."
+    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
+    - sleep 10  # 서비스 시작 대기
 
-
-test-python-job:
-  stage: test
-  tags:
-    - aws-ec2-docker
+# 2️⃣ OWASP ZAP 실행 (Juice Shop 타겟)
+zap_scan:
+  image: owasp/zap2docker-stable
+  stage: security_scan
+  dependencies:
+    - start_juice_shop
   script:
-    - echo "Running Python tests on Docker in AWS EC2"
-    - python3 --version 
-    - python3 ZAP/Main/main.py 
-  
+    - echo "Running OWASP ZAP against Juice Shop..."
+    - zap-baseline.py -t http://host.docker.internal:3000 -J zap_results.json -r zap_report.html
+  artifacts:
+    paths:
+      - zap_results.json
+      - zap_report.html
 
-test-docker-container:
-  stage: test
-  tags:
-    - aws-ec2-docker
+# 3️⃣ Zest Script 실행
+
+# 4️⃣ JSON 데이터를 PostgreSQL에 저장
+save_to_db:
+  image: python:3.9
+  stage: save_results
+  dependencies:
+    - zap_scan
+  before_script:
+    - pip install psycopg2-binary
   script:
-    - echo "Testing the Docker container"
-    - docker run --env-file .env --network host zap_scanner   
+    - python3 ZAP/Main/server.py
+  allow_failure: false
 
+# 5️⃣ Grafana에서 데이터 시각화
+grafana_visualization:
+  stage: visualize
+  script:
+    - echo "Grafana is now visualizing the security scan data from PostgreSQL."
