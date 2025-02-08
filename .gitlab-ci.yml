@@ -10,9 +10,11 @@ start_juice_shop:
   stage: start_services
   services:
     - docker:dind
+  tags:
+    - euro-mac
   script:
     - echo "Starting Juice Shop..."
-    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
+    - docker run -d --name juice-shop -p 80:3000 bkimminich/juice-shop
     - sleep 10  # 서비스 시작 대기
 
 # 2️⃣ OWASP ZAP 실행 (Juice Shop 타겟)
@@ -21,15 +23,18 @@ zap_scan:
   stage: security_scan
   dependencies:
     - start_juice_shop
+  tags:
+    - euro-mac
   script:
     - echo "Running OWASP ZAP against Juice Shop..."
-    - zap-baseline.py -t http://host.docker.internal:3000 -J zap_results.json -r zap_report.html
+    - python3 ZAP/Main/zap_exec.py
+    - python3 ZAP/Main/main.py
   artifacts:
     paths:
       - zap_results.json
       - zap_report.html
 
-# 3️⃣ Zest Script 실행
+# 3️⃣ Zest Script 실행 (필요하면 추가)
 
 # 4️⃣ JSON 데이터를 PostgreSQL에 저장
 save_to_db:
@@ -39,6 +44,8 @@ save_to_db:
     - zap_scan
   before_script:
     - pip install psycopg2-binary
+  tags:
+    - euro-mac
   script:
     - python3 ZAP/Main/server.py
   allow_failure: false
@@ -46,5 +53,7 @@ save_to_db:
 # 5️⃣ Grafana에서 데이터 시각화
 grafana_visualization:
   stage: visualize
+  tags:
+    - euro-mac
   script:
     - echo "Grafana is now visualizing the security scan data from PostgreSQL."
