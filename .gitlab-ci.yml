@@ -73,7 +73,7 @@ grafana_visualization:
         -p 4000:3000 
         -v grafana_data:/var/lib/grafana 
         -e GF_DATABASE_TYPE=postgres 
-        -e GF_DATABASE_HOST=172.17.0.1 
+        -e GF_DATABASE_HOST=host.docker.internal
         -e GF_DATABASE_USER=eurobae 
         -e GF_DATABASE_PASSWORD=$DB_PASSWORD 
         -e GF_DATABASE_NAME=$DB_NAME 
