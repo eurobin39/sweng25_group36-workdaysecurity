@@ -29,7 +29,7 @@ zap_scan:
   tags:
     - euro-mac
   before_script:
-    - pip install zaproxy
+    - pip3 install zaproxy
   script:
     - echo "Running OWASP ZAP against Juice Shop..."
     - python3 ZAP/Main/zap_exec.py
@@ -48,7 +48,7 @@ save_to_db:
   dependencies:
     - zap_scan
   before_script:
-    - pip install psycopg2-binary
+    - pip3 install psycopg2-binary
   tags:
     - euro-mac
   script:
