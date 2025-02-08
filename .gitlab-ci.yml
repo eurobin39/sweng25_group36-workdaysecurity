@@ -25,6 +25,8 @@ zap_scan:
     - start_juice_shop
   tags:
     - euro-mac
+  before_script:
+    - pip install zaproxy
   script:
     - echo "Running OWASP ZAP against Juice Shop..."
     - python3 ZAP/Main/zap_exec.py
