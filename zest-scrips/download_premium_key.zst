@@ -53,46 +53,6 @@
       "elementType": "ZestRequest"
     },
     {
-      "url": "http://localhost:3000/encryptionkeys/premium.key",
-      "data": "",
-      "method": "GET",
-      "headers": "Upgrade-Insecure-Requests: 1\r\nPriority: u\u003d0, i\r\ncontent-length: 0\r\n",
-      "response": {
-        "url": "http://localhost:3000/encryptionkeys/premium.key",
-        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nAccept-Ranges: bytes\r\nCache-Control: public, max-age\u003d0\r\nLast-Modified: Mon, 03 Feb 2025 18:51:59 GMT\r\nETag: W/\"32-194cd27b546\"\r\nContent-Type: application/octet-stream\r\nContent-Length: 50\r\nDate: Sun, 09 Feb 2025 17:18:00 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
-        "body": "1337133713371337.EA99A61D92D2955B1E9285B55BF2AD42\n",
-        "statusCode": 200,
-        "responseTimeInMs": 9,
-        "elementType": "ZestResponse"
-      },
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 200,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 50,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1739121480782,
-      "cookies": [],
-      "index": 2,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
       "rootExpression": {
         "code": 200,
         "not": false,
@@ -100,16 +60,16 @@
       },
       "ifStatements": [
         {
-          "message": "Fail, High, High, Download premium key, Attempted to download premium key in encryptionkeys path and succeeded.",
-          "index": 4,
+          "message": "\"Fail, High, High, Download premium key, Attempted to download premium key in encryptionkeys path and succeeded.\"",
+          "index": 2,
           "enabled": true,
           "elementType": "ZestActionPrint"
         }
       ],
       "elseStatements": [
         {
-          "message": "Pass, NA, NA, Download premium key, Attempted to download premium key in encryptionkeys path and failed.",
-          "index": 5,
+          "message": "\"Pass, NA, NA, Download premium key, Attempted to download premium key in encryptionkeys path and failed.\"",
+          "index": 3,
           "enabled": true,
           "elementType": "ZestActionPrint"
         }
