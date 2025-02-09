@@ -73,16 +73,11 @@ grafana_visualization:
         -v grafana_data:/var/lib/grafana 
         -v $CI_PROJECT_DIR/grafana/provisioning:/etc/grafana/provisioning 
         -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards 
-        -e GF_DATABASE_TYPE=postgres 
-        -e GF_DATABASE_HOST=host.docker.internal 
-        -e GF_DATABASE_USER=eurobae 
-        -e GF_DATABASE_PASSWORD=$DB_PASSWORD 
-        -e GF_DATABASE_NAME=ZAP_DB 
-        grafana/grafana:latest
+        grafana/grafana:latest  # 🔥 `-e GF_DATABASE_*` 환경 변수 제거
 
     - sleep 15
-   
 
     - echo "Testing Grafana provisioning..."
     - curl -s -u admin:admin http://localhost:4000/api/datasources
     - curl -s -u admin:admin http://localhost:4000/api/search?query=
+
