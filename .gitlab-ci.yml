@@ -80,11 +80,8 @@ grafana_visualization:
         -e GF_DATABASE_NAME=ZAP_DB 
         grafana/grafana:latest
 
-    - echo "Waiting for Grafana to be ready..."
-    - until curl -s http://localhost:4000/api/health | grep '"database": "ok"'; do
-        echo "Waiting for Grafana...";
-        sleep 2;
-      done
+    - sleep 20
+   
 
     - echo "Testing Grafana provisioning..."
     - curl -s -u admin:$eurobea0309 http://localhost:4000/api/datasources
