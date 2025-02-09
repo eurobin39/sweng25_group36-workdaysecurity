@@ -5,7 +5,7 @@ datasources:
     access: proxy
     url: host.docker.internal:5432  
     database: ZAP_DB
-    user: eurobae
+    user: grafana_user
     secureJsonData:
       password: eurobea0309
     jsonData:
