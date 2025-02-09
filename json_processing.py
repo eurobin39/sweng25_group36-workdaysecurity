@@ -42,10 +42,14 @@ def main(filename):
     entries = extract_csv_entries(content)
 
     # Output the list of JSON objects (dictionaries)
-    print(json.dumps(entries, indent=4))
+    with open(output_filename, 'w') as outfile:
+        json.dump(entries, outfile, indent=4)
+    print(f"JSON output saved to {output_filename}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python extract_csv.py <filename>")
+        print("Usage: python extract_csv.py <input_filename> [output_filename]")
         sys.exit(1)
-    main(sys.argv[1])
+    input_filename = sys.argv[1]
+    output_filename = sys.argv[2] if len(sys.argv) > 2 else "output.json"
+    main(input_filename, output_filename)
