@@ -60,7 +60,7 @@
       },
       "ifStatements": [
         {
-          "message": "Successfully Injected",
+          "message": "Fail",
           "index": 3,
           "enabled": true,
           "elementType": "ZestActionPrint"
@@ -68,7 +68,7 @@
       ],
       "elseStatements": [
         {
-          "message": "Passed, no injection",
+          "message": "Pass",
           "index": 4,
           "enabled": true,
           "elementType": "ZestActionPrint"

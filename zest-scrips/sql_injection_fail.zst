@@ -60,7 +60,7 @@
       },
       "ifStatements": [
         {
-          "message": "Fail: 'SQL INJECTION', 'HIGH'",
+          "message": "Fail",
           "priority": "HIGH",
           "index": 4,
           "enabled": true,
@@ -69,7 +69,7 @@
       ],
       "elseStatements": [
         {
-          "message": "Pass: 'SQL INJECTION'",
+          "message": "Pass",
           "index": 5,
           "enabled": true,
           "elementType": "ZestActionPrint"
