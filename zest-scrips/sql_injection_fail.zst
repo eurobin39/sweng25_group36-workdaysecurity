@@ -54,13 +54,13 @@
     },
     {
       "rootExpression": {
-        "code": 401,
+        "code": 200,
         "not": false,
         "elementType": "ZestExpressionStatusCode"
       },
       "ifStatements": [
         {
-          "message": "Fail",
+          "message": "Fail, High, High, SQL login injection, Attempted SQL injection with password and succeeded.",
           "priority": "HIGH",
           "index": 4,
           "enabled": true,
@@ -69,7 +69,7 @@
       ],
       "elseStatements": [
         {
-          "message": "Pass",
+          "message": "Pass, NA, NA, SQL login injection, Attempted SQL injection with password and did not succeed",
           "index": 5,
           "enabled": true,
           "elementType": "ZestActionPrint"
