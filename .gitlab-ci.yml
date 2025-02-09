@@ -59,7 +59,7 @@ save_to_db:
     - python3 ZAP/Main/server.py
   allow_failure: false
 
-# 5️⃣ Grafana에서 데이터 시각화
+# 5️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
 grafana_visualization:
   stage: visualize
   tags:
@@ -68,16 +68,27 @@ grafana_visualization:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true
     - docker rm grafana || true
-    - echo "Starting Grafana with PostgreSQL as its database..."
+
+    - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
     - docker run -d --name=grafana 
         -p 4000:3000 
         -v grafana_data:/var/lib/grafana 
+        -v $CI_PROJECT_DIR/grafana/Provisioning/Datasources:/etc/grafana/Provisioning/Datasources 
+        -v $CI_PROJECT_DIR/grafana/Provisioning/Dashboards:/etc/grafana/Provisioning/Dashboards 
+        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards 
         -e GF_DATABASE_TYPE=postgres 
-        -e GF_DATABASE_HOST=host.docker.internal
+        -e GF_DATABASE_HOST=host.docker.internal 
         -e GF_DATABASE_USER=eurobae 
         -e GF_DATABASE_PASSWORD=$DB_PASSWORD 
-        -e GF_DATABASE_NAME=$DB_NAME 
-        grafana/grafana
+        -e GF_DATABASE_NAME=ZAP_DB 
+        grafana/grafana:latest
+
+    - sleep 10  # Grafana가 완전히 실행될 시간을 확보
+
+    - echo "Testing Grafana provisioning..."
+    - curl -s http://localhost:4000/api/datasources
+    - curl -s http://localhost:4000/api/search?query=
+
 
 
 
