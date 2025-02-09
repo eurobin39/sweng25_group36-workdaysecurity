@@ -1,0 +1,19 @@
+{
+    "id": null,
+    "title": "OWASP ZAP Security Scan",
+    "panels": [
+        {
+            "title": "Vulnerabilities Over Time",
+            "type": "graph",
+            "targets": [
+                {
+                    "datasource": "PostgreSQL",
+                    "rawSql": "SELECT timestamp AS time, COUNT(*) AS vulnerabilities FROM zap_scan_results GROUP BY timestamp ORDER BY timestamp;",
+                    "format": "time_series"
+                }
+            ]
+        }
+    ],
+    "schemaVersion": 16,
+    "version": 1
+}
