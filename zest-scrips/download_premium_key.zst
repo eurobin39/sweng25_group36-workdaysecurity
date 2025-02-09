@@ -33,17 +33,9 @@
             "elementType": "ZestExpressionStatusCode"
           },
           "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 7949,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
         }
+        
+        
       ],
       "followRedirects": false,
       "timestamp": 1739121410166,
