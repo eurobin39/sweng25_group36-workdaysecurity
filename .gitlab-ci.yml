@@ -19,3 +19,4 @@ check_failure:
     when: always
     paths:
       - output.txt
+      - output.json
