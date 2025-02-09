@@ -86,8 +86,9 @@ grafana_visualization:
     - sleep 10  # Grafana가 완전히 실행될 시간을 확보
 
     - echo "Testing Grafana provisioning..."
-    - curl -s http://localhost:4000/api/datasources
-    - curl -s http://localhost:4000/api/search?query=
+    - curl -s -u admin:admin http://localhost:4000/api/datasources
+    - curl -s -u admin:admin http://localhost:4000/api/search?query=
+
 
 
 
