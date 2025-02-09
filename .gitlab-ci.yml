@@ -73,7 +73,7 @@ grafana_visualization:
         -v grafana_data:/var/lib/grafana 
         -v $CI_PROJECT_DIR/grafana/provisioning:/etc/grafana/provisioning 
         -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards 
-        grafana/grafana:latest  # 🔥 `-e GF_DATABASE_*` 환경 변수 제거
+        grafana/grafana:latest  
 
     - sleep 15
 
