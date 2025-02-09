@@ -1,10 +1,10 @@
 apiVersion: 1
 datasources:
-  - name: PostgreSQL2
+  - name: PostgreSQL
     type: postgres
     access: proxy
     url: host.docker.internal:5432  
-    database: ZAP_DB
+    database: ""
     user: eurobae
     secureJsonData:
       password: eurobea0309
