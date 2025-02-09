@@ -60,7 +60,7 @@
       },
       "ifStatements": [
         {
-          "message": "Fail",
+          "message": "Fail, High, High, SQL login injection, Attempted SQL injection with password and succeeded.",
           "index": 3,
           "enabled": true,
           "elementType": "ZestActionPrint"
@@ -68,7 +68,7 @@
       ],
       "elseStatements": [
         {
-          "message": "Pass",
+          "message": "Pass, NA, NA, SQL login injection, Attempted SQL injection with password and did not succeed",
           "index": 4,
           "enabled": true,
           "elementType": "ZestActionPrint"
