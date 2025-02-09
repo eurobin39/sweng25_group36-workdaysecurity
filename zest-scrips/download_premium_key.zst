@@ -100,7 +100,7 @@
       },
       "ifStatements": [
         {
-          "message": "\"Fail, High, High, Download premium key, Attempted to download premium key in encryptionkeys path and succeeded.\"",
+          "message": "Fail, High, High, Download premium key, Attempted to download premium key in encryptionkeys path and succeeded.",
           "index": 4,
           "enabled": true,
           "elementType": "ZestActionPrint"
@@ -108,7 +108,7 @@
       ],
       "elseStatements": [
         {
-          "message": "\"Pass, NA, NA, Download premium key, Attempted to download premium key in encryptionkeys path and failed.\"",
+          "message": "Pass, NA, NA, Download premium key, Attempted to download premium key in encryptionkeys path and failed.",
           "index": 5,
           "enabled": true,
           "elementType": "ZestActionPrint"
