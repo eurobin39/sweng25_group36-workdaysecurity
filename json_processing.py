@@ -53,8 +53,14 @@ def main(input_filename, output_filename):
     entries = extract_csv_entries(content)
 
     # Write the JSON output to the specified output file
+    json_output = json.dumps(entries, indent=4)
+
+    # Output the JSON to the console
+    print(json_output)
+
+    # Save the JSON string to a file
     with open(output_filename, 'w') as outfile:
-        json.dump(entries, outfile, indent=4)
+        outfile.write(json_output)
     print(f"JSON output saved to {output_filename}")
 
 if __name__ == "__main__":
