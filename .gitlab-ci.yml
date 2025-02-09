@@ -7,7 +7,7 @@ stages:
 check_failure:
   stage: test
   tags:
-    - aws-ec2-docker
+    - shared-aws
   script:
     # Run your command and capture its output.
     - /usr/share/owasp-zap/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
