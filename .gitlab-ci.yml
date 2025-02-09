@@ -43,9 +43,7 @@ zap_scan:
       - zap_results.json
       - zap_report.html
 
-# 3️⃣ Zest Script 실행 (필요하면 추가)
-
-# 4️⃣ JSON 데이터를 PostgreSQL에 저장
+# 3️⃣ JSON 데이터를 PostgreSQL에 저장
 save_to_db:
   image: python:3.9
   stage: save_results
@@ -59,7 +57,7 @@ save_to_db:
     - python3 ZAP/Main/server.py
   allow_failure: false
 
-# 5️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
+# 4️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
 grafana_visualization:
   stage: visualize
   tags:
@@ -73,8 +71,7 @@ grafana_visualization:
     - docker run -d --name=grafana 
         -p 4000:3000 
         -v grafana_data:/var/lib/grafana 
-        -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards 
+        -v $CI_PROJECT_DIR/grafana/provisioning:/etc/grafana/provisioning 
         -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards 
         -e GF_DATABASE_TYPE=postgres 
         -e GF_DATABASE_HOST=host.docker.internal 
@@ -83,14 +80,12 @@ grafana_visualization:
         -e GF_DATABASE_NAME=ZAP_DB 
         grafana/grafana:latest
 
-    - sleep 10  # Grafana가 완전히 실행될 시간을 확보
+    - echo "Waiting for Grafana to be ready..."
+    - until curl -s http://localhost:4000/api/health | grep '"database": "ok"'; do
+        echo "Waiting for Grafana...";
+        sleep 2;
+      done
 
     - echo "Testing Grafana provisioning..."
-    - curl -s -u admin:eurobea0309 http://localhost:4000/api/datasources
-    - curl -s -u admin:eurobea0309 http://localhost:4000/api/search?query=
-
-
-
-
-
-
+    - curl -s -u admin:$eurobea0309 http://localhost:4000/api/datasources
+    - curl -s -u admin:$eurobea0309 http://localhost:4000/api/search?query=
