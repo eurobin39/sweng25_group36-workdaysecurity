@@ -12,7 +12,7 @@ check_failure:
     # Run your command and capture its output.
     - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
     - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login_2.zst" >> output.txt
-
+    - python3 json_processing.py output.txt
     
   # Artifacts are saved even if the job fails:
   artifacts:
