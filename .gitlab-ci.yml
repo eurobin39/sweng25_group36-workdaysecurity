@@ -7,12 +7,12 @@ stages:
 check_failure:
   stage: test
   tags:
-    - shared-aws
+    - tim-mac
   script:
     # Run your command and capture its output.
-    - /usr/share/owasp-zap/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
-    - /usr/share/owasp-zap/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login_2.zst" >> output.txt
-    - /usr/share/owasp-zap/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" > output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login_2.zst" >> output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" > output.txt
 
     - python3 json_processing.py output.txt
     
