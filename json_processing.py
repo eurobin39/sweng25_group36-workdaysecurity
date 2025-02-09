@@ -15,7 +15,18 @@ def extract_csv_entries(text):
     
     Returns a list of dictionaries mapping CSV_KEYS to the corresponding values.
     """
-    
+    # The regex explained:
+    #   (Pass|Fail)           -> Capture group 1: either "Pass" or "Fail" (the test result)
+    #   \s*,\s*               -> A comma with optional whitespace around it.
+    #   ([^,]+)               -> Capture group 2: one or more characters that are not a comma (risk)
+    #   \s*,\s*               -> comma separator (and so on)
+    #   ([^,]+)               -> Capture group 3: confidence
+    #   \s*,\s*
+    #   ([^,]+)               -> Capture group 4: alert
+    #   \s*,\s*
+    #   (.*?)(?=$|\n)         -> Capture group 5: description (non-greedy until end of line)
+    #
+    # This regex assumes that the first four fields do not contain commas.
     pattern = re.compile(
         r'(Pass|Fail)\s*,\s*'   # test result
         r'([^,]+)\s*,\s*'       # risk
@@ -33,15 +44,15 @@ def extract_csv_entries(text):
         entries.append(entry)
     return entries
 
-def main(filename):
+def main(input_filename, output_filename):
     # Read the entire file
-    with open(filename, 'r') as f:
+    with open(input_filename, 'r') as f:
         content = f.read()
 
     # Extract CSV entries from the file content
     entries = extract_csv_entries(content)
 
-    # Output the list of JSON objects (dictionaries)
+    # Write the JSON output to the specified output file
     with open(output_filename, 'w') as outfile:
         json.dump(entries, outfile, indent=4)
     print(f"JSON output saved to {output_filename}")
