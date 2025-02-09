@@ -1,0 +1,126 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/",
+  "zestVersion": "0.8",
+  "title": "download_premium_key",
+  "description": "",
+  "prefix": "http://localhost:3000/encryptionkeys",
+  "type": "StandAlone",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "url": "http://localhost:3000/encryptionkeys",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\nPriority: u\u003d0, i\r\ncontent-length: 0\r\n",
+      "response": {
+        "url": "http://localhost:3000/encryptionkeys",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: text/html; charset\u003dutf-8\r\nContent-Length: 7952\r\nVary: Accept-Encoding\r\nDate: Sun, 09 Feb 2025 17:16:50 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "\u003c!DOCTYPE html\u003e\n\u003chtml\u003e\n  \u003chead\u003e\n    \u003cmeta charset\u003d\u0027utf-8\u0027\u003e \n    \u003cmeta name\u003d\"viewport\" content\u003d\"width\u003ddevice-width, initial-scale\u003d1.0, maximum-scale\u003d1.0, user-scalable\u003dno\" /\u003e\n    \u003ctitle\u003elisting directory /encryptionkeys\u003c/title\u003e\n    \u003cstyle\u003e* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2, h3 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nh3 {\n  margin: 5px 0 10px 0;\n  padding-bottom: 5px;\n  border-bottom: 1px solid #eee;\n  font-size: 18px;\n}\nul li {\n  list-style: none;\n}\nul li:hover {\n  cursor: pointer;\n  color: #2e2e2e;\n}\nul li .path {\n  padding-left: 5px;\n  font-weight: bold;\n}\nul li .line {\n  padding-right: 5px;\n  font-style: italic;\n}\nul li:first-child .path {\n  padding-left: 0;\n}\np {\n  line-height: 1.5;\n}\na {\n  color: #555;\n  text-decoration: none;\n}\na:hover {\n  color: #303030;\n}\n#stacktrace {\n  margin-top: 15px;\n}\n.directory h1 {\n  margin-bottom: 15px;\n  font-size: 18px;\n}\nul#files {\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\nul#files li {\n  float: left;\n  width: 30%;\n  line-height: 25px;\n  margin: 1px;\n}\nul#files li a {\n  display: block;\n  height: 25px;\n  border: 1px solid transparent;\n  -webkit-border-radius: 5px;\n  -moz-border-radius: 5px;\n  border-radius: 5px;\n  overflow: hidden;\n  white-space: nowrap;\n}\nul#files li a:focus,\nul#files li a:hover {\n  background: rgba(255,255,255,0.65);\n  border: 1px solid #ececec;\n}\nul#files li a.highlight {\n  -webkit-transition: background .4s ease-in-out;\n  background: #ffff4f;\n  border-color: #E9DC51;\n}\n#search {\n  display: block;\n  position: fixed;\n  top: 20px;\n  right: 20px;\n  width: 90px;\n  -webkit-transition: width ease 0.2s, opacity ease 0.4s;\n  -moz-transition: width ease 0.2s, opacity ease 0.4s;\n  -webkit-border-radius: 32px;\n  -moz-border-radius: 32px;\n  -webkit-box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.25), inset 0px 1px 3px rgba(0, 0, 0, 0.7), 0px 1px 0px rgba(255, 255, 255, 0.03);\n  -moz-box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.25), inset 0px 1px 3px rgba(0, 0, 0, 0.7), 0px 1px 0px rgba(255, 255, 255, 0.03);\n  -webkit-font-smoothing: antialiased;\n  text-align: left;\n  font: 13px \"Helvetica Neue\", Arial, sans-serif;\n  padding: 4px 10px;\n  border: none;\n  background: transparent;\n  margin-bottom: 0;\n  outline: none;\n  opacity: 0.7;\n  color: #888;\n}\n#search:focus {\n  width: 120px;\n  opacity: 1.0; \n}\n\n/*views*/\n#files span {\n  display: inline-block;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  text-indent: 10px;\n}\n#files .name {\n  background-repeat: no-repeat;\n}\n#files .icon .name {\n  text-indent: 28px;\n}\n\n/*tiles*/\n.view-tiles .name {\n  width: 100%;\n  background-position: 8px 5px;\n}\n.view-tiles .size,\n.view-tiles .date {\n  display: none;\n}\n\n/*details*/\nul#files.view-details li {\n  float: none;\n  display: block;\n  width: 90%;\n}\nul#files.view-details li.header {\n  height: 25px;\n  background: #000;\n  color: #fff;\n  font-weight: bold;\n}\n.view-details .header {\n  border-radius: 5px;\n}\n.view-details .name {\n  width: 60%;\n  background-position: 8px 5px;\n}\n.view-details .size {\n  width: 10%;\n}\n.view-details .date {\n  width: 30%;\n}\n.view-details .size,\n.view-details .date {\n  text-align: right;\n  direction: rtl;\n}\n\n/*mobile*/\n@media (max-width: 768px) {\n  body {\n    font-size: 13px;\n    line-height: 16px;\n    padding: 0;\n  }\n  #search {\n    position: static;\n    width: 100%;\n    font-size: 2em;\n    line-height: 1.8em;\n    text-indent: 10px;\n    border: 0;\n    border-radius: 0;\n    padding: 10px 0;\n    margin: 0;\n  }\n  #search:focus {\n    width: 100%;\n    border: 0;\n    opacity: 1;\n  }\n  .directory h1 {\n    font-size: 2em;\n    line-height: 1.5em;\n    color: #fff;\n    background: #000;\n    padding: 15px 10px;\n    margin: 0;\n  }\n  ul#files {\n    border-top: 1px solid #cacaca;\n  }\n  ul#files li {\n    float: none;\n    width: auto !important;\n    display: block;\n    border-bottom: 1px solid #cacaca;\n    font-size: 2em;\n    line-height: 1.2em;\n    text-indent: 0;\n    margin: 0;\n  }\n  ul#files li:nth-child(odd) {\n    background: #e0e0e0;\n  }\n  ul#files li a {\n    height: auto;\n    border: 0;\n    border-radius: 0;\n    padding: 15px 10px;\n  }\n  ul#files li a:focus,\n  ul#files li a:hover {\n    border: 0;\n  }\n  #files .header,\n  #files .size,\n  #files .date {\n    display: none !important;\n  }\n  #files .name {\n    float: none;\n    display: inline-block;\n    width: 100%;\n    text-indent: 0;\n    background-position: 0 50%;\n  }\n  #files .icon .name {\n    text-indent: 41px;\n  }\n}\n#files .icon-default .name {\n  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC4SURBVCjPdZFbDsIgEEWnrsMm7oGGfZrohxvU+Iq1TyjU60Bf1pac4Yc5YS4ZAtGWBMk/drQBOVwJlZrWYkLhsB8UV9K0BUrPGy9cWbng2CtEEUmLGppPjRwpbixUKHBiZRS0p+ZGhvs4irNEvWD8heHpbsyDXznPhYFOyTjJc13olIqzZCHBouE0FRMUjA+s1gTjaRgVFpqRwC8mfoXPPEVPS7LbRaJL2y7bOifRCTEli3U7BMWgLzKlW/CuebZPAAAAAElFTkSuQmCC);\n}\n\u003c/style\u003e\n    \u003cscript\u003e\n      function $(id){\n        var el \u003d \u0027string\u0027 \u003d\u003d typeof id\n          ? document.getElementById(id)\n          : id;\n\n        el.on \u003d function(event, fn){\n          if (\u0027content loaded\u0027 \u003d\u003d event) {\n            event \u003d window.attachEvent ? \"load\" : \"DOMContentLoaded\";\n          }\n          el.addEventListener\n            ? el.addEventListener(event, fn, false)\n            : el.attachEvent(\"on\" + event, fn);\n        };\n\n        el.all \u003d function(selector){\n          return $(el.querySelectorAll(selector));\n        };\n\n        el.each \u003d function(fn){\n          for (var i \u003d 0, len \u003d el.length; i \u003c len; ++i) {\n            fn($(el[i]), i);\n          }\n        };\n\n        el.getClasses \u003d function(){\n          return this.getAttribute(\u0027class\u0027).split(/\\s+/);\n        };\n\n        el.addClass \u003d function(name){\n          var classes \u003d this.getAttribute(\u0027class\u0027);\n          el.setAttribute(\u0027class\u0027, classes\n            ? classes + \u0027 \u0027 + name\n            : name);\n        };\n\n        el.removeClass \u003d function(name){\n          var classes \u003d this.getClasses().filter(function(curr){\n            return curr !\u003d name;\n          });\n          this.setAttribute(\u0027class\u0027, classes.join(\u0027 \u0027));\n        };\n\n        return el;\n      }\n\n      function search() {\n        var str \u003d $(\u0027search\u0027).value.toLowerCase();\n        var links \u003d $(\u0027files\u0027).all(\u0027a\u0027);\n\n        links.each(function(link){\n          var text \u003d link.textContent.toLowerCase();\n\n          if (\u0027..\u0027 \u003d\u003d text) return;\n          if (str.length \u0026\u0026 ~text.indexOf(str)) {\n            link.addClass(\u0027highlight\u0027);\n          } else {\n            link.removeClass(\u0027highlight\u0027);\n          }\n        });\n      }\n\n      $(window).on(\u0027content loaded\u0027, function(){\n        $(\u0027search\u0027).on(\u0027keyup\u0027, search);\n      });\n    \u003c/script\u003e\n  \u003c/head\u003e\n  \u003cbody class\u003d\"directory\"\u003e\n    \u003cinput id\u003d\"search\" type\u003d\"text\" placeholder\u003d\"Search\" autocomplete\u003d\"off\" /\u003e\n    \u003cdiv id\u003d\"wrapper\"\u003e\n      \u003ch1\u003e\u003ca href\u003d\".\"\u003e~\u003c/a\u003e / \u003ca href\u003d\"encryptionkeys\"\u003eencryptionkeys\u003c/a\u003e\u003c/h1\u003e\n      \u003cul id\u003d\"files\" class\u003d\"view-details\"\u003e\u003cli class\u003d\"header\"\u003e\u003cspan class\u003d\"name\"\u003eName\u003c/span\u003e\u003cspan class\u003d\"size\"\u003eSize\u003c/span\u003e\u003cspan class\u003d\"date\"\u003eModified\u003c/span\u003e\u003c/li\u003e\u003cli\u003e\u003ca href\u003d\"encryptionkeys/jwt.pub\" class\u003d\"icon icon icon-pub icon-default\" title\u003d\"jwt.pub\"\u003e\u003cspan class\u003d\"name\"\u003ejwt.pub\u003c/span\u003e\u003cspan class\u003d\"size\"\u003e248\u003c/span\u003e\u003cspan class\u003d\"date\"\u003e2/3/2025 6:51:59 PM\u003c/span\u003e\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003e\u003ca href\u003d\"encryptionkeys/premium.key\" class\u003d\"icon icon icon-key icon-default\" title\u003d\"premium.key\"\u003e\u003cspan class\u003d\"name\"\u003epremium.key\u003c/span\u003e\u003cspan class\u003d\"size\"\u003e50\u003c/span\u003e\u003cspan class\u003d\"date\"\u003e2/3/2025 6:51:59 PM\u003c/span\u003e\u003c/a\u003e\u003c/li\u003e\u003c/ul\u003e\n    \u003c/div\u003e\n  \u003c/body\u003e\n\u003c/html\u003e",
+        "statusCode": 200,
+        "responseTimeInMs": 6012,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 7949,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1739121410166,
+      "cookies": [],
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/encryptionkeys/premium.key",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\nPriority: u\u003d0, i\r\ncontent-length: 0\r\n",
+      "response": {
+        "url": "http://localhost:3000/encryptionkeys/premium.key",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nAccept-Ranges: bytes\r\nCache-Control: public, max-age\u003d0\r\nLast-Modified: Mon, 03 Feb 2025 18:51:59 GMT\r\nETag: W/\"32-194cd27b546\"\r\nContent-Type: application/octet-stream\r\nContent-Length: 50\r\nDate: Sun, 09 Feb 2025 17:18:00 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "1337133713371337.EA99A61D92D2955B1E9285B55BF2AD42\n",
+        "statusCode": 200,
+        "responseTimeInMs": 9,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 50,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1739121480782,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "rootExpression": {
+        "code": 200,
+        "not": false,
+        "elementType": "ZestExpressionStatusCode"
+      },
+      "ifStatements": [
+        {
+          "message": "\"Fail, High, High, Download premium key, Attempted to download premium key in encryptionkeys path and succeeded.\"",
+          "index": 4,
+          "enabled": true,
+          "elementType": "ZestActionPrint"
+        }
+      ],
+      "elseStatements": [
+        {
+          "message": "\"Pass, NA, NA, Download premium key, Attempted to download premium key in encryptionkeys path and failed.\"",
+          "index": 5,
+          "enabled": true,
+          "elementType": "ZestActionPrint"
+        }
+      ],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestConditional"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}
