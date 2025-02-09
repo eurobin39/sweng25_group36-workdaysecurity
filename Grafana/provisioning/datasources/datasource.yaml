@@ -4,12 +4,12 @@ datasources:
     type: postgres
     access: proxy
     url: host.docker.internal:5432  
-    database: ZAP_DB
     user: eurobae
     secureJsonData:
       password: eurobea0309
     jsonData:
       sslmode: "disable"  
+      database: ZAP_DB
       postgresVersion: 1400
       timescaledb: false
     readOnly: false
