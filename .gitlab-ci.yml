@@ -80,7 +80,7 @@ grafana_visualization:
         -e GF_DATABASE_NAME=ZAP_DB 
         grafana/grafana:latest
 
-    - sleep 20
+    - sleep 15
    
 
     - echo "Testing Grafana provisioning..."
