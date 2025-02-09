@@ -60,12 +60,6 @@
       },
       "ifStatements": [
         {
-          "message": "Injected",
-          "index": 3,
-          "enabled": true,
-          "elementType": "ZestActionPrint"
-        },
-        {
           "message": "Fail: 'SQL INJECTION', 'HIGH'",
           "priority": "HIGH",
           "index": 4,
