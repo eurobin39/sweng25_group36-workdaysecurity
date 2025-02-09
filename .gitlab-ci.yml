@@ -10,3 +10,30 @@ run_zest_tests:
     - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst"
    
 
+stages:
+  - test
+
+check_failure:
+  stage: test
+  tags:
+    - tim-mac
+  script:
+    # Run your command and capture its output.
+    - output=$(zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst")   # Replace with your actual command.
+    - echo "$output"
+    
+    # Check if the output contains "Fail".
+    - if echo "$output" | grep -q "Fail"; then
+        # Optionally, use jq to safely escape the output for JSON.
+        # Ensure that jq is installed on your runner.
+        escaped_output=$(echo "$output" | jq -Rs .)
+        echo "{\"status\": \"fail\", \"message\": \"Failure detected in test output.\", \"details\": $escaped_output}" > failure.json;
+      else
+        echo "{\"status\": \"success\", \"message\": \"No failures detected.\"}" > failure.json;
+      
+      fi
+  # Artifacts are saved even if the job fails:
+  artifacts:
+    when: always
+    paths:
+      - failure.json
