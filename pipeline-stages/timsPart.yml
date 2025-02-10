@@ -1,8 +1,8 @@
 stages:
-  - test
+  - run_pen_test
 
 check_failure:
-  stage: test
+  stage: run_pen_test
   tags:
     # - tim-mac
     - yaroslav-mac
