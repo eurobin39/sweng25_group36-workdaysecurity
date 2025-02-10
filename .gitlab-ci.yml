@@ -68,7 +68,7 @@ save_results:
     # - euro-mac
     - yaroslav-mac
   script:
-    - python3 ZAP/Main/send_test_results_to_SQL.py
+    - python3 py-scripts/send_test_results_to_SQL.py
   allow_failure: false
 
 # 4️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
