@@ -1,24 +1,20 @@
 import psycopg2
 import json
-import os
-from dotenv import load_dotenv
-
-
-load_dotenv()
+from config import config
 
 
 conn = psycopg2.connect(
-    dbname=os.getenv("DB_NAME"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    host=os.getenv("DB_HOST"),
-    port=os.getenv("DB_PORT")
+    dbname=config.db_name,
+    user=config.db_user,
+    password=config.db_password,
+    host=config.db_host,
+    port=config.db_port
 )
 
 cursor = conn.cursor()
 
 
-with open("ZAP/Main/security_results.json", "r", encoding="utf-8") as file:
+with open("../data/output.json", "r", encoding="utf-8") as file:
     json_data = json.load(file)
 
 

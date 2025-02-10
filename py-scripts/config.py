@@ -10,6 +10,11 @@ class Config:
     zap_host: str
     zap_port: str
     zap_api: str
+    db_name: str
+    db_user: str
+    db_password: str
+    db_host: str
+    db_port: str
 
 
 def get_config():
@@ -23,11 +28,16 @@ def get_config():
         raise ValueError("ZAP_API_KEY environment variable is missing!")
 
     return Config(
-                zap_path = path,
-                zap_host = host,
-                zap_port = port,
-                zap_api  = zap_token
-        )
+        zap_path=path,
+        zap_host=host,
+        zap_port=port,
+        zap_api=token,
+        db_name=os.getenv("DB_NAME"),
+        db_user=os.getenv("DB_USER"),
+        db_password=os.getenv("DB_PASSWORD"),
+        db_host=os.getenv("DB_HOST"),
+        db_port=os.getenv("DB_PORT")
+    )
 
 # Load the configuration
 config = get_config()
