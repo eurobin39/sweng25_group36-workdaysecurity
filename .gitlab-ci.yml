@@ -1,6 +1,6 @@
 include:
-  - 'pipeline-stages/eurosPart.yml'
-  - 'pipeline-stages/timsPart.yml'
+  - local: "pipeline-stages/eurosPart.yml"
+  - local: "pipeline-stages/timsPart.yml"
 
 stages:
   - start_juice_shop
