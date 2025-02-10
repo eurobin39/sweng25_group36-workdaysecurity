@@ -41,7 +41,7 @@ zap_scan:
   artifacts:
     paths:
       - zap_results.json
-      - zap_report.html
+      - security_results.json
 
 # 3️⃣ JSON 데이터를 PostgreSQL에 저장
 save_to_db:
