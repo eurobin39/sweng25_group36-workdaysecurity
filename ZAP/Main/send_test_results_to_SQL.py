@@ -15,8 +15,6 @@ conn = psycopg2.connect(
     port=os.getenv("DB_PORT")
 )
 
-print(f"{os.getenv("DB_USER")}");
-
 cursor = conn.cursor()
 
 
