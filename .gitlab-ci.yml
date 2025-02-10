@@ -63,7 +63,7 @@ save_results:
   needs:
     - run_pen_test
   before_script:
-    - pip3 install psycopg2-binary
+    - pip3 install python-dotenv
   tags:
     # - euro-mac
     - yaroslav-mac
