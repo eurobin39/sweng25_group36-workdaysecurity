@@ -41,10 +41,10 @@ run_pen_test:
     - tudor-mac
   image: owasp/zap2docker-stable
   before_script:
-  # Export the PATH to include ZAP's location
-  - export PATH="$PATH:/Applications/OWASP ZAP.app/Contents/Java"
-  # Verify ZAP is accessible
-  - which zap.sh
+    # This will help you locate ZAP
+    - find / -name "zap.sh" 2>/dev/null
+    # Or if you know it's in Applications
+    - find /Applications -name "zap.sh" 2>/dev/null
   script:
     # Run your command and capture its output.
     - mkdir -p data
