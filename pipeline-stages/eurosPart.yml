@@ -27,7 +27,7 @@ save_to_db:
   image: python:3.9
   stage: save_results
   dependencies:
-    - test
+    - run_pen_test
   before_script:
     - pip3 install psycopg2-binary
   tags:
