@@ -5,10 +5,10 @@ import subprocess
 from zapv2 import ZAPv2
 from config import config
 
-# --- Configuration ---
-ZAP_PATH = "/System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh"  # adjust this to your ZAP launch script
-ZAP_HOST = "localhost"
-ZAP_PORT = "8080"
+# # --- Configuration ---
+# ZAP_PATH = "/System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh"  # adjust this to your ZAP launch script
+# ZAP_HOST = "localhost"
+# ZAP_PORT = "8080"
 
 # The script details provided by the user
 SCRIPT_NAME = "sql_injection_login"
@@ -57,7 +57,7 @@ def main():
     start_zap()
 
     # Create a ZAP API client instance
-    zap = ZAPv2(apikey=config.ZAP_API_KEY, proxies={'http': f'http://{ZAP_HOST}:{ZAP_PORT}', 'https': f'http://{ZAP_HOST}:{ZAP_PORT}'})
+    zap = ZAPv2(apikey=config.zap_api, proxies={'http': f'http://{config.zap_host}:{config.zap_port}', 'https': f'http://{config.zap_host}:{config.zap_port}'})
 
     # Give a little extra time for the API to be ready
     time.sleep(5)
