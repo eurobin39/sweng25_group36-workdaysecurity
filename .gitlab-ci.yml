@@ -11,11 +11,12 @@
 
 stages:
   - start_services
+  - run_pen_test
   - save_results
   - visualize
 
 # 1️⃣ Juice Shop 실행 (로컬에서 실행됨)
-start_juice_shop:
+start_services:
   image: docker:latest
   stage: start_services
   services:
@@ -32,7 +33,7 @@ start_juice_shop:
     - docker ps
 
 # Stage 2
-check_failure:
+run_pen_test:
   stage: run_pen_test
   tags:
     # - tim-mac
@@ -57,7 +58,7 @@ check_failure:
 
 
 # 3️⃣ JSON 데이터를 PostgreSQL에 저장
-save_to_db:
+save_results:
   image: python:3.9
   stage: save_results
   needs:
@@ -74,7 +75,8 @@ save_to_db:
 # 4️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
 grafana_visualization:
   stage: visualize
-  needs: save_results
+  needs: 
+    - save_results
   tags:
     # - euro-mac
     - yaroslav-mac
