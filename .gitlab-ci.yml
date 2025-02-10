@@ -5,6 +5,6 @@ include:
 stages:
   - start_juice_shop
   # - security_scan
-  # - save_results
   - test
+  - save_results
   - visualize

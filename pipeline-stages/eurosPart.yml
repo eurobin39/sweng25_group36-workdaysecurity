@@ -1,7 +1,6 @@
 
 stages:
   - start_services
-  - security_scan
   - save_results
   - visualize
 
@@ -21,42 +20,19 @@ start_juice_shop:
     - sleep 10
     - docker ps
 
-# 2️⃣ OWASP ZAP 실행 (Juice Shop 타겟)
-zap_scan:
-  image: owasp/zap2docker-stable
-  stage: security_scan
-  dependencies:
-    - start_juice_shop
-  tags:
-    - euro-mac
-  before_script:
-    - echo "ZAP_API_KEY=$ZAP_API_KEY" > ZAP/Main/.env
-    - echo "TARGET_URL=$TARGET_URL" > ZAP/Main/.env
-    - pip3 install zaproxy
-    - pip3 install python-dotenv
-
-  script:
-    - echo "Running OWASP ZAP against Juice Shop..."
-    - python3 ZAP/Main/zap_exec.py
-    - python3 ZAP/Main/main.py
-  artifacts:
-    paths:
-      - zap_results.json
-      - security_results.json
 
 # 3️⃣ JSON 데이터를 PostgreSQL에 저장
 save_to_db:
   image: python:3.9
   stage: save_results
   dependencies:
-    - zap_scan
+    - test
   before_script:
     - pip3 install psycopg2-binary
   tags:
     - euro-mac
   script:
-    - python3 ZAP/Main/server.py
-    - python3 ZAP/Main/security_server.py #추가 사항 확인
+    - python3 ZAP/Main/send_test_results_to_SQL.py
   allow_failure: false
 
 # 4️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
