@@ -73,7 +73,7 @@ grafana_visualization:
         -p 4000:3000 
         -v grafana_data:/var/lib/grafana 
         -v $CI_PROJECT_DIR/grafana/provisioning:/etc/grafana/provisioning 
-        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards 
+        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboard
         grafana/grafana:latest  
 
     - sleep 15
