@@ -1,4 +1,26 @@
 stages:
+  - test
+
+check_failure:
+  stage: test
+  tags:
+    - tim-mac
+  script:
+    # Run your command and capture its output.
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login_2.zst" >> output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" >> output.txt
+
+    - python3 json_processing.py output.txt
+    
+  # Artifacts are saved even if the job fails:
+  artifacts:
+    when: always
+    paths:
+      - output.txt
+      - output.json
+
+stages:
   - start_services
   - security_scan
   - save_results
@@ -81,4 +103,3 @@ grafana_visualization:
     - echo "Testing Grafana provisioning..."
     - curl -s -u admin:admin http://localhost:4000/api/datasources
     - curl -s -u admin:admin http://localhost:4000/api/search?query=
-
