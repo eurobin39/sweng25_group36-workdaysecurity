@@ -4,7 +4,7 @@ stages:
   - save_results
   - visualize
 
-# 1️⃣ Juice Shop 실행 (로컬에서 실행됨)
+# 1️⃣ Juice Shop execute
 start_juice_shop:
   image: docker:latest
   stage: start_services
@@ -22,7 +22,7 @@ start_juice_shop:
     - docker ps
 
 
-# 3️⃣ JSON 데이터를 PostgreSQL에 저장
+# 3️⃣ save JSON data to PostgreSQL
 save_to_db:
   image: python:3.9
   stage: save_results
@@ -37,27 +37,32 @@ save_to_db:
     - python3 ZAP/Main/send_test_results_to_SQL.py
   allow_failure: false
 
-# 4️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
+# 4️⃣ Grafana
 grafana_visualization:
   stage: visualize
   tags:
-    # - euro-mac
-    - yaroslav-mac
+    - euro-mac
   script:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true
     - docker rm grafana || true
 
     - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
-    - docker run -d --name=grafana
-        -p 4000:3000
-        -v grafana_data:/var/lib/grafana
-        -v $CI_PROJECT_DIR/grafana/provisioning:/etc/grafana/provisioning
-        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboard
+    - docker run -d --name=grafana 
+        -p 4000:3000 
+        -v grafana_data:/var/lib/grafana 
+        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards 
+        -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
+        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards
         grafana/grafana:latest
 
-    - sleep 15
+    - sleep 20  
+
+    - echo "Checking Grafana logs..."
+    - docker logs grafana
 
     - echo "Testing Grafana provisioning..."
-    - curl -s -u admin:admin http://localhost:4000/api/datasources
     - curl -s -u admin:admin http://localhost:4000/api/search?query=
+
+
+
