@@ -10,11 +10,11 @@ class Config:
     zap_host: str
     zap_port: str
     zap_api: str
-    db_name: str
-    db_user: str
-    db_password: str
-    db_host: str
-    db_port: str
+    db_name: str = "ZAP_DB"
+    db_user: str = "tudor"
+    db_password: str = "tudor"
+    db_host: str = "localhost"  # or "localhost" if running locally
+    db_port: str = "5432"
 
 
 def get_config():
