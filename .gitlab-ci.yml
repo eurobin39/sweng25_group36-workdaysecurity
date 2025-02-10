@@ -29,7 +29,7 @@ start_services:
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
     - echo "Starting Juice Shop..."
     - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
-    - sleep 10
+    - sleep 5
     - docker ps
 
 # Stage 2
@@ -43,9 +43,8 @@ run_pen_test:
   script:
     # Run your command and capture its output.
     # - zap-cli scripts -f "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
-    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
-    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login_2.zst" >> output.txt
-    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" >> output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" >> data/output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" >> data/output.txt
 
     - python3 json_processing.py data/output.txt data/output.json
 
@@ -75,7 +74,7 @@ save_results:
 # 4️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
 grafana_visualization:
   stage: visualize
-  needs: 
+  needs:
     - save_results
   tags:
     # - euro-mac
