@@ -17,7 +17,7 @@
   - (optional) database: <database_name>
 
 8. docker run --name my_postgres -e POSTGRES_USER=<user_from_7> -e POSTGRES_PASSWORD=<password_from_7> -e POSTGRES_DB=<db_name_from_7> -p 5432:5432 -d postgres
-docker run --name my_postgres -e POSTGRES_USER=tudor -e POSTGRES_PASSWORD=tudor -e POSTGRES_DB=ZAP_DB -p 5432:5432 -d postgres
+docker run --name my_postgres -e POSTGRES_USER=tudor -e POSTGRES_PASSWORD=eurobea0309 -e POSTGRES_DB=ZAP_DB -p 5432:5432 -d postgres
 
 9. Open pgadmin4
 - right click servers -> register server -> In general... Name = <db_name_from_7>, In connection... hostname/address = localhost
