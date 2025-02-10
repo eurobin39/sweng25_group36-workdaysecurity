@@ -1,0 +1,23 @@
+[
+    {
+        "test result": "Pass",
+        "risk": "NA",
+        "confidence": "NA",
+        "alert": "SQL login injection",
+        "description": "Attempted SQL injection with password and did not succeed"
+    },
+    {
+        "test result": "Fail",
+        "risk": "High",
+        "confidence": "High",
+        "alert": "SQL login injection",
+        "description": "Attempted SQL injection with password and succeeded."
+    },
+    {
+        "test result": "Fail",
+        "risk": "High",
+        "confidence": "High",
+        "alert": "Premium key illegal download",
+        "description": "Attempted illegal premium key download and succeeded."
+    }
+]

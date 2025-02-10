@@ -3,10 +3,10 @@ import json
 import os 
 from dotenv import load_dotenv
 
-# .env 파일 로드
+
 load_dotenv()
 
-# PostgreSQL 연결
+
 conn = psycopg2.connect(
     dbname=os.getenv("DB_NAME"),
     user=os.getenv("DB_USER"),
@@ -17,11 +17,11 @@ conn = psycopg2.connect(
 
 cursor = conn.cursor()
 
-# JSON 파일 읽기
+
 with open("zap_results.json", "r") as file:
     json_data = json.load(file)
 
-# SQL 쿼리 (INSERT INTO)
+
 insert_query = """
 INSERT INTO zap_scan_results (
     sourceid, plugin_id, cwe_id, confidence, risk, alert, description,
@@ -29,7 +29,7 @@ INSERT INTO zap_scan_results (
 ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
 """
 
-# JSON 데이터 반복 삽입
+
 for entry in json_data:
     cursor.execute(insert_query, (
         entry.get("sourceid"),
@@ -47,10 +47,10 @@ for entry in json_data:
         entry.get("param"),
         entry.get("attack"),
         entry.get("wascid"),
-        json.dumps(entry.get("tags", {}))  # JSON 데이터 저장
+        json.dumps(entry.get("tags", {}))  
     ))
 
-# 변경 사항 저장 및 종료
+
 conn.commit()
 cursor.close()
 conn.close()
