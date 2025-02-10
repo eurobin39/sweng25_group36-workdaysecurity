@@ -1,10 +1,98 @@
-include:
-  - local: "pipeline-stages/eurosPart.yml"
-  - local: "pipeline-stages/timsPart.yml"
+# include:
+#   - local: "pipeline-stages/eurosPart.yml"
+#   - local: "pipeline-stages/timsPart.yml"
+
+# stages:
+#   - start_services
+#   # - security_scan
+#   - run_pen_test
+#   - save_results
+#   - visualize
 
 stages:
   - start_services
-  # - security_scan
-  - run_pen_test
   - save_results
   - visualize
+
+# 1️⃣ Juice Shop 실행 (로컬에서 실행됨)
+start_juice_shop:
+  image: docker:latest
+  stage: start_services
+  services:
+    - docker:dind
+  tags:
+    # - euro-mac
+    - yaroslav-mac
+  script:
+    - echo "Checking if Juice Shop is already running..."
+    - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
+    - echo "Starting Juice Shop..."
+    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
+    - sleep 10
+    - docker ps
+
+# Stage 2
+check_failure:
+  stage: run_pen_test
+  tags:
+    # - tim-mac
+    - yaroslav-mac
+
+  image: owasp/zap2docker-stable
+  script:
+    # Run your command and capture its output.
+    - zap-cli scripts -f "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login_2.zst" >> output.txt
+    - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" >> output.txt
+
+    - python3 json_processing.py data/output.txt data/output.json
+
+  # Artifacts are saved even if the job fails:
+  artifacts:
+    when: always
+    paths:
+      - data/output.txt
+      - data/output.json
+
+
+# 3️⃣ JSON 데이터를 PostgreSQL에 저장
+save_to_db:
+  image: python:3.9
+  stage: save_results
+  needs:
+    - run_pen_test
+  before_script:
+    - pip3 install psycopg2-binary
+  tags:
+    # - euro-mac
+    - yaroslav-mac
+  script:
+    - python3 ZAP/Main/send_test_results_to_SQL.py
+  allow_failure: false
+
+# 4️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
+grafana_visualization:
+  stage: visualize
+  needs: save_results
+  tags:
+    # - euro-mac
+    - yaroslav-mac
+  script:
+    - echo "Stopping any existing Grafana container..."
+    - docker stop grafana || true
+    - docker rm grafana || true
+
+    - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
+    - docker run -d --name=grafana
+        -p 4000:3000
+        -v grafana_data:/var/lib/grafana
+        -v $CI_PROJECT_DIR/grafana/provisioning:/etc/grafana/provisioning
+        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboard
+        grafana/grafana:latest
+
+    - sleep 15
+
+    - echo "Testing Grafana provisioning..."
+    - curl -s -u admin:admin http://localhost:4000/api/datasources
+    - curl -s -u admin:admin http://localhost:4000/api/search?query=
