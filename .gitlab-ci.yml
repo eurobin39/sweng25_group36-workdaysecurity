@@ -32,7 +32,7 @@ start_services:
     - sleep 5
     - docker ps
 
-# Stage 2
+# Stage 2 
 run_pen_test:
   stage: run_pen_test
   tags:
@@ -56,7 +56,7 @@ run_pen_test:
       - data/output.json
 
 
-# 3️⃣ JSON to PostgreSQL
+# 3️⃣ JSON data to PostgreSQL
 save_results:
   image: python:3.9
   stage: save_results
