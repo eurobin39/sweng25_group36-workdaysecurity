@@ -11,7 +11,8 @@ start_juice_shop:
   services:
     - docker:dind
   tags:
-    - euro-mac
+    # - euro-mac
+    - yaroslav-mac
   script:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
@@ -30,7 +31,8 @@ save_to_db:
   before_script:
     - pip3 install psycopg2-binary
   tags:
-    - euro-mac
+    # - euro-mac
+    - yaroslav-mac
   script:
     - python3 ZAP/Main/send_test_results_to_SQL.py
   allow_failure: false
@@ -39,7 +41,8 @@ save_to_db:
 grafana_visualization:
   stage: visualize
   tags:
-    - euro-mac
+    # - euro-mac
+    - yaroslav-mac
   script:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true

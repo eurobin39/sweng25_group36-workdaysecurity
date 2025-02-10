@@ -4,9 +4,14 @@ stages:
 check_failure:
   stage: test
   tags:
-    - tim-mac
+    # - tim-mac
+    - yaroslav-mac
+
+  image:
+    - owasp/zap2docker-stable
   script:
     # Run your command and capture its output.
+    - zap-cli scripts -f "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
     - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > output.txt
     - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login_2.zst" >> output.txt
     - zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" >> output.txt
