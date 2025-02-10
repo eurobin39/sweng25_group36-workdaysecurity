@@ -22,7 +22,7 @@ start_services:
   services:
     - docker:dind
   tags:
-    - euro-mac
+    - tudor-mac
     # - yaroslav-mac
   script:
     - echo "Checking if Juice Shop is already running..."
@@ -38,7 +38,7 @@ run_pen_test:
   tags:
     # - tim-mac
     # - yaroslav-mac
-    - euro-mac
+    - tudor-mac
   image: owasp/zap2docker-stable
   script:
     # Run your command and capture its output.
@@ -74,7 +74,7 @@ save_results:
 
 
   tags:
-    - euro-mac
+    - tudor-mac
     # yaroslav-mac
   script:
     - python3 py-scripts/send_test_results_to_SQL.py
@@ -84,7 +84,7 @@ save_results:
 grafana_visualization:
   stage: visualize
   tags:
-    - euro-mac
+    - tudor-mac
     # yaroslav-mac
   script:
     - echo "Stopping any existing Grafana container..."
