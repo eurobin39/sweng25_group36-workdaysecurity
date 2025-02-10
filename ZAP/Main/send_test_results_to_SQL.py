@@ -15,6 +15,8 @@ conn = psycopg2.connect(
     port=os.getenv("DB_PORT")
 )
 
+print(f"{os.getenv("DB_USER")}");
+
 cursor = conn.cursor()
 
 
@@ -31,7 +33,7 @@ INSERT INTO security_test_results (
 
 for entry in json_data:
     cursor.execute(insert_query, (
-        entry.get("test result"),  
+        entry.get("test result"),
         entry.get("risk"),
         entry.get("confidence"),
         entry.get("alert"),
