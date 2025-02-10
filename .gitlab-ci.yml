@@ -65,8 +65,8 @@ save_results:
   before_script:
     - pip3 install python-dotenv
   tags:
-    - euro-mac
-    # yaroslav-mac
+    # euro-mac
+    - yaroslav-mac
   script:
     - python3 py-scripts/send_test_results_to_SQL.py
   allow_failure: false
@@ -75,7 +75,8 @@ save_results:
 grafana_visualization:
   stage: visualize
   tags:
-    - euro-mac
+    # euro-mac
+    - yaroslav-mac
   script:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true
