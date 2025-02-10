@@ -3,7 +3,7 @@ include:
   - local: "pipeline-stages/timsPart.yml"
 
 stages:
-  - start_juice_shop
+  - start_services
   # - security_scan
   - run_pen_test
   - save_results
