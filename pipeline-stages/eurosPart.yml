@@ -26,7 +26,7 @@ start_juice_shop:
 save_to_db:
   image: python:3.9
   stage: save_results
-  dependencies:
+  needs:
     - run_pen_test
   before_script:
     - pip3 install psycopg2-binary
