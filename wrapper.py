@@ -3,10 +3,10 @@ import time
 import os
 import subprocess
 from zapv2 import ZAPv2
+from config import config
 
 # --- Configuration ---
 ZAP_PATH = "/System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh"  # adjust this to your ZAP launch script
-ZAP_API_KEY = ""  # if you have an API key configured; else leave empty
 ZAP_HOST = "localhost"
 ZAP_PORT = "8080"
 
@@ -35,14 +35,14 @@ def load_and_run_script(zap):
         print("Load response:", response, flush=True)
     except Exception as e:
         print("Error loading script:", e, flush=True)
-    
+
     print("Running script...", flush=True)
     try:
         response = zap._request("JSON/script/action/run/", {"scriptName": SCRIPT_NAME})
         print("Run response:", response, flush=True)
     except Exception as e:
         print("Error running script:", e, flush=True)
-    
+
     print("Removing script...", flush=True)
     try:
         response = zap.script.remove(scriptName=SCRIPT_NAME)
@@ -57,14 +57,14 @@ def main():
     start_zap()
 
     # Create a ZAP API client instance
-    zap = ZAPv2(apikey=ZAP_API_KEY, proxies={'http': f'http://{ZAP_HOST}:{ZAP_PORT}', 'https': f'http://{ZAP_HOST}:{ZAP_PORT}'})
-    
+    zap = ZAPv2(apikey=config.ZAP_API_KEY, proxies={'http': f'http://{ZAP_HOST}:{ZAP_PORT}', 'https': f'http://{ZAP_HOST}:{ZAP_PORT}'})
+
     # Give a little extra time for the API to be ready
     time.sleep(5)
-    
+
     # Load and run the user's script
     load_and_run_script(zap)
-    
+
     # Optionally, retrieve some logs or results
     # For example, to get alerts (vulnerabilities) found during scanning:
     alerts = zap.core.alerts(baseurl="http://example.com")
