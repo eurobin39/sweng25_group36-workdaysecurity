@@ -64,32 +64,24 @@ save_results:
   needs:
     - run_pen_test
   before_script:
-    # First, install Homebrew if it's not already installed
-    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || true
+    # Create a virtual environment
+    - python3 -m venv venv
     
-    # Add Homebrew to PATH
-    - export PATH="/opt/homebrew/bin:$PATH"
+    # Activate the virtual environment
+    - source venv/bin/activate
     
-    # Install PostgreSQL using Homebrew
-    - brew install postgresql@14
-    
-    # Update pip to latest version using Python's module system
+    # Now we can safely install packages in our isolated environment
     - python3 -m pip install --upgrade pip
+    - python3 -m pip install psycopg2-binary python-dotenv
     
-    # Now install our Python dependencies
-    - python3 -m pip install --no-cache-dir psycopg2-binary python-dotenv
-    
-    # Print debug information to verify our setup
-    - echo "Verifying environment setup:"
+    # Verify our environment
+    - echo "Python environment information:"
+    - which python3
     - python3 --version
-    - psql --version
-    - python3 -m pip list
+    - pip list
     
-    # Create data directory if needed
-    - mkdir -p data
-    
-    # Show current directory structure
-    - echo "Directory structure:"
+    # Show our working directory and contents
+    - echo "Current directory structure:"
     - pwd
     - ls -la
     
@@ -97,6 +89,8 @@ save_results:
     - tudor-mac
   
   script:
+    # Make sure we're still in our virtual environment when running the script
+    - source venv/bin/activate
     - python3 py-scripts/send_test_results_to_SQL.py
   
   artifacts:
