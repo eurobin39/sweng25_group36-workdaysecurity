@@ -1,0 +1,89 @@
+{
+    "dashboard": {
+        "id": null,
+        "title": "Security Test Dashboard",
+        "description": "Visualization of security test results",
+        "panels": [
+            {
+                "title": "Test Results Count",
+                "type": "piechart",
+                "datasource": "PostgreSQL",
+                "targets": [
+                    {
+                        "rawSql": "SELECT test_result, COUNT(*) AS count FROM security_tests GROUP BY test_result;",
+                        "format": "table"
+                    }
+                ],
+                "fieldConfig": {
+                    "defaults": {
+                        "unit": "short",
+                        "displayName": "Test Result Count"
+                    }
+                }
+            },
+            {
+                "title": "Risk Distribution",
+                "type": "bargraph",
+                "datasource": "PostgreSQL",
+                "targets": [
+                    {
+                        "rawSql": "SELECT risk, COUNT(*) AS count FROM security_tests GROUP BY risk;",
+                        "format": "table"
+                    }
+                ],
+                "fieldConfig": {
+                    "defaults": {
+                        "unit": "short",
+                        "displayName": "Risk Levels"
+                    }
+                }
+            },
+            {
+                "title": "Alert Breakdown",
+                "type": "table",
+                "datasource": "PostgreSQL",
+                "targets": [
+                    {
+                        "rawSql": "SELECT alert, test_result, risk, confidence, description, create_at FROM security_tests ORDER BY create_at DESC;",
+                        "format": "table"
+                    }
+                ],
+                "styles": [
+                    {
+                        "type": "string",
+                        "pattern": "alert",
+                        "alias": "Alert Type"
+                    },
+                    {
+                        "type": "string",
+                        "pattern": "test_result",
+                        "alias": "Test Result"
+                    },
+                    {
+                        "type": "string",
+                        "pattern": "risk",
+                        "alias": "Risk Level"
+                    },
+                    {
+                        "type": "string",
+                        "pattern": "confidence",
+                        "alias": "Confidence"
+                    },
+                    {
+                        "type": "string",
+                        "pattern": "description",
+                        "alias": "Description"
+                    },
+                    {
+                        "type": "date",
+                        "pattern": "create_at",
+                        "alias": "Test Time"
+                    }
+                ]
+            }
+        ],
+        "schemaVersion": 16,
+        "version": 1
+    },
+    "overwrite": true
+}

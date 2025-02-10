@@ -1,10 +1,11 @@
 apiVersion: 1
 providers:
-  - name: 'default'
+  - name: "Security Test Dashboard"  # 대시보드 이름
     orgId: 1
-    folder: 'General'
+    folder: "Security Tests"
     type: file
     disableDeletion: false
-    updateIntervalSeconds: 10
+    editable: true
     options:
-      path: /var/lib/grafana/dashboards
+      path: "/var/lib/grafana/dashboards/security-test-dashboard.json"  # JSON 대시보드 파일 경로
+
