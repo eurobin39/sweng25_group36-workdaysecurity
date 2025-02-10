@@ -65,35 +65,35 @@ save_results:
   before_script:
     - pip3 install python-dotenv
   tags:
-    # - euro-mac
-    - yaroslav-mac
+    - euro-mac
+    # yaroslav-mac
   script:
     - python3 py-scripts/send_test_results_to_SQL.py
   allow_failure: false
 
-# 4️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
+# 4️⃣ Grafana
 grafana_visualization:
   stage: visualize
-  needs:
-    - save_results
   tags:
-    # - euro-mac
-    - yaroslav-mac
+    - euro-mac
   script:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true
     - docker rm grafana || true
 
     - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
-    - docker run -d --name=grafana
-        -p 4000:3000
-        -v grafana_data:/var/lib/grafana
-        -v $CI_PROJECT_DIR/grafana/provisioning:/etc/grafana/provisioning
-        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboard
+    - docker run -d --name=grafana 
+        -p 4000:3000 
+        -v grafana_data:/var/lib/grafana 
+        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards 
+        -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
+        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards
         grafana/grafana:latest
 
-    - sleep 15
+    - sleep 20  
+
+    - echo "Checking Grafana logs..."
+    - docker logs grafana
 
     - echo "Testing Grafana provisioning..."
-    - curl -s -u admin:admin http://localhost:4000/api/datasources
     - curl -s -u admin:admin http://localhost:4000/api/search?query=
