@@ -18,7 +18,7 @@ conn = psycopg2.connect(
 cursor = conn.cursor()
 
 
-with open("security_results.json", "r", encoding="utf-8") as file:
+with open("ZAP/Main/security_results.json", "r", encoding="utf-8") as file:
     json_data = json.load(file)
 
 
