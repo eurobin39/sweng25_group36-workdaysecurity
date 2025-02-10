@@ -1,6 +1,11 @@
+import os
 import psycopg2
 import json
 from config import config
+
+# 현재 스크립트의 절대 경로 구하기
+script_dir = os.path.dirname(os.path.abspath(__file__))
+json_file_path = os.path.join(script_dir, "..", "data", "output.json")
 
 # 환경 변수 확인
 print("🔹 DB Connection Details:")
@@ -11,22 +16,28 @@ print(f"DB_HOST: {config.db_host}")
 print(f"DB_PORT: {config.db_port}")
 
 # PostgreSQL 연결
-conn = psycopg2.connect(
-    dbname=config.db_name,
-    user=config.db_user,
-    password=config.db_password,
-    host=config.db_host,
-    port=config.db_port
-)
-
-print("✅ Connected to PostgreSQL:", conn)
+try:
+    conn = psycopg2.connect(
+        dbname=config.db_name,
+        user=config.db_user,
+        password=config.db_password,
+        host=config.db_host,
+        port=config.db_port
+    )
+    print("✅ Connected to PostgreSQL:", conn)
+except psycopg2.OperationalError as e:
+    print(f"❌ Database connection failed: {e}")
+    exit(1)
 
 cursor = conn.cursor()
 
-# JSON 파일 확인
-json_file_path = "../data/output.json"
-print(f"🔍 Checking JSON file at: {json_file_path}")
+# JSON 파일 존재 여부 확인
+if not os.path.exists(json_file_path):
+    print(f"❌ JSON 파일이 존재하지 않습니다: {json_file_path}")
+    exit(1)
 
+# JSON 파일 로드
+print(f"🔍 Checking JSON file at: {json_file_path}")
 with open(json_file_path, "r", encoding="utf-8") as file:
     json_data = json.load(file)
 

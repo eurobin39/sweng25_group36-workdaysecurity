@@ -63,10 +63,15 @@ save_results:
   needs:
     - run_pen_test
   before_script:
-    - pip3 install python-dotenv
-    - echo "🔹 Checking environment variables..."
-    - echo "DB_USER=$DB_USER"
-    - echo "DB_NAME=$DB_NAME"
+    - echo "🔍 Current Working Directory:"
+    - pwd
+    - echo "🔍 Listing files in current directory:"
+    - ls -l
+    - echo "🔍 Listing files in parent directory:"
+    - ls -l ..
+    - echo "🔍 Listing files in ../data:"
+    - ls -l ../data || echo "❌ ../data directory not found"
+
 
   tags:
     - euro-mac
