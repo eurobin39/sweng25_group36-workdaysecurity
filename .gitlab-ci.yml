@@ -55,7 +55,7 @@ save_to_db:
     - euro-mac
   script:
     - python3 ZAP/Main/server.py
-    - python3 ZAP/MIN/security_server.py #추가 사항 확인
+    - python3 ZAP/Main/security_server.py #추가 사항 확인
   allow_failure: false
 
 # 4️⃣ Grafana에서 데이터 시각화 + 데이터 소스 및 대시보드 자동 추가
