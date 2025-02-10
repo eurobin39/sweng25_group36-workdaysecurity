@@ -6,7 +6,7 @@ datasources:
     url: host.docker.internal:5432
     user: tudor
     secureJsonData:
-      password: tudor
+      password: eurobea0309
     jsonData:
       sslmode: "disable"
       database: ZAP_DB
