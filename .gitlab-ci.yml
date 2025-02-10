@@ -40,20 +40,11 @@ run_pen_test:
     # - yaroslav-mac
     - tudor-mac
   image: owasp/zap2docker-stable
-  before_script:
-  # First, let's verify that ZAP exists at the specified path
-  - ls "/System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh"
-  
-  # Export the ZAP path to make our commands cleaner
-  - export ZAP_PATH="/System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh"
-  
-  # Make sure ZAP is executable
-  - chmod +x "$ZAP_PATH"
   script:
     # Run your command and capture its output.
     - mkdir -p data
-    - "$ZAP_PATH" -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" >> data/output.txt
-    - "$ZAP_PATH" -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" >> data/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" >> data/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" >> data/output.txt
     - python3 py-scripts/json_processing.py data/output.txt data/output.json
 
   # Artifacts are saved even if the job fails:
