@@ -64,6 +64,10 @@ save_results:
     - run_pen_test
   before_script:
     - pip3 install python-dotenv
+    - echo "🔹 Checking environment variables..."
+    - echo "DB_USER=$DB_USER"
+    - echo "DB_NAME=$DB_NAME"
+
   tags:
     - euro-mac
     # yaroslav-mac
