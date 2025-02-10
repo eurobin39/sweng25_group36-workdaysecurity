@@ -56,7 +56,7 @@ run_pen_test:
       - data/output.json
 
 
-# 3️⃣ JSON 데이터를 PostgreSQL에 저장
+# 3️⃣ JSON to PostgreSQL
 save_results:
   image: python:3.9
   stage: save_results
