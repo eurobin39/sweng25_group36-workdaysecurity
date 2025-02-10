@@ -15,7 +15,7 @@ stages:
   - save_results
   - visualize
 
-# 1️⃣ Juice Shop 실행 (로컬에서 실행됨)
+# 1️⃣ Juice Shop 
 start_services:
   image: docker:latest
   stage: start_services
