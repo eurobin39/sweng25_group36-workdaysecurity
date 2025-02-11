@@ -45,8 +45,9 @@ run_pen_test:
   script:
     # Run your command and capture its output.
     - mkdir -p data
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" >> data/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_fail.zst" > data/output.txt
     - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/premium_key_get.zst" >> data/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "/Users/timothytay/Desktop/sweng2025/sweng25_group36-workdaysecurity/zest-scrips/sql_injection_login_2.zst" >> data/output.txt >> data/output.txt
     - python3 py-scripts/json_processing.py data/output.txt data/output.json
 
   # Artifacts are saved even if the job fails:
