@@ -1,0 +1,61 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/",
+  "zestVersion": "0.8",
+  "title": "download_premium_key",
+  "description": "",
+  "prefix": "http://localhost:3000/encryptionkeys",
+  "type": "StandAlone",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "elementType": "ZestRequest",
+      "url": "http://localhost:3000/encryptionkeys",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\nPriority: u=0, i\r\ncontent-length: 0\r\n",
+      "followRedirects": false,
+      "assertions": [
+        {
+          "elementType": "ZestAssertion",
+          "rootExpression": {
+            "elementType": "ZestExpressionStatusCode",
+            "code": 200,
+            "not": false
+          }
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "elementType": "ZestConditional",
+      "rootExpression": {
+        "elementType": "ZestExpressionStatusCode",
+        "code": 200,
+        "not": false
+      },
+      "ifStatements": [
+        {
+          "elementType": "ZestActionPrint",
+          "message": "\"Fail, High, High, Download premium key, Attempted to download premium key in encryptionkeys path and succeeded.\"",
+          "enabled": true
+        }
+      ],
+      "elseStatements": [
+        {
+          "elementType": "ZestActionPrint",
+          "message": "\"Pass, NA, NA, Download premium key, Attempted to download premium key in encryptionkeys path and failed.\"",
+          "enabled": true
+        }
+      ],
+      "enabled": true
+    }
+  ],
+  "authentication": [],
+  "enabled": true,
+  "elementType": "ZestScript"
+}

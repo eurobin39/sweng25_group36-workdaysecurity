@@ -1,0 +1,46 @@
+# Python Bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+
+# Pytest / Coverage reports
+*.cover
+*.tox/
+*.nox/
+*.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.hypothesis/
+
+# Editor / IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Environment variable files
+.env
+*.env
+
+# ZAP related files
+zap.wf
+zap-reports/
+*.log
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db

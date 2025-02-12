@@ -1,0 +1,45 @@
+{
+  "about": "This is a minimal Zest script for Juice Shop. For more details about Zest visit https://github.com/zaproxy/zest/",
+  "zestVersion": "0.3",
+  "title": "Minimal Juice Shop Test",
+  "description": "A minimal active script that hits the Juice Shop homepage",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {
+      "request.body": "",
+      "request.header": "",
+      "request.method": "GET",
+      "request.url": "http://localhost:3000/",
+      "target": "__replace__"
+    },
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "comment": "Active scripts are called for every parameter in every request included in the scan.\nReplace the 'target' parameter value if you want to inject an attack. This script just does a simple GET.",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "{{request.url}}",
+      "data": "{{request.body}}",
+      "method": "{{request.method}}",
+      "headers": "{{request.header}}",
+      "assertions": [],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

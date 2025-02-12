@@ -1,0 +1,40 @@
+1. brew install docker
+- (open docker app and sign in)
+2. brew install gitlab-runner
+
+3. "SETTING UP GITLAB RUNNER"
+-- https://gitlab.scss.tcd.ie/tmanea/sweng25_group36-workdaysecurity/ -> Settings -> CI/CD -> Runners -> New project runner
+  -> tags = <your_name>-<your_machine> (leave rest of fields empty) -> press create runner -> follow os specific instructions on page
+  -> choose shell as executor once prompted to do so
+
+4. gitlab-runner runner
+
+5. brew install postgresql@15
+6. download pgadmin4 from their website (choose right file for your machine)
+7. change the following fields in Grafana/provisioning/datasources/datasources.yml:
+  - user: <your_name>
+  - password: <your_password>
+  - (optional) database: <database_name>
+
+8. docker run --name my_postgres -e POSTGRES_USER=<user_from_7> -e POSTGRES_PASSWORD=<password_from_7> -e POSTGRES_DB=<db_name_from_7> -p 5432:5432 -d postgres
+docker run --name my_postgres -e POSTGRES_USER=tudor -e POSTGRES_PASSWORD=eurobea0309 -e POSTGRES_DB=ZAP_DB -p 5432:5432 -d postgres
+
+9. Open pgadmin4
+- right click servers -> register server -> In general... Name = <db_name_from_7>, In connection... hostname/address = localhost
+    port = 5432 maintenance database = <db_name_from_7> username = <user_from_7> password = <password_from_7>
+  
+10. In pgadmin expand the db you just made -> expand databases -> right click on the one with correct name from earlier
+    -> query tool -> paste in the following:
+
+    CREATE TABLE security_test_results (
+      id SERIAL PRIMARY KEY,
+      test_result VARCHAR(10) NOT NULL,
+      risk VARCHAR(10),
+      confidence VARCHAR(10),
+      alert VARCHAR(255) NOT NULL,
+      description TEXT NOT NULL
+    );
+
+    -> Click play button
+
+11. brew install owasp-zap

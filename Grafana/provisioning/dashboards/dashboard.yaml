@@ -1,0 +1,11 @@
+apiVersion: 1
+providers:
+  - name: "Security Test Dashboard"  
+    orgId: 1
+    folder: "Security Tests"
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: "/var/lib/grafana/dashboards/"  
+

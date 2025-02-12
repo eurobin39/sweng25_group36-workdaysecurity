@@ -1,0 +1,12 @@
+Found Java version 17.0.13
+Available memory: 8192 MB
+Using JVM args: -Xmx2048m
+java.lang.IllegalArgumentException: URI is not absolutePass, NA, NA, SQL login injection, Attempted SQL injection with password and did not succeed
+Found Java version 17.0.13
+Available memory: 8192 MB
+Using JVM args: -Xmx2048m
+java.lang.IllegalArgumentException: URI is not absoluteFail, High, High, SQL login injection, Attempted SQL injection with password and succeeded.
+Found Java version 17.0.13
+Available memory: 8192 MB
+Using JVM args: -Xmx2048m
+java.lang.IllegalArgumentException: URI is not absoluteFail, High, High, Premium key illegal download, Attempted illegal premium key download and succeeded.
