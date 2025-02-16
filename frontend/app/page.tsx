@@ -10,7 +10,7 @@ export default function FileUploadDemo() {
   };
 
   return (
-    <div className="w-full max-w-full mx-auto min-h-96 border border-dashed bg-blue-700 dark:bg-blue-700 border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
+    <div className="w-full max-w-6xl mx-auto min-h-96 border bg-orange-500 dark:bg-orange-700 border-neutral-200 dark:border-neutral-700 rounded-lg p-4">
       <FileUpload onChange={handleFileUpload} />
 
       {/* Display uploaded files */}
