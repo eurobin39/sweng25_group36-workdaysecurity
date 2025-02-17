@@ -2,71 +2,144 @@
 import re
 import json
 import sys
+import os
 
-# Keys corresponding to the five comma-separated values.
-CSV_KEYS = ["test result", "risk", "confidence", "alert", "description"]
+# Keys corresponding to the seven comma-separated assertion fields.
+CSV_KEYS = ["name", "status", "expected", "actual", "risk", "confidence", "message"]
 
-def extract_csv_entries(text):
+def extract_assertions(text):
     """
-    Search the given text for comma separated entries that look like:
-      Pass, NA, NA, SQL login injection, Attempted SQL injection with password and did not succeed
-    or
-      Fail, High, High, SQL login injection, Attempted SQL injection with password and succeeded.
+    Extracts assertion lines from the log file.
+    Each assertion line is expected to be a single line with 7 comma-separated fields,
+    and should not begin with any header keywords like "Found", "Available", "Using", "Time", or "Test".
     
-    Returns a list of dictionaries mapping CSV_KEYS to the corresponding values.
+    For example:
+      SQL login injection, pass, No SQL Injection detected, No SQL Injection detected, NA, NA, Attempted SQL injection with password and did not succeed.
+    
+    Returns a list of dictionaries mapping CSV_KEYS to the extracted values.
     """
-    # The regex explained:
-    #   (Pass|Fail)           -> Capture group 1: either "Pass" or "Fail" (the test result)
-    #   \s*,\s*               -> A comma with optional whitespace around it.
-    #   ([^,]+)               -> Capture group 2: one or more characters that are not a comma (risk)
-    #   \s*,\s*               -> comma separator (and so on)
-    #   ([^,]+)               -> Capture group 3: confidence
-    #   \s*,\s*
-    #   ([^,]+)               -> Capture group 4: alert
-    #   \s*,\s*
-    #   (.*?)(?=$|\n)         -> Capture group 5: description (non-greedy until end of line)
-    #
-    # This regex assumes that the first four fields do not contain commas.
+    # Negative lookahead to ignore lines that start with unwanted header keywords.
     pattern = re.compile(
-        r'(Pass|Fail)\s*,\s*'   # test result
-        r'([^,]+)\s*,\s*'       # risk
-        r'([^,]+)\s*,\s*'       # confidence
-        r'([^,]+)\s*,\s*'       # alert
-        r'(.*?)(?=$|\n)'        # description (up to end of line)
+        r'^(?!Found|Available|Using|Time|Test)'
+        r'(?P<name>[^,]+)\s*,\s*'
+        r'(?P<status>\w+)\s*,\s*'
+        r'(?P<expected>[^,]+)\s*,\s*'
+        r'(?P<actual>[^,]+)\s*,\s*'
+        r'(?P<risk>[^,]+)\s*,\s*'
+        r'(?P<confidence>[^,]+)\s*,\s*'
+        r'(?P<message>.+?)(?:\.\s*$|\s*$)',
+        re.MULTILINE
     )
+    
+    assertions = []
+    for match in pattern.finditer(text):
+        # Build a dictionary from the named groups.
+        entry = {key: match.group(key).strip() for key in CSV_KEYS}
+        assertions.append(entry)
+    return assertions
 
-    entries = []
-    # re.findall will return a list of tuples of all the capture groups.
-    for match in pattern.findall(text):
-        # Remove any extra whitespace from each field.
-        fields = [field.strip() for field in match]
-        entry = dict(zip(CSV_KEYS, fields))
-        entries.append(entry)
-    return entries
+def extract_duration(text):
+    """
+    Extracts the test duration (in seconds) from a line like:
+      Time taken: 31 seconds
+    Returns the integer duration, or 0 if not found.
+    """
+    duration_pattern = re.compile(r'Time taken:\s*(\d+)\s*seconds', re.IGNORECASE)
+    matches = duration_pattern.findall(text)
+    if matches:
+        return int(matches[-1])
+    return 0
 
-def main(input_filename, output_filename):
-    # Read the entire file
+def determine_overall_status(assertions):
+    """
+    Determines the overall test status. If any assertion's status is 'fail'
+    (case-insensitive), returns "fail". Otherwise, returns "pass".
+    """
+    for assertion in assertions:
+        if assertion.get("status", "").lower() == "fail":
+            return "fail"
+    return "pass"
+
+def extract_test_info(text):
+    """
+    Extracts testInfo fields from the log file.
+    Looks for lines like:
+      Test Suite: Zest Security Tests
+      Test Type: advanced
+      Category: general
+    
+    Returns a dictionary with keys: name, type, category.
+    Uses defaults if any are missing.
+    """
+    info = {}
+    suite_match = re.search(r'Test Suite:\s*(.+)', text)
+    info["name"] = suite_match.group(1).strip() if suite_match else "Zest Security Tests"
+    
+    type_match = re.search(r'Test Type:\s*(.+)', text)
+    info["type"] = type_match.group(1).strip() if type_match else "advanced"
+    
+    category_match = re.search(r'Category:\s*(.+)', text)
+    info["category"] = category_match.group(1).strip() if category_match else "general"
+    
+    return info
+
+def load_metadata(metadata_filename):
+    """Load metadata from metadata.json file."""
+    if not os.path.exists(metadata_filename):
+        print(f"⚠️ Warning: {metadata_filename} not found. Using default metadata.")
+        return {
+            "timestamp": "unknown",
+            "repository": "unknown",
+            "branch": "unknown",
+            "commitHash": "unknown",
+            "runner": "unknown",
+            "projectId": "unknown"
+        }
+
+    with open(metadata_filename, 'r', encoding="utf-8") as f:
+        return json.load(f)
+
+def main(input_filename, output_filename, metadata_filename):
+    # Read the test results from the input file
     with open(input_filename, 'r') as f:
         content = f.read()
 
-    # Extract CSV entries from the file content
-    entries = extract_csv_entries(content)
+    # Extract necessary data
+    assertions = extract_assertions(content)
+    duration = extract_duration(content)
+    overall_status = determine_overall_status(assertions)
+    vulnerability_found = overall_status == "fail"
+    test_info = extract_test_info(content)
+    
+    # Load metadata from file
+    metadata = load_metadata(metadata_filename)
 
-    # Write the JSON output to the specified output file
-    json_output = json.dumps(entries, indent=4)
+    # Build the final JSON structure as a list
+    results = [{
+        "metadata": metadata,
+        "testInfo": test_info,
+        "results": {
+            "status": overall_status,
+            "duration": duration,
+            "vulnerabilityFound": vulnerability_found,
+            "assertions": assertions
+        }
+    }]
 
-    # Output the JSON to the console
-    print(json_output)
+    # Save JSON output to file
+    with open(output_filename, 'w', encoding="utf-8") as outfile:
+        json.dump(results, outfile, indent=4)
 
-    # Save the JSON string to a file
-    with open(output_filename, 'w') as outfile:
-        outfile.write(json_output)
-    print(f"JSON output saved to {output_filename}")
+    
+    print(f"✅ JSON output saved to {output_filename}")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python extract_csv.py <input_filename> [output_filename]")
+    if len(sys.argv) < 3:
+        print("Usage: python json_processing.py <input_filename> <output_filename> <metadata_filename>")
         sys.exit(1)
+    
     input_filename = sys.argv[1]
-    output_filename = sys.argv[2] if len(sys.argv) > 2 else "output.json"
-    main(input_filename, output_filename)
+    output_filename = sys.argv[2]
+    metadata_filename = sys.argv[3] if len(sys.argv) > 3 else "metadata.json"
+
+    main(input_filename, output_filename, metadata_filename) 

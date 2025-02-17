@@ -3,10 +3,10 @@ datasources:
   - name: PostgreSQL
     type: postgres
     access: proxy
-    url: host.docker.internal:5432
-    user: tudor
+    url: database-1.c7k0w6yq8dlr.eu-west-1.rds.amazonaws.com:5432
+    user: grafana_user
     secureJsonData:
-      password: eurobea0309
+      password: password1234
     jsonData:
       sslmode: "disable"
       database: ZAP_DB

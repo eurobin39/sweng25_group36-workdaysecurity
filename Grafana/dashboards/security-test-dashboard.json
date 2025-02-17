@@ -29,7 +29,9 @@
             },
             "fieldConfig": {
                 "defaults": {
-                    "displayName": "Test Result Count",
+                    "color": {
+                        "mode": "thresholds"
+                    },
                     "mappings": [],
                     "thresholds": {
                         "mode": "absolute",
@@ -43,18 +45,327 @@
                                 "value": 80
                             }
                         ]
-                    },
-                    "unit": "short"
+                    }
                 },
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
-                "w": 4,
+                "h": 4,
+                "w": 7,
                 "x": 0,
                 "y": 0
             },
-            "id": 2,
+            "id": 13,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.5.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "PCC52D03280B7034C"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT \n    branch,\n    COUNT(*) AS total_tests,\n    SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) AS failed_tests,\n    (SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS fail_rate\nFROM security_test_results\nGROUP BY branch\nORDER BY fail_rate DESC\nLIMIT 10;\n",
+                    "refId": "A",
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
+                }
+            ],
+            "title": "Branches with High Failure Rate",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "PCC52D03280B7034C"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 8,
+                "x": 7,
+                "y": 0
+            },
+            "id": 9,
+            "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "orientation": "auto",
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                },
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+            },
+            "pluginVersion": "11.5.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "PCC52D03280B7034C"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT \n    name AS assertion_name, \n    COUNT(*) AS fail_count\nFROM assertions\nWHERE status = 'fail'\nGROUP BY assertion_name\nORDER BY fail_count DESC\nLIMIT 10;\n",
+                    "refId": "A",
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
+                }
+            ],
+            "title": "Failing Assertions",
+            "type": "barchart"
+        },
+        {
+            "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "PCC52D03280B7034C"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 9,
+                "x": 15,
+                "y": 0
+            },
+            "id": 8,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.5.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "PCC52D03280B7034C"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT \n    DATE(timestamp) AS test_date, \n    COUNT(*) AS total_tests,\n    SUM(CASE WHEN vulnerability_found = TRUE THEN 1 ELSE 0 END) AS vulnerabilities_detected\nFROM security_test_results\nGROUP BY test_date\nORDER BY test_date ASC;\n",
+                    "refId": "A",
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
+                }
+            ],
+            "title": "Vulnerability Trends",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "PCC52D03280B7034C"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 50
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 7,
+                "x": 0,
+                "y": 4
+            },
+            "id": 11,
             "options": {
                 "minVizHeight": 75,
                 "minVizWidth": 75,
@@ -77,12 +388,31 @@
                         "type": "grafana-postgresql-datasource",
                         "uid": "PCC52D03280B7034C"
                     },
+                    "editorMode": "code",
                     "format": "table",
-                    "rawSql": "SELECT test_result, COUNT(*) AS count FROM security_test_results GROUP BY test_result;",
-                    "refId": "A"
+                    "rawQuery": true,
+                    "rawSql": "SELECT \n    COUNT(*) AS total_assertions,\n    SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) AS passed_assertions,\n    SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) AS failed_assertions,\n    ROUND(100.0 * SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) / COUNT(*), 2) AS pass_rate,\n    ROUND(100.0 * SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) / COUNT(*), 2) AS fail_rate\nFROM assertions;\n",
+                    "refId": "A",
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
                 }
             ],
-            "title": "Test Results Count",
+            "title": "Security Test Summary",
             "type": "gauge"
         },
         {
@@ -90,133 +420,43 @@
                 "type": "grafana-postgresql-datasource",
                 "uid": "PCC52D03280B7034C"
             },
-            "description": "SQL LOGIN INJECTION",
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "mode": "thresholds"
+                        "mode": "palette-classic"
                     },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 30
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 5,
-                "w": 6,
-                "x": 4,
-                "y": 0
-            },
-            "id": 5,
-            "options": {
-                "displayMode": "lcd",
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "bottom",
-                    "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-            },
-            "pluginVersion": "11.5.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "grafana-postgresql-datasource",
-                        "uid": "PCC52D03280B7034C"
-                    },
-                    "editorMode": "code",
-                    "format": "table",
-                    "hide": false,
-                    "rawQuery": true,
-                    "rawSql": "SELECT COUNT(*) AS \"SQL Injection Count\"\nFROM security_test_results\nWHERE alert ILIKE '%SQL login injection%';\n",
-                    "refId": "A",
-                    "sql": {
-                        "columns": [
-                            {
-                                "name": "COUNT",
-                                "parameters": [
-                                    {
-                                        "name": "alert",
-                                        "type": "functionParameter"
-                                    }
-                                ],
-                                "type": "function"
-                            }
-                        ],
-                        "groupBy": [],
-                        "limit": 50,
-                        "whereJsonTree": {
-                            "children1": [
-                                {
-                                    "id": "abb899aa-cdef-4012-b456-7194f078bbcd",
-                                    "properties": {
-                                        "field": "alert",
-                                        "fieldSrc": "field",
-                                        "operator": "equal",
-                                        "value": [
-                                            "SQL login injection"
-                                        ],
-                                        "valueError": [
-                                            null
-                                        ],
-                                        "valueSrc": [
-                                            "value"
-                                        ],
-                                        "valueType": [
-                                            "text"
-                                        ]
-                                    },
-                                    "type": "rule"
-                                }
-                            ],
-                            "id": "abbb8b98-0123-4456-b89a-b194f078182e",
-                            "type": "group"
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
                         },
-                        "whereString": "alert = 'SQL login injection'"
-                    },
-                    "table": "security_test_results"
-                }
-            ],
-            "title": "SQL LOGIN INJECTION",
-            "type": "bargauge"
-        },
-        {
-            "datasource": {
-                "type": "grafana-postgresql-datasource",
-                "uid": "PCC52D03280B7034C"
-            },
-            "description": "Premium key illegal download",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
                     },
                     "mappings": [],
                     "thresholds": {
@@ -228,7 +468,7 @@
                             },
                             {
                                 "color": "red",
-                                "value": 40.0002
+                                "value": 80
                             }
                         ]
                     }
@@ -236,35 +476,24 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
-                "w": 6,
-                "x": 10,
-                "y": 0
+                "h": 6,
+                "w": 9,
+                "x": 15,
+                "y": 6
             },
-            "id": 6,
+            "id": 15,
             "options": {
-                "displayMode": "lcd",
                 "legend": {
                     "calcs": [],
                     "displayMode": "list",
                     "placement": "bottom",
-                    "showLegend": false
+                    "showLegend": true
                 },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                }
             },
             "pluginVersion": "11.5.0",
             "targets": [
@@ -276,7 +505,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "SELECT COUNT(*) AS \"SQL Injection Count\"\nFROM security_test_results\nWHERE alert ILIKE '%Premium key illegal download%';\n",
+                    "rawSql": "SELECT \n    timestamp,\n    status,\n    COUNT(*) AS test_count\nFROM security_test_results\nWHERE timestamp >= NOW() - INTERVAL '1 day'\nGROUP BY timestamp, status\nORDER BY timestamp ASC;\n",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -297,8 +526,8 @@
                     }
                 }
             ],
-            "title": "Premium key illegal download",
-            "type": "bargauge"
+            "title": "Last 24 Hours Test Results",
+            "type": "timeseries"
         },
         {
             "datasource": {
@@ -308,37 +537,132 @@
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "fixedColor": "red",
-                        "mode": "palette-classic"
+                        "mode": "thresholds"
                     },
                     "custom": {
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        }
+                        "align": "auto",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "inspect": false
                     },
-                    "mappings": []
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
                 },
                 "overrides": []
             },
             "gridPos": {
-                "h": 8,
+                "h": 5,
+                "w": 8,
+                "x": 7,
+                "y": 7
+            },
+            "id": 14,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true
+            },
+            "pluginVersion": "11.5.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "PCC52D03280B7034C"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT \n    name AS vulnerability_name,\n    COUNT(*) AS occurrence_count,\n    risk\nFROM assertions\nWHERE risk IN ('High', 'Critical')\nGROUP BY vulnerability_name, risk\nORDER BY occurrence_count DESC\nLIMIT 10;\n",
+                    "refId": "A",
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
+                }
+            ],
+            "title": "Top High-Risk Security Issues",
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "PCC52D03280B7034C"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
                 "w": 7,
                 "x": 0,
-                "y": 5
+                "y": 11
             },
-            "id": 4,
+            "id": 10,
             "options": {
-                "displayLabels": [
-                    "name"
-                ],
+                "displayMode": "gradient",
                 "legend": {
+                    "calcs": [],
                     "displayMode": "list",
                     "placement": "bottom",
-                    "showLegend": true
+                    "showLegend": false
                 },
-                "pieType": "pie",
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "auto",
                 "reduceOptions": {
                     "calcs": [
                         "lastNotNull"
@@ -346,11 +670,9 @@
                     "fields": "",
                     "values": false
                 },
-                "tooltip": {
-                    "hideZeros": false,
-                    "mode": "multi",
-                    "sort": "none"
-                }
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
             },
             "pluginVersion": "11.5.0",
             "targets": [
@@ -362,179 +684,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "SELECT \n    COUNT(CASE WHEN test_result = 'Pass' THEN 1 END) AS \"Pass Count\",\n    COUNT(CASE WHEN test_result = 'Fail' THEN 1 END) AS \"Fail Count\"\nFROM security_test_results;\n",
-                    "refId": "A",
-                    "sql": {
-                        "columns": [
-                            {
-                                "name": "COUNT",
-                                "parameters": [
-                                    {
-                                        "name": "test_result",
-                                        "type": "functionParameter"
-                                    }
-                                ],
-                                "type": "function"
-                            }
-                        ],
-                        "groupBy": [
-                            {
-                                "property": {
-                                    "type": "string"
-                                },
-                                "type": "groupBy"
-                            }
-                        ],
-                        "limit": 50,
-                        "whereJsonTree": {
-                            "children1": [
-                                {
-                                    "id": "88b9a989-cdef-4012-b456-7194f0712d31",
-                                    "properties": {
-                                        "field": "test_result",
-                                        "fieldSrc": "field",
-                                        "operator": "equal",
-                                        "value": [
-                                            "Pass"
-                                        ],
-                                        "valueError": [
-                                            null
-                                        ],
-                                        "valueSrc": [
-                                            "value"
-                                        ],
-                                        "valueType": [
-                                            "text"
-                                        ]
-                                    },
-                                    "type": "rule"
-                                },
-                                {
-                                    "id": "a98ab9aa-89ab-4cde-b012-3194f07181a2",
-                                    "properties": {
-                                        "field": "test_result",
-                                        "fieldSrc": "field",
-                                        "operator": "equal",
-                                        "value": [
-                                            "Fail"
-                                        ],
-                                        "valueError": [
-                                            null
-                                        ],
-                                        "valueSrc": [
-                                            "value"
-                                        ],
-                                        "valueType": [
-                                            "text"
-                                        ]
-                                    },
-                                    "type": "rule"
-                                }
-                            ],
-                            "id": "99b8a99b-0123-4456-b89a-b194f0705557",
-                            "properties": {
-                                "conjunction": "OR"
-                            },
-                            "type": "group"
-                        },
-                        "whereString": "(test_result = 'Pass' OR test_result = 'Fail')"
-                    },
-                    "table": "security_test_results"
-                }
-            ],
-            "title": "Success/Fail",
-            "type": "piechart"
-        },
-        {
-            "datasource": {
-                "type": "grafana-postgresql-datasource",
-                "uid": "PCC52D03280B7034C"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisBorderShow": false,
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "fillOpacity": 80,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "lineWidth": 1,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "displayName": "Risk Levels",
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "short"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 6,
-                "x": 7,
-                "y": 5
-            },
-            "id": 3,
-            "options": {
-                "barRadius": 0,
-                "barWidth": 0.97,
-                "fullHighlight": false,
-                "groupWidth": 0.7,
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
-                "orientation": "auto",
-                "showValue": "auto",
-                "stacking": "none",
-                "tooltip": {
-                    "hideZeros": false,
-                    "mode": "single",
-                    "sort": "none"
-                },
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
-            },
-            "pluginVersion": "11.5.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "grafana-postgresql-datasource",
-                        "uid": "PCC52D03280B7034C"
-                    },
-                    "editorMode": "code",
-                    "format": "table",
-                    "rawQuery": true,
-                    "rawSql": "SELECT risk, COUNT(*) AS count FROM security_test_results GROUP BY risk;",
+                    "rawSql": "SELECT \n    commit_hash,\n    COUNT(*) AS total_tests,\n    SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) AS passed_tests,\n    (SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS pass_rate\nFROM security_test_results\nGROUP BY commit_hash\nORDER BY total_tests DESC\nLIMIT 10;\n",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -555,15 +705,14 @@
                     }
                 }
             ],
-            "title": "Risk Distribution",
-            "type": "barchart"
+            "title": "Pass Rate per Commit",
+            "type": "bargauge"
         },
         {
             "datasource": {
                 "type": "grafana-postgresql-datasource",
                 "uid": "PCC52D03280B7034C"
             },
-            "description": "Confidence Distribution",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -575,16 +724,28 @@
                         "axisColorMode": "text",
                         "axisLabel": "",
                         "axisPlacement": "auto",
-                        "fillOpacity": 80,
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
                         "gradientMode": "none",
                         "hideFrom": {
                             "legend": false,
                             "tooltip": false,
                             "viz": false
                         },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
                         "lineWidth": 1,
+                        "pointSize": 5,
                         "scaleDistribution": {
                             "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
                         },
                         "thresholdsStyle": {
                             "mode": "off"
@@ -608,33 +769,24 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 8,
-                "w": 6,
-                "x": 13,
-                "y": 5
+                "h": 5,
+                "w": 9,
+                "x": 15,
+                "y": 12
             },
-            "id": 7,
+            "id": 12,
             "options": {
-                "barRadius": 0,
-                "barWidth": 0.97,
-                "fullHighlight": false,
-                "groupWidth": 0.7,
                 "legend": {
                     "calcs": [],
                     "displayMode": "list",
                     "placement": "bottom",
                     "showLegend": true
                 },
-                "orientation": "auto",
-                "showValue": "auto",
-                "stacking": "none",
                 "tooltip": {
                     "hideZeros": false,
                     "mode": "single",
                     "sort": "none"
-                },
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                }
             },
             "pluginVersion": "11.5.0",
             "targets": [
@@ -646,7 +798,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "SELECT confidence, COUNT(*) AS count FROM security_test_results GROUP BY confidence;",
+                    "rawSql": "SELECT \n    timestamp, \n    COUNT(*) AS total_tests,\n    SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) AS passed_tests,\n    SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) AS failed_tests,\n    (SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0)) AS pass_rate\nFROM security_test_results\nGROUP BY timestamp\nORDER BY timestamp ASC;\n",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -667,8 +819,8 @@
                     }
                 }
             ],
-            "title": "Confidence Distribution",
-            "type": "barchart"
+            "title": "Test Pass/Fail Rate Over Time",
+            "type": "timeseries"
         }
     ],
     "preload": false,
@@ -681,6 +833,6 @@
     "timezone": "",
     "title": "Security Test Dashboard",
     "uid": "security-test-dashboard",
-    "version": 4,
+    "version": 6,
     "weekStart": ""
 }
