@@ -25,26 +25,7 @@
         "responseTimeInMs": 53,
         "elementType": "ZestResponse"
       },
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 200,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 811,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
+      "assertions": [],
       "followRedirects": false,
       "timestamp": 1738882589448,
       "cookies": [],
@@ -60,7 +41,7 @@
       },
       "ifStatements": [
         {
-          "message": "Fail, High, High, SQL login injection, Attempted SQL injection with password and succeeded.",
+          "message": "SQL login injection, fail, No SQL Injection detected, SQL Injection succeeded, High, High, Attempted SQL injection with password and succeeded.",
           "index": 3,
           "enabled": true,
           "elementType": "ZestActionPrint"
@@ -68,7 +49,7 @@
       ],
       "elseStatements": [
         {
-          "message": "Pass, NA, NA, SQL login injection, Attempted SQL injection with password and did not succeed",
+          "message": "SQL login injection, pass, No SQL Injection detected, No SQL Injection detected, NA, NA, Attempted SQL injection with password and did not succeed.",
           "index": 4,
           "enabled": true,
           "elementType": "ZestActionPrint"

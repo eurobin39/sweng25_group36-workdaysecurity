@@ -60,7 +60,7 @@
       },
       "ifStatements": [
         {
-          "message": "Fail, High, High, Premium key illegal download, Attempted illegal premium key download and succeeded.",
+          "message": "Premium key illegal download, fail, Download blocked, Download succeeded, High, High, Attempted illegal premium key download and succeeded.",
           "index": 3,
           "enabled": true,
           "elementType": "ZestActionPrint"
@@ -68,7 +68,7 @@
       ],
       "elseStatements": [
         {
-          "message": "Pass, NA, NA, Premium key illegal download, Attempted illegal premium key download and failed.",
+          "message": "Premium key illegal download, pass, Download blocked, Download blocked, NA, NA, Attempted illegal premium key download and failed.",
           "index": 4,
           "enabled": true,
           "elementType": "ZestActionPrint"
