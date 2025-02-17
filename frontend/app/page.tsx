@@ -19,12 +19,14 @@ export default function HomePage() {
       </h1>
       
       <div className="flex space-x-6">
-        <button
-          className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
-          onClick={() => router.push("/software-engineer")}
+        <a
+          href="https://gitlab.scss.tcd.ie/tmanea/sweng25_group36-workdaysecurity/-/pipelines"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all no-underline"
         >
           Software Engineer
-        </button>
+        </a>
         <button
           className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
           onClick={() => router.push("/security-engineer")}
