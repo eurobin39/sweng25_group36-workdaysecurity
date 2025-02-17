@@ -26,6 +26,18 @@ export default function FileUploadDemo() {
           </ul>
         </div>
       )}
+
+      {/* Grafana Button */}
+      <div className="mt-6 flex justify-center">
+        <a
+          href="http://localhost:4000"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-400 hover:to-blue-500 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all no-underline"
+        >
+          Grafana
+        </a>
+      </div>
     </div>
   );
 }
