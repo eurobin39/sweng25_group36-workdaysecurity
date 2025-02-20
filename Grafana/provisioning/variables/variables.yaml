@@ -1,0 +1,14 @@
+apiVersion: 1
+
+variables:
+  - name: repository
+    type: query
+    label: "Repository"
+    hide: 0
+    query: "SELECT DISTINCT repository FROM security_test_results ORDER BY repository;"
+    datasource: PostgreSQL
+    refresh: 2
+    multi: true
+    includeAll: true
+    allValue: "'ALL'"
+    sort: 1

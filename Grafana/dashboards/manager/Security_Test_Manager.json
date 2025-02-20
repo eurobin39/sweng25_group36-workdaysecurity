@@ -579,8 +579,8 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Security Test Dashboard",
+    "title": "Security_Test_Manager",
     "uid": "security-test-dashboard",
-    "version": 2,
+    "version": 3,
     "weekStart": ""
 }
