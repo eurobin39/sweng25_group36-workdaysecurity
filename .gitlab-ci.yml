@@ -123,7 +123,6 @@ grafana_visualization:
   stage: visualize
   tags:
     - euro-mac
-    # yaroslav-mac
   script:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true
@@ -133,9 +132,9 @@ grafana_visualization:
     - docker run -d --name=grafana 
         -p 4000:3000 
         -v grafana_data:/var/lib/grafana 
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards 
+        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security 
+        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager 
         -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
-        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards
         grafana/grafana:latest
 
     - sleep 10  
