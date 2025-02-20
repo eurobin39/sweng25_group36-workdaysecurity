@@ -8,7 +8,7 @@ providers:
     editable: true
     updateIntervalSeconds: 30
     options:
-      path: "/etc/grafana/provisioning/dashboards/security"
+      path: "/etc/grafana/provisioning/dashboards/security/"
 
   - name: "Security Test Manager Dashboards"
     orgId: 1
@@ -18,4 +18,4 @@ providers:
     editable: true
     updateIntervalSeconds: 30
     options:
-      path: "/etc/grafana/provisioning/dashboards/manager"
+      path: "/etc/grafana/provisioning/dashboards/manager/"
