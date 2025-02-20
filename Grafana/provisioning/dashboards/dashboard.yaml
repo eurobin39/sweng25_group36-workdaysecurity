@@ -10,7 +10,7 @@ providers:
     options:
       path: "/var/lib/grafana/dashboards/security/"
 
-  - name: "Security Test Manager"  
+  - name: "Security_Test_Manager"  
     orgId: 1
     folder: "Security Test Manager"
     type: file
