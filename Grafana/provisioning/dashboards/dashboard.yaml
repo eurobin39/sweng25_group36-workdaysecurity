@@ -2,18 +2,18 @@ apiVersion: 1
 providers:
   - name: "Security Test Dashboard"  
     orgId: 1
-    folder: "Security Tests"
+    folder: "Security Dashboard"
     type: file
     disableDeletion: false
     editable: true
     options:
-      path: "/var/lib/grafana/dashboards/"  
+      path: "/var/lib/grafana/dashboards/securityX/"  
 
   - name: "Security_Test_Manager"  
     orgId: 1
-    folder: "Security Tests"
+    folder: "Manager Dashboard"
     type: file
     disableDeletion: false
     editable: true
     options:
-      path: "/var/lib/grafana/dashboards/"  
+      path: "/var/lib/grafana/dashboards/manager/"  
