@@ -70,7 +70,7 @@ async function updateCiYaml(scriptCommand: string) {
     url: endpoint,
     headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
     data: {
-      branch: "main",
+      branch: "connect_frontend",
       content: newContent,
       commit_message: "Update CI YAML to add new zest script command",
     },
