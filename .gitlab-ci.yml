@@ -125,28 +125,27 @@ grafana_visualization:
   before_script:
   - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/security/
   - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager/
-
-
   tags:
     - euro-mac
   script:
-    - echo "Stopping any existing Grafana container..."
-    - docker stop grafana || true
-    - docker rm grafana || true
+  - echo "Stopping any existing Grafana container..."
+  - docker stop grafana || true
+  - docker rm grafana || true
 
-    - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
-    - docker run -d --name=grafana 
-        -p 4000:3000 
-        -v grafana_data:/var/lib/grafana 
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security 
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager 
-        -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
-        grafana/grafana:latest
+  - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
+  - docker run -d --name=grafana -p 4000:3000 
+      -v grafana_data:/var/lib/grafana 
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security 
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager 
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml 
+      -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
+      grafana/grafana:latest
 
-    - sleep 10  
+  - sleep 10
 
-    - echo "Checking Grafana logs..."
-    - docker logs grafana
+  - echo "Checking Grafana logs..."
+  - docker logs grafana
 
-    - echo "Testing Grafana provisioning..."
-    - curl -s -u admin:admin http://localhost:4000/api/search?query=
+  - echo "Testing Grafana provisioning..."
+  - curl -s -u admin:admin http://localhost:4000/api/search?query=
+
