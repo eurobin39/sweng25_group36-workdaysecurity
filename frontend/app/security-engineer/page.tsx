@@ -4,9 +4,38 @@ import { FileUpload } from "@/components/ui/file-upload";
 
 export default function FileUploadDemo() {
   const [files, setFiles] = useState<File[]>([]);
+  const [uploadMessage, setUploadMessage] = useState<string>("");
+
+  // New function to upload file(s) to the serverless function
+  const uploadFiles = async (files: File[]) => {
+    // Create a new FormData object
+    const formData = new FormData();
+    // If you only want to allow one file, you can send files[0]
+    // For multiple files, you may loop over the array.
+    formData.append("file", files[0]);
+
+    try {
+      const response = await fetch("/api/uploadZest", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setUploadMessage("Upload successful!");
+      } else {
+        setUploadMessage(`Error: ${data.error}`);
+      }
+    } catch (error: any) {
+      setUploadMessage(`Error: ${error.message}`);
+    }
+  };
+
   const handleFileUpload = (files: File[]) => {
     setFiles(files);
-    console.log(files);
+    console.log("Files selected:", files);
+    // Call the upload function once the file is selected
+    uploadFiles(files);
   };
 
   return (
@@ -24,6 +53,13 @@ export default function FileUploadDemo() {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* Display upload status */}
+      {uploadMessage && (
+        <div className="mt-4">
+          <p className="text-sm text-green-600 dark:text-green-400">{uploadMessage}</p>
         </div>
       )}
 
