@@ -23,7 +23,7 @@ async function commitFile(filePath: string, content: string, commitMessage: stri
   try {
     await axios.get(endpoint, {
       headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
-      params: { ref: "main" }, // Ensure this matches your branch name
+      params: { ref: "connect_frontend" }, // Ensure this matches your branch name
     });
     method = "PUT";
   } catch (error: any) {
@@ -37,7 +37,7 @@ async function commitFile(filePath: string, content: string, commitMessage: stri
     url: endpoint,
     headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
     data: {
-      branch: "main", // Ensure this matches your branch name
+      branch: "connect_frontend", // Ensure this matches your branch name
       content: content,
       commit_message: commitMessage,
     },
@@ -52,7 +52,7 @@ async function updateCiYaml(scriptCommand: string) {
 
   const res = await axios.get(endpoint, {
     headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
-    params: { ref: "main" },
+    params: { ref: "connect_frontend" },
   });
   const currentContent = Buffer.from(res.data.content, "base64").toString("utf8");
 
