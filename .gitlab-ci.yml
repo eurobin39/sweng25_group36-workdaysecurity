@@ -121,6 +121,12 @@ save_results:
 # 4️⃣ Grafana
 grafana_visualization:
   stage: visualize
+
+  before_script:
+  - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/security/
+  - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager/
+
+
   tags:
     - euro-mac
   script:
