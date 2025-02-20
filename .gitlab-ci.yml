@@ -105,7 +105,7 @@ save_results:
     - ls -la
     
   tags:
-    - euro-mac
+    - euro-mac 
   
   script:
     # Make sure we're still in our virtual environment when running the script
