@@ -8,5 +8,12 @@ providers:
     editable: true
     options:
       path: "/var/lib/grafana/dashboards/"  
-
-
+providers:
+  - name: "Security_Test_Manager"  
+    orgId: 1
+    folder: "Security Tests"
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: "/var/lib/grafana/dashboards/"  
