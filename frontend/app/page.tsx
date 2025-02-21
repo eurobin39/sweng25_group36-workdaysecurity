@@ -26,6 +26,13 @@ export default function HomePage() {
         >
           Security Engineer
         </button>
+        <button
+        className="mt-6 hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
+        style={{ background: "var(--secondary)" }}
+        onClick={() => router.push("/login")}
+        >
+        Login
+      </button>
       </div>
     </div>
   );
