@@ -57,8 +57,6 @@ run_pen_test:
     # Run your command and capture its output.
     - mkdir -p data
     - START_TIME=$(date +%s)
-    
-    - /zest-scripts/sql_injection_login.zst" > data/output.txt
     - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_fail.zst" > data/output.txt
     - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/premium_key_get.zst" >> data/output.txt
     - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_login_2.zst" >> data/output.txt

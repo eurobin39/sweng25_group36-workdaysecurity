@@ -12,32 +12,29 @@ export const config = {
   },
 };
 
-const gitlabBaseURL = "https://gitlab.scss.tcd.ie/api/v4"; // Updated for your instance
+const gitlabBaseURL = "https://gitlab.scss.tcd.ie/api/v4"; // Your GitLab instance URL
 const { GITLAB_TOKEN, GITLAB_PROJECT_ID } = process.env;
 
 async function commitFile(filePath: string, content: string, commitMessage: string) {
   const endpoint = `${gitlabBaseURL}/projects/${encodeURIComponent(GITLAB_PROJECT_ID!)}/repository/files/${encodeURIComponent(filePath)}`;
   
-  // Determine whether the file exists by trying to GET it.
   let method: "POST" | "PUT" = "POST";
   try {
     await axios.get(endpoint, {
       headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
-      params: { ref: "test_script_upload" }, // Ensure this matches your branch name
+      params: { ref: "test_script_upload" }, // Adjust branch name if necessary
     });
     method = "PUT";
   } catch (error: any) {
-    // If the file doesn't exist, continue with POST.
-    // You can add extra checking here if desired.
+    // If the file doesn't exist, we'll use POST.
   }
   
-  // Correct Axios call
   const response = await axios({
     method,
     url: endpoint,
     headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
     data: {
-      branch: "test_script_upload", // Ensure this matches your branch name
+      branch: "test_script_upload",
       content: content,
       commit_message: commitMessage,
     },
@@ -46,25 +43,31 @@ async function commitFile(filePath: string, content: string, commitMessage: stri
   return response.data;
 }
 
-async function updateCiYaml(scriptCommand: string) {
-  const ciFilePath = ".gitlab-ci.yml";
-  const endpoint = `${gitlabBaseURL}/projects/${encodeURIComponent(GITLAB_PROJECT_ID!)}/repository/files/${encodeURIComponent(ciFilePath)}`;
+async function updatePentestYaml(scriptCommand: string) {
+  // Update the file path to yaml_files/pentest.yml
+  const yamlFilePath = "yaml_files/pentest.yml";
+  const endpoint = `${gitlabBaseURL}/projects/${encodeURIComponent(GITLAB_PROJECT_ID!)}/repository/files/${encodeURIComponent(yamlFilePath)}`;
 
+  // Get the current content of pentest.yml
   const res = await axios.get(endpoint, {
     headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
     params: { ref: "test_script_upload" },
   });
   const currentContent = Buffer.from(res.data.content, "base64").toString("utf8");
 
+  // Look for a placeholder in your pentest.yml where new commands should be injected.
+  // Ensure your pentest.yml file contains the following placeholder comment:
+  //    # zest-script-placeholder
   const placeholder = "# zest-script-placeholder";
   if (!currentContent.includes(placeholder)) {
-    throw new Error("Placeholder for zest script not found in .gitlab-ci.yml");
+    throw new Error("Placeholder for zest script not found in yaml_files/pentest.yml");
   }
   const newContent = currentContent.replace(
     placeholder,
     `${placeholder}\n    - ${scriptCommand}`
   );
 
+  // Update the pentest.yml file in GitLab
   const response = await axios({
     method: "PUT",
     url: endpoint,
@@ -72,7 +75,7 @@ async function updateCiYaml(scriptCommand: string) {
     data: {
       branch: "test_script_upload",
       content: newContent,
-      commit_message: "Update CI YAML to add new zest script command",
+      commit_message: "Update pentest.yml to add new zap command",
     },
   });
   return response.data;
@@ -96,36 +99,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: "No file uploaded" });
       }
 
-      // Normalize to an array so we can support single or multiple files
+      // Normalize to an array to support single or multiple file uploads.
       const uploadedFiles: FormidableFile[] = Array.isArray(fileField)
         ? fileField.filter(Boolean) as FormidableFile[]
         : [fileField as FormidableFile];
 
       for (const uploadedFile of uploadedFiles) {
+        // Read the zap zest script as a UTF-8 text file.
         const fileContent = fs.readFileSync(uploadedFile.filepath, "utf8");
+        // Define where to store the file in your GitLab repository.
         const targetFilePath = `zest-scripts/${uploadedFile.originalFilename}`;
         
+        // Commit the file to GitLab.
         await commitFile(
           targetFilePath,
           fileContent,
           `Add zest script: ${uploadedFile.originalFilename}`
         );
         
+        // Define the zap command to be injected.
         const scriptCommand = `/System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/${targetFilePath}" >> data/output.txt`;
-        await updateCiYaml(scriptCommand);
+        
+        // Update pentest.yml instead of .gitlab-ci.yml
+        await updatePentestYaml(scriptCommand);
       }
 
-      res.status(200).json({ success: true, message: "Zest script(s) uploaded and CI YAML updated" });
+      res.status(200).json({ success: true, message: "Zest script(s) uploaded and pentest.yml updated" });
     } catch (error: any) {
-        if (error.response) {
-          // Log only the essential parts to avoid circular structure issues
-          console.error("Error status:", error.response.status);
-          console.error("Error headers:", util.inspect(error.response.headers, { depth: null }));
-          console.error("Error data:", util.inspect(error.response.data, { depth: null }));
-        } else {
-          console.error("Error processing upload:", error.message);
-        }
-        res.status(500).json({ error: error.message });
-        }
+      if (error.response) {
+        console.error("Error status:", error.response.status);
+        console.error("Error headers:", util.inspect(error.response.headers, { depth: null }));
+        console.error("Error data:", util.inspect(error.response.data, { depth: null }));
+      } else {
+        console.error("Error processing upload:", error.message);
+      }
+      res.status(500).json({ error: error.message });
+    }
   });
 }
