@@ -22,7 +22,7 @@ async function commitFile(filePath: string, content: string, commitMessage: stri
   try {
     await axios.get(endpoint, {
       headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
-      params: { ref: "test_script_upload" }, // Adjust branch name if necessary
+      params: { ref: "new_test_branch" }, // Adjust branch name if necessary
     });
     method = "PUT";
   } catch (error: any) {
@@ -34,7 +34,7 @@ async function commitFile(filePath: string, content: string, commitMessage: stri
     url: endpoint,
     headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
     data: {
-      branch: "test_script_upload",
+      branch: "new_test_branch",
       content: content,
       commit_message: commitMessage,
     },
@@ -51,7 +51,7 @@ async function updatePentestYaml(scriptCommand: string) {
   // Get the current content of pentest.yml
   const res = await axios.get(endpoint, {
     headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
-    params: { ref: "test_script_upload" },
+    params: { ref: "new_test_branch" },
   });
   const currentContent = Buffer.from(res.data.content, "base64").toString("utf8");
 
@@ -73,7 +73,7 @@ async function updatePentestYaml(scriptCommand: string) {
     url: endpoint,
     headers: { "PRIVATE-TOKEN": GITLAB_TOKEN },
     data: {
-      branch: "test_script_upload",
+      branch: "new_test_branch",
       content: newContent,
       commit_message: "Update pentest.yml to add new zap command",
     },
