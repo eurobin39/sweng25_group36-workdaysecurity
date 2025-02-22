@@ -7,32 +7,37 @@ export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen" style={{ background: "var(--background)" }}>
-      <h1 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: "var(--text-color)" }}>
-        What is your role?
-      </h1>
-      <div className="flex space-x-6">
+    <div
+      className="relative flex flex-col items-center justify-center min-h-screen text-white"
+      style={{
+        backgroundImage: "url('/secImg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed"
+      }}
+    >
+      {/* 오버레이 효과 추가 */}
+      <div className="absolute inset-0 bg-black opacity-50"></div>
+
+      {/* 헤더 */}
+      <header className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-10">
+        <h1 className="text-2xl font-bold">SecuriDay</h1>
         <button
-          className="hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
-          style={{ background: "var(--primary)" }}
-          onClick={() => router.push("/software-engineer")}
-        >
-          Software Engineer
-        </button>
-        <button
-          className="hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
-          style={{ background: "var(--primary)" }}
-          onClick={() => router.push("/security-engineer")}
-        >
-          Security Engineer
-        </button>
-        <button
-          className="mt-6 hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
-          style={{ background: "var(--secondary)" }}
           onClick={() => router.push("/login")}
+          className="px-6 py-3 text-lg font-semibold bg-white text-purple-700 rounded-lg shadow-lg hover:bg-gray-100 transition-all"
         >
           Login
         </button>
+      </header>
+
+      {/* 메인 컨텐츠 */}
+      <div className="text-center z-10">
+        <h2 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6">
+          Automated Security <br /> Seamless Development.
+        </h2>
+        <p className="text-lg text-gray-200 max-w-xl mx-auto">
+          From Commit to Security in One Flow.
+        </p>
       </div>
     </div>
   );

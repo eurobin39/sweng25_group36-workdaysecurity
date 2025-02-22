@@ -1,80 +1,64 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-const Login = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const router = useRouter();
+import FormButton from "@/components/button";
+import Input from "../components/input";
+import Link from "next/link";
+import { useActionState } from "react";
+import { login } from "./actions";
 
-    const handleLogin = () => {
-        if (!username || !password) {
-            setError("Please enter both username and password.");
-            return;
-        }
-        setError("");
-        router.push("/");
-    };
-
-    const handleRegister = () => {
-        router.push("/register");
-    };
+export default function Login() {
+    const [state, action] = useActionState(login, null);
 
     return (
-        <div style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            background: "linear-gradient(to right, #4facfe, #00f2fe)"
-        }}>
-            <div style={{
-                width: "300px",
-                padding: "20px",
-                backgroundColor: "white",
-                boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
-                borderRadius: "8px"
-            }}>
-                <h2 style={{ textAlign: "center" }}>Login</h2>
-                <div style={{ marginBottom: "10px" }}>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        id="username"
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Enter your username"
-                        style={{ width: "100%", padding: "8px", marginTop: "5px", borderRadius: "4px", border: "1px solid #ccc" }}
-                    />
+        <div
+            className="flex items-center justify-center min-h-screen px-4"
+            style={{
+                background: "linear-gradient(to bottom, #007BFF, #A1D6FF, #FF9A3C, #FF4500)",
+                backgroundAttachment: "fixed",
+            }}
+        >
+            <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full">
+                <div className="flex flex-col items-center gap-6">
+                    {/* Logo */}
+                    <Link href="/" className="font-extrabold text-4xl text-blue-500 tracking-wide">
+                        WORKDAY
+                    </Link>
+                    <h2 className="text-gray-600 text-lg">Welcome Back! Login to Your Account</h2>
                 </div>
-                <div style={{ marginBottom: "10px" }}>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        id="password"
+
+                {/* LOGIN FORM */}
+                <form action={action} className="flex flex-col gap-4 mt-6">
+                    <Input
+                        name="email"
+                        required
+                        type="email"
+                        placeholder="Email"
+                        className="rounded-lg text-gray-600 border-gray-300 shadow-sm focus:ring-indigo-600 focus:border-indigo-600"
+                        errors={state?.fieldErrors.email}
+                    />
+                    <Input
+                        name="password"
+                        required
                         type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter your password"
-                        style={{ width: "100%", padding: "8px", marginTop: "5px", borderRadius: "4px", border: "1px solid #ccc" }}
+                        placeholder="Password"
+                        className="rounded-lg border-gray-300 text-gray-600 shadow-sm focus:ring-indigo-600 focus:border-indigo-600"
+                        errors={state?.fieldErrors.password}
                     />
+                    <FormButton
+                        text="Login"
+                    />
+                </form>
+
+                {/* create Account */}
+                <div className="mt-4 text-center">
+                    <p className="text-gray-500 text-sm">
+                        Don't have an account?{" "}
+                        <Link href="/register" className="text-blue-500 hover:underline">
+                            Sign up
+                        </Link>
+                    </p>
                 </div>
-                {error && <p style={{ color: "red", fontSize: "12px" }}>{error}</p>}
-                <button
-                    onClick={handleLogin}
-                    style={{ width: "100%", padding: "10px", backgroundColor: "#007bff", color: "white", border: "none", borderRadius: "4px", cursor: "pointer", marginBottom: "10px" }}
-                >
-                    Login
-                </button>
-                <button
-                    onClick={handleRegister}
-                    style={{ width: "100%", padding: "10px", backgroundColor: "#28a745", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
-                >
-                    Register
-                </button>
             </div>
         </div>
     );
-};
-
-export default Login;
+}

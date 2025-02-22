@@ -14,7 +14,7 @@ export default function Button({ text, disabled = false, className }: ButtonProp
     return (
         <button
             disabled={disabled || pending} // Disable if `disabled` is true or form is pending
-            className={`h-10 px-4 py-2 font-medium text-white bg-indigo-600 rounded-lg transition duration-300 ease-in-out hover:bg-indigo-700 disabled:bg-neutral-400 disabled:text-neutral-300 disabled:cursor-not-allowed ${className ?? ''}`}
+            className={`h-10 px-4 py-2 font-medium text-white bg-blue-500 rounded-lg transition duration-300 ease-in-out hover:bg-blue-500 disabled:bg-neutral-400 disabled:text-neutral-300 disabled:cursor-not-allowed ${className ?? ''}`}
         >
             {pending ? "Loading..." : text}
         </button>
