@@ -144,7 +144,7 @@ grafana_visualization:
         -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards
         grafana/grafana:latest
 
-    - sleep 20
+    - sleep 10
 
     - echo "Checking Grafana logs..."
     - docker logs grafana
