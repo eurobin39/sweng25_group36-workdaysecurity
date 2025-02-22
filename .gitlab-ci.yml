@@ -30,7 +30,8 @@ start_services:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
     - echo "Starting Juice Shop..."
-    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
+    # changed the juice shop version bellow (added :latest-arm) might need to take it out if not using bin-runner
+    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop:latest-arm
     - sleep 5
     - docker ps
   
