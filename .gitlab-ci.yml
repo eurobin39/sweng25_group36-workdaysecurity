@@ -44,10 +44,10 @@ extract_metadata:
     - yaroslav-mac
 
   script:
-    - python3 SecOps/pipeline/py-scripts/extract_gitlab_metadata.py /SecOps/artifacts/metadata.json
+    - python3 SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   artifacts:
     paths:
-      - /SecOps/artifacts/metadata.json
+      - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
     when: always
 
 
@@ -116,7 +116,7 @@ save_results:
   script:
     # Make sure we're still in our virtual environment when running the script
     - source venv/bin/activate
-    - python3 SecOps/pipeline/py-scripts/send_test_results_to_SQL.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+    - python3 SecOps/pipeline/py-scripts/send_test_results_to_SQL.py $CI_PROJECT_DIR/SecOps/artifacts/output.json
 
   artifacts:
     paths:
