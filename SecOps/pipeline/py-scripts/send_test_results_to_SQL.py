@@ -1,3 +1,4 @@
+import sys
 import os
 import psycopg2
 import json
@@ -5,8 +6,9 @@ from config import config
 from datetime import datetime
 
 # 🔹 Get the script directory
-script_dir = os.path.dirname(os.path.abspath(__file__))
-json_file_path = os.path.join(script_dir, "..", "data", "output.json")
+# script_dir = os.path.dirname(os.path.abspath(__file__))
+json_file_path = sys.argv[1]
+# json_file_path = os.path.join(script_dir, "..", "data", "output.json")
 
 # 🔹 Verify Database Connection Details
 print("🔹 DB Connection Details:")
@@ -52,7 +54,7 @@ if not isinstance(json_data, list):
 # 🔹 SQL Query for Inserting Security Test Results
 insert_results_query = """
 INSERT INTO security_test_results (
-    commit_hash, timestamp, repository, branch, runner, project_id, 
+    commit_hash, timestamp, repository, branch, runner, project_id,
     test_name, test_type, test_category, status, duration, vulnerability_found
 ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
 ON CONFLICT (commit_hash) DO NOTHING;
@@ -67,7 +69,7 @@ INSERT INTO assertions (
 
 # 🔹 Process Each Test Result Entry in JSON
 for test_entry in json_data:
-    metadata = test_entry.get("metadata", {})  
+    metadata = test_entry.get("metadata", {})
     test_info = test_entry.get("testInfo", {})
     results = test_entry.get("results", {})
 

@@ -116,7 +116,7 @@ save_results:
   script:
     # Make sure we're still in our virtual environment when running the script
     - source venv/bin/activate
-    - python3 SecOps/pipeline/py-scripts/send_test_results_to_SQL.py
+    - python3 SecOps/pipeline/py-scripts/send_test_results_to_SQL.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
 
   artifacts:
     paths:
