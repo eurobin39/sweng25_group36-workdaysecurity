@@ -44,7 +44,7 @@ def get_gitlab_metadata():
 
 
 def save_metadata_to_json():
-    """Save metadata as a JSON file in the /data directory."""
+    """Save metadata as a JSON file in the /artifacts directory."""
     metadata = get_gitlab_metadata()
     if not metadata:
         print("❌ Failed to fetch metadata")
@@ -56,7 +56,7 @@ def save_metadata_to_json():
     with open(metadata_relative_path, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=4)
 
-    print(f"✅ Metadata saved to {output_path}")
+    print(f"✅ Metadata saved to {metadata_relative_path}")
 
 if __name__ == "__main__":
     save_metadata_to_json()
