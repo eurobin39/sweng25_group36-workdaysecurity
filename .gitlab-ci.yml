@@ -54,9 +54,9 @@ run_pen_test:
     # Run your command and capture its output.
     - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    - /home/alex/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_fail.zst" > data/output.txt
-    - /home/alex/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/premium_key_get.zst" >> data/output.txt
-    - /home/alex/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_login_2.zst" >> data/output.txt
+    - /home/alex/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/alex/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/alex/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_fail.zst > data/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/premium_key_get.zst >> data/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_login_2.zst >> data/output.txt
