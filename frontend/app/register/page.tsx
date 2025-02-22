@@ -57,14 +57,28 @@ export default function CreateAccount() {
             className="rounded-lg border-gray-300 text-gray-600 shadow-sm focus:ring-indigo-500"
             errors={state?.fieldErrors.confirmPassword}
           />
-          <Input
-            name="role"
-            required
-            type="text"
-            placeholder="Choose Your Role"
-            className="rounded-lg border-gray-300 text-gray-600 shadow-sm focus:ring-indigo-500"
-            errors={state?.fieldErrors.role}
-          />
+
+          {/* Role dropdown */}
+          <div>
+            <select
+              name="role"
+              id="role"
+              required
+              className="w-full rounded-lg border-gray-300 text-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            >
+              <option value="" disabled selected>
+                Select a Role
+              </option>
+              <option value="Security Engineer">Security Engineer</option>
+              <option value="Software Engineer">Software Engineer</option>
+              <option value="Manager">Manager</option>
+              <option value="Admin">Admin</option>
+            </select>
+            {state?.fieldErrors.role && (
+              <p className="text-red-500 text-sm mt-1">{state.fieldErrors.role}</p>
+            )}
+          </div>
+
           <Button text="Create Account" />
         </form>
         <p className="mt-4 text-center text-gray-500 text-sm">
