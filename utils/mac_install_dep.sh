@@ -1,10 +1,15 @@
 #!/bin/bash
 
+###
+# This file helps to setup .venv.
+# it should be used for manual debugging of python scripts
+###
+
 # Exit on error
 set -e
 
 # Check if requirements.txt exists
-if [ ! -f ./py-scripts/requirements.txt ]; then
+if [ ! -f ./SecOps/pipeline/py-scripts/requirements.txt ]; then
   echo "Error: requirements.txt not found!"
   exit 1
 fi
@@ -18,16 +23,15 @@ else
 fi
 
 # Activate the virtual environment
-echo "Activating virtual environment..."
 source .venv/bin/activate
 
 # Install the dependencies from requirements.txt
 echo "Installing dependencies from requirements.txt..."
-pip install -r ./py-scripts/requirements.txt
+pip install -r ./SecOps/pipeline/py-scripts/requirements.txt
+
+# deactivate venv
+deactivate
 
 # Success message
 echo "Setup complete! Virtual environment is ready and dependencies installed."
 echo "If you use mac, type source .venv/bin/activate to activate a virtual environment"
-
-# deactivate venv
-deactivate
