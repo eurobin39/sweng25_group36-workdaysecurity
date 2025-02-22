@@ -1,12 +1,11 @@
 Found Java version 17.0.13
-Available memory: 8192 MB
-Using JVM args: -Xmx2048m
-java.lang.IllegalArgumentException: URI is not absolutePass, NA, NA, SQL login injection, Attempted SQL injection with password and did not succeed
-Found Java version 17.0.13
-Available memory: 8192 MB
-Using JVM args: -Xmx2048m
-java.lang.IllegalArgumentException: URI is not absoluteFail, High, High, SQL login injection, Attempted SQL injection with password and succeeded.
-Found Java version 17.0.13
-Available memory: 8192 MB
-Using JVM args: -Xmx2048m
-java.lang.IllegalArgumentException: URI is not absoluteFail, High, High, Premium key illegal download, Attempted illegal premium key download and succeeded.
+Available memory: 7837 MB
+Using JVM args: -Xmx1959m
+294 [main] INFO  org.parosproxy.paros.Constant - Copying default configuration to /home/zap/.ZAP/config.xml
+346 [main] INFO  org.parosproxy.paros.Constant - Creating directory /home/zap/.ZAP/session
+347 [main] INFO  org.parosproxy.paros.Constant - Creating directory /home/zap/.ZAP/dirbuster
+347 [main] INFO  org.parosproxy.paros.Constant - Creating directory /home/zap/.ZAP/fuzzers
+347 [main] INFO  org.parosproxy.paros.Constant - Creating directory /home/zap/.ZAP/plugin
+Feb 22, 2025 6:32:43 PM java.util.prefs.FileSystemPreferences$1 run
+INFO: Created user preferences directory.
+Connect to localhost:3000 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused
