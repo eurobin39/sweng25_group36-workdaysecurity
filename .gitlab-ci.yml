@@ -1,8 +1,8 @@
 #demo9
 
 # include:
-#   - local: "pipeline-stages/eurosPart.yml"
-#   - local: "pipeline-stages/timsPart.yml"
+#   - local: "pipeline/stages/eurosPart.yml"
+#   - local: "pipeline/stages/timsPart.yml"
 
 # stages:
 #   - start_services
@@ -18,27 +18,31 @@ stages:
   - save_results
   - visualize
 
-# 1️⃣ Juice Shop 
+# 1️⃣ Juice Shop
 start_services:
   image: docker:latest
   stage: start_services
   services:
     - docker:dind
   tags:
-    - tudor-mac
+    # - tudor-mac
+    - yaroslav-mac
   script:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
     - echo "Starting Juice Shop..."
     - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
-    - sleep 5
+    - sleep 3
     - docker ps
-  
+
 
 extract_metadata:
   stage: extract_metadata
+
   tags:
-    - tudor-mac
+    # - tudor-mac
+    - yaroslav-mac
+
   script:
     - python3 py-scripts/extract_gitlab_metadata.py
   artifacts:
@@ -47,11 +51,12 @@ extract_metadata:
     when: always
 
 
-# Stage 2 
+# Stage 2
 run_pen_test:
   stage: run_pen_test
   tags:
-    - tudor-mac
+    # - tudor-mac
+    - yaroslav-mac
   image: owasp/zap2docker-stable
   script:
     # Run your command and capture its output.
@@ -85,33 +90,34 @@ save_results:
   before_script:
     # Create a virtual environment
     - python3 -m venv venv
-    
+
     # Activate the virtual environment
     - source venv/bin/activate
-    
+
     # Now we can safely install packages in our isolated environment
     - python3 -m pip install --upgrade pip
     - python3 -m pip install psycopg2-binary python-dotenv
-    
+
     # Verify our environment
     - echo "Python environment information:"
     - which python3
     - python3 --version
     - pip list
-    
+
     # Show our working directory and contents
     - echo "Current directory structure:"
     - pwd
     - ls -la
-    
+
   tags:
-    - tudor-mac
-  
+    # - tudor-mac
+    - yaroslav-mac
+
   script:
     # Make sure we're still in our virtual environment when running the script
     - source venv/bin/activate
     - python3 py-scripts/send_test_results_to_SQL.py
-  
+
   artifacts:
     paths:
       - data/
@@ -122,23 +128,23 @@ save_results:
 grafana_visualization:
   stage: visualize
   tags:
-    - tudor-mac
-    # yaroslav-mac
+    # - tudor-mac
+    - yaroslav-mac
   script:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true
     - docker rm grafana || true
 
     - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
-    - docker run -d --name=grafana 
-        -p 4000:3000 
-        -v grafana_data:/var/lib/grafana 
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards 
-        -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
+    - docker run -d --name=grafana
+        -p 4000:3000
+        -v grafana_data:/var/lib/grafana
+        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+        -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
         -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards
         grafana/grafana:latest
 
-    - sleep 20  
+    - sleep 20
 
     - echo "Checking Grafana logs..."
     - docker logs grafana
