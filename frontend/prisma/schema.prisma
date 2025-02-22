@@ -22,25 +22,25 @@ model User {
 }
 
 model security_test_results {
-  id                 Int          @id @default(autoincrement())
-  commit_Hash        String       @unique
-  timestamp          DateTime     @default(now())
-  repository         String
-  branch             String
-  runner             String
-  projectId          String
-  testName           String
-  testType           String
-  testCategory       String
-  status             String
-  duration           Float
-  vulnerabilityFound Boolean
-  assertions         assertions[]
+  id                  Int          @id @default(autoincrement())
+  commit_hash         String       @unique
+  timestamp           DateTime     @default(now())
+  repository          String
+  branch              String
+  runner              String
+  project_id          String
+  test_name           String
+  test_type           String
+  test_category       String
+  status              String
+  duration            Float
+  vulnerability_found Boolean
+  assertions          assertions[]
 }
 
 model assertions {
   id          Int     @id @default(autoincrement())
-  commit_Hash String  @map("commit_hash")
+  commit_hash String  @map("commit_hash")
   name        String
   status      String
   expected    String?
@@ -49,5 +49,5 @@ model assertions {
   confidence  String? @default("NA")
   message     String?
 
-  securityTestResult security_test_results @relation(fields: [commit_Hash], references: [commit_Hash], onDelete: Cascade)
+  securityTestResult security_test_results @relation(fields: [commit_hash], references: [commit_hash], onDelete: Cascade)
 }

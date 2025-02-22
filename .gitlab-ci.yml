@@ -7,7 +7,7 @@
 # stages:
 #   - start_services
 #   # - security_scan
-#   - run_pen_test
+#   - run_pen_test 
 #   - save_results
 #   - visualize
 
