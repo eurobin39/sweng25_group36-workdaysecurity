@@ -62,9 +62,9 @@ run_pen_test:
     # Run your command and capture its output.
     - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_fail.zst" > SecOps/artifacts/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/premium_key_get.zst" >> SecOps/artifacts/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_login_2.zst" >> SecOps/artifacts/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scrips/sql_injection_fail.zst" > SecOps/artifacts/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scrips/premium_key_get.zst" >> SecOps/artifacts/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scrips/sql_injection_login_2.zst" >> SecOps/artifacts/output.txt
     - END_TIME=$(date +%s)
     - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/data/output.txt'
