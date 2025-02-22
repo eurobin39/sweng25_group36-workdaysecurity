@@ -1,87 +1,76 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-const Register = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const router = useRouter();
+import Input from "../components/input";
+import { useActionState } from "react";
+import { createAccount } from "./actions";
+import Button from "../components/button";
+import Link from "next/link";
 
-  const handleRegister = () => {
-    if (!username || !password || !confirmPassword) {
-      setError("Please fill in all fields.");
-      return;
-    }
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-    setError("");
-    alert("Registration successful!");
-    router.push("/login");
-  };
+export default function CreateAccount() {
+  const [state, action] = useActionState(createAccount, null);
 
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-      background: "linear-gradient(to right, #4facfe, #00f2fe)"
-    }}>
-      <div style={{
-        width: "300px",
-        padding: "20px",
-        backgroundColor: "white",
-        boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
-        borderRadius: "8px"
-      }}>
-        <h2 style={{ textAlign: "center" }}>Register</h2>
-        <div style={{ marginBottom: "10px" }}>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+      <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full">
+        <div className="flex flex-col gap-3 items-center">
+          <Link href="/" className="font-extrabold text-4xl text-indigo-700 tracking-wide">
+            WORKDAY
+          </Link>
+          <h2 className="text-lg text-gray-600">Fill in the Form Below to Join!</h2>
+        </div>
+        <form action={action} className="flex flex-col gap-4 mt-6">
+          <Input
+            name="username"
+            required
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
-            style={{ width: "100%", padding: "8px", marginTop: "5px", borderRadius: "4px", border: "1px solid #ccc" }}
+            placeholder="Username"
+            className="rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500"
+            errors={state?.fieldErrors.username}
           />
-        </div>
-        <div style={{ marginBottom: "10px" }}>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
+          <Input
+            name="email"
+            required
+            type="email"
+            placeholder="Email"
+            className="rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500"
+            errors={state?.fieldErrors.email}
+          />
+          <Input
+            name="password"
+            required
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            style={{ width: "100%", padding: "8px", marginTop: "5px", borderRadius: "4px", border: "1px solid #ccc" }}
+            placeholder="Password"
+            className="rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500"
+            errors={state?.fieldErrors.password}
           />
-        </div>
-        <div style={{ marginBottom: "10px" }}>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            id="confirmPassword"
+          <Input
+            name="confirmPassword"
+            required
             type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm your password"
-            style={{ width: "100%", padding: "8px", marginTop: "5px", borderRadius: "4px", border: "1px solid #ccc" }}
+            placeholder="Confirm Password"
+            className="rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500"
+            errors={state?.fieldErrors.confirmPassword}
           />
-        </div>
-        {error && <p style={{ color: "red", fontSize: "12px" }}>{error}</p>}
-        <button
-          onClick={handleRegister}
-          style={{ width: "100%", padding: "10px", backgroundColor: "#28a745", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
-        >
-          Register
-        </button>
+          <Input
+            name="role"
+            required
+            type="text"
+            placeholder="Choose Your Role"
+            className="rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500"
+            errors={state?.fieldErrors.role}
+          />
+          <Button
+            text="Create Account"
+
+          />
+        </form>
+        <p className="mt-4 text-center text-gray-500 text-sm">
+          Already have an account?{" "}
+          <Link href="/login" className="text-indigo-500 hover:underline">
+            Log in
+          </Link>
+        </p>
       </div>
     </div>
   );
-};
-
-export default Register;
+}

@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  username String @unique
+  password String
+  role     String
+}
+
+model security_test_results {
+  id                 Int          @id @default(autoincrement())
+  commitHash         String       @unique
+  timestamp          DateTime     @default(now())
+  repository         String
+  branch             String
+  runner             String
+  projectId          String
+  testName           String
+  testType           String
+  testCategory       String
+  status             String
+  duration           Float
+  vulnerabilityFound Boolean
+  assertions         assertions[]
+}
+
+model assertions {
+  id         Int     @id @default(autoincrement())
+  commitHash String  @map("commit_hash")
+  name       String
+  status     String
+  expected   String?
+  actual     String?
+  risk       String? @default("NA")
+  confidence String? @default("NA")
+  message    String?
+
+  securityTestResult security_test_results @relation(fields: [commitHash], references: [commitHash], onDelete: Cascade)
+}
