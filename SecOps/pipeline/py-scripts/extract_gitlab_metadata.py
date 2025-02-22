@@ -53,7 +53,7 @@ def save_metadata_to_json():
     # save to 1st argument path
     metadata_relative_path = sys.argv[1]
 
-    with open(output_path, "w", encoding="utf-8") as f:
+    with open(metadata_relative_path, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=4)
 
     print(f"✅ Metadata saved to {output_path}")
