@@ -23,7 +23,7 @@ model User {
 
 model security_test_results {
   id                 Int          @id @default(autoincrement())
-  commitHash         String       @unique
+  commit_Hash        String       @unique
   timestamp          DateTime     @default(now())
   repository         String
   branch             String
@@ -39,15 +39,15 @@ model security_test_results {
 }
 
 model assertions {
-  id         Int     @id @default(autoincrement())
-  commitHash String  @map("commit_hash")
-  name       String
-  status     String
-  expected   String?
-  actual     String?
-  risk       String? @default("NA")
-  confidence String? @default("NA")
-  message    String?
+  id          Int     @id @default(autoincrement())
+  commit_Hash String  @map("commit_hash")
+  name        String
+  status      String
+  expected    String?
+  actual      String?
+  risk        String? @default("NA")
+  confidence  String? @default("NA")
+  message     String?
 
-  securityTestResult security_test_results @relation(fields: [commitHash], references: [commitHash], onDelete: Cascade)
+  securityTestResult security_test_results @relation(fields: [commit_Hash], references: [commit_Hash], onDelete: Cascade)
 }
