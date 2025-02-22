@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import subprocess
 from datetime import datetime, timezone
@@ -9,9 +10,9 @@ def get_git_info():
         commit_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
 
         branch = os.getenv("CI_COMMIT_REF_NAME", None)
-        if branch is None:  
+        if branch is None:
             branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode().strip()
-        
+
         repository_path = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode().strip()
         repository = os.path.basename(repository_path)
     except subprocess.CalledProcessError as e:
@@ -36,7 +37,7 @@ def get_gitlab_metadata():
         "repository": git_info["repository"],
         "branch": git_info["branch"],
         "commitHash": git_info["commitHash"],
-        "runner": os.getenv("CI_RUNNER_DESCRIPTION", os.getenv("CI_RUNNER_ID", "unknown")),  
+        "runner": os.getenv("CI_RUNNER_DESCRIPTION", os.getenv("CI_RUNNER_ID", "unknown")),
         "projectId": os.getenv("CI_PROJECT_ID", "unknown")
     }
     return metadata
@@ -49,11 +50,8 @@ def save_metadata_to_json():
         print("❌ Failed to fetch metadata")
         return
 
-    #save data/metadata.json
-    data_dir = os.path.join(os.getenv("CI_PROJECT_DIR", "."), "data")
-    os.makedirs(data_dir, exist_ok=True)
-
-    output_path = os.path.join(data_dir, "metadata.json")
+    # save to 1st argument path
+    metadata_relative_path = sys.argv[1]
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=4)

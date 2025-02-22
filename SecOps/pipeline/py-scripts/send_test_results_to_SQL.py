@@ -6,9 +6,7 @@ from config import config
 from datetime import datetime
 
 # 🔹 Get the script directory
-# script_dir = os.path.dirname(os.path.abspath(__file__))
 json_file_path = sys.argv[1]
-# json_file_path = os.path.join(script_dir, "..", "data", "output.json")
 
 # 🔹 Verify Database Connection Details
 print("🔹 DB Connection Details:")

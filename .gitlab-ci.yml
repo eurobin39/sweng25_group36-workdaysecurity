@@ -44,7 +44,7 @@ extract_metadata:
     - yaroslav-mac
 
   script:
-    - python3 SecOps/pipeline/py-scripts/extract_gitlab_metadata.py
+    - python3 SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   artifacts:
     paths:
       - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
