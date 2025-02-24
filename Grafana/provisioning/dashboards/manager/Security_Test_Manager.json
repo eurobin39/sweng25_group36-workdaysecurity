@@ -404,7 +404,6 @@
                 "wideLayout": true
             },
             "pluginVersion": "11.5.0",
-            "repeatDirection": "h",
             "targets": [
                 {
                     "datasource": {
@@ -437,102 +436,6 @@
             ],
             "title": "Top Failed Test Types",
             "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "grafana-postgresql-datasource",
-                "uid": "PCC52D03280B7034C"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "#EAB839",
-                                "value": 30
-                            },
-                            {
-                                "color": "red",
-                                "value": 40
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 7,
-                "w": 7,
-                "x": 0,
-                "y": 6
-            },
-            "id": 1,
-            "options": {
-                "displayMode": "lcd",
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "bottom",
-                    "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "top",
-                "orientation": "horizontal",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-            },
-            "pluginVersion": "11.5.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "grafana-postgresql-datasource",
-                        "uid": "PCC52D03280B7034C"
-                    },
-                    "editorMode": "code",
-                    "format": "table",
-                    "rawQuery": true,
-                    "rawSql": "SELECT \n    COUNT(*) AS total_tests,\n    SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) AS passed_tests,\n    SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) AS failed_tests,\n    ROUND(AVG(duration), 2) AS avg_duration_seconds,\n    SUM(CASE WHEN vulnerability_found = TRUE THEN 1 ELSE 0 END) AS total_vulnerabilities,\n    COUNT(DISTINCT commit_hash) AS unique_commits\nFROM security_test_results\nWHERE repository = $repository\nAND timestamp >= NOW() - INTERVAL '30 days';\n\n",
-                    "refId": "A",
-                    "sql": {
-                        "columns": [
-                            {
-                                "parameters": [],
-                                "type": "function"
-                            }
-                        ],
-                        "groupBy": [
-                            {
-                                "property": {
-                                    "type": "string"
-                                },
-                                "type": "groupBy"
-                            }
-                        ],
-                        "limit": 50
-                    }
-                }
-            ],
-            "title": "Test Summary(30D)",
-            "type": "bargauge"
         }
     ],
     "preload": false,
@@ -573,6 +476,6 @@
     "timezone": "",
     "title": "Security Test Manager Dashboard",
     "uid": "security-test-manager-dashboard",
-    "version": 1,
+    "version": 2,
     "weekStart": ""
 }

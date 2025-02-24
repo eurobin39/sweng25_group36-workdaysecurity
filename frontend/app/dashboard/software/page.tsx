@@ -1,8 +1,7 @@
 "use client";
 
-import { Code, ExternalLink } from "lucide-react";
+import { Code } from "lucide-react";
 import Link from "next/link";
-import Button from "@/components/button";
 
 export default function SoftwareEngineerDashboard() {
   return (
@@ -11,10 +10,14 @@ export default function SoftwareEngineerDashboard() {
       <h1 className="text-4xl font-bold">Software Engineer Dashboard</h1>
       <p className="text-gray-200 mt-2">Develop, test, and deploy applications efficiently.</p>
 
-      <Link href="http://localhost:4000/d/security-test-dashboard/security-test-dashboard?orgId=1&from=now-6h&to=now&timezone=browser" target="_blank">
-        <Button
-          text="Grafana"
-        />
+      <Link
+        href="http://localhost:4000/d/security-test-dashboard/security-test-dashboard?orgId=1&from=now-6h&to=now&timezone=browser"
+        target="_blank"
+        className="mt-6"
+      >
+        <button className="px-6 py-3 bg-green-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:bg-green-500 hover:scale-105">
+          Open Grafana
+        </button>
       </Link>
     </div>
   );
