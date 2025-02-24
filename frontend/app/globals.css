@@ -5,12 +5,18 @@
 :root {
   --background: linear-gradient(135deg, #1d4ed8, #60a5fa);
   --foreground: #171717;
+  --primary: linear-gradient(135deg, #ff7f50, #ff4500);
+  --secondary: linear-gradient(135deg, #4caf50, #2e8b57);
+  --text-color: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: linear-gradient(135deg, #1d40af, #3b82f6);
     --foreground: #ededed;
+    --primary: linear-gradient(135deg, #ff6347, #ff2400);
+    --secondary: linear-gradient(135deg, #228b22, #006400);
+    --text-color: #ffffff;
   }
 }
 
