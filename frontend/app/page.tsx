@@ -9,21 +9,27 @@ export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen" style={{ background: "var(--background)" }}>
-      <h1 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: "var(--text-color)" }}>
+    <div>
+    <NavBar />
+
+
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-600 to-blue-300">
+
+      <h1 className="text-white text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-400 drop-shadow-lg animate-bounce">
         What is your role?
       </h1>
-      <div className="flex space-x-6">
-        <button
-          className="hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
-          style={{ background: "var(--primary)" }}
-          onClick={() => router.push("/software-engineer")}
+      
+      <div className="flex justify-center space-x-12 p-10">
+        <a
+          href="https://gitlab.scss.tcd.ie/tmanea/sweng25_group36-workdaysecurity/-/pipelines"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-4 px-12 rounded-lg text-2xl shadow-xl transition-all"
         >
           Software Engineer
-        </button>
+        </a>
         <button
-          className="hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
-          style={{ background: "var(--primary)" }}
+          className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-4 px-12 rounded-lg text-2xl shadow-xl transition-all"
           onClick={() => router.push("/security-engineer")}
         >
           Security Engineer
@@ -36,6 +42,8 @@ export default function HomePage() {
         Login
       </button>
       </div>
-    </div>    
+    </div>
+    </div>
+    
   );
 }
