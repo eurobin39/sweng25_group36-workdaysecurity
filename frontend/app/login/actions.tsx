@@ -71,10 +71,10 @@ export async function login(prevState: any, formData: FormData) {
                     redirect("/dashboard/admin");
                     break;
                 case "Security Engineer":
-                    redirect("/dashboard/security-engineer");
+                    redirect("/dashboard/security");
                     break;
                 case "Software Engineer":
-                    redirect("/dashboard/software-engineer");
+                    redirect("/dashboard/software");
                     break;
                 case "Manager":
                     redirect("/dashboard/manager");

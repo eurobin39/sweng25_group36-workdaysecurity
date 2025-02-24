@@ -1,6 +1,8 @@
 "use client";
 
-import { Code } from "lucide-react";
+import { Code, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import Button from "@/components/button";
 
 export default function SoftwareEngineerDashboard() {
   return (
@@ -8,6 +10,12 @@ export default function SoftwareEngineerDashboard() {
       <Code className="w-16 h-16 text-lime-300 mb-4" />
       <h1 className="text-4xl font-bold">Software Engineer Dashboard</h1>
       <p className="text-gray-200 mt-2">Develop, test, and deploy applications efficiently.</p>
+
+      <Link href="http://your-grafana-url.com" target="_blank">
+        <Button
+          text="Grafana"
+        />
+      </Link>
     </div>
   );
 }
