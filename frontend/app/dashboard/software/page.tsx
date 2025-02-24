@@ -11,7 +11,7 @@ export default function SoftwareEngineerDashboard() {
       <h1 className="text-4xl font-bold">Software Engineer Dashboard</h1>
       <p className="text-gray-200 mt-2">Develop, test, and deploy applications efficiently.</p>
 
-      <Link href="http://your-grafana-url.com" target="_blank">
+      <Link href="http://localhost:4000/d/security-test-dashboard/security-test-dashboard?orgId=1&from=now-6h&to=now&timezone=browser" target="_blank">
         <Button
           text="Grafana"
         />
