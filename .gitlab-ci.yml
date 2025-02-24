@@ -137,6 +137,8 @@ grafana_visualization:
       -v grafana_data:/var/lib/grafana 
       -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security 
       -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager 
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/software:/etc/grafana/provisioning/dashboards/software
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/admin:/etc/grafana/provisioning/dashboards/admin
       -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml 
       -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
       grafana/grafana:latest
