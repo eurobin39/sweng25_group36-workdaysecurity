@@ -14,14 +14,13 @@ export default function FileUploadDemo() {
   };
 
   return (
-    <div 
-      className="w-full max-w-6xl mx-auto min-h-96 border rounded-lg p-4 flex flex-col items-center justify-center"
-      style={{
-        background: "var(--primary)", // Making the entire section orange
-        borderColor: "var(--foreground)",
-      }}
-    >
-      <FileUpload onChange={handleFileUpload} />
+    <div>
+    <NavBar />
+    <div className= "h-screen bg-gradient-to-br from-blue-600 to-blue-300 flex flex-col items-center justify-start pt-20">
+    
+      <div className="w-full max-w-6xl mx-auto min-h-96 border bg-orange-300 dark:bg-orange-600 border-neutral-200 dark:border-neutral-100 rounded-lg p-4">
+      
+        <FileUpload onChange={handleFileUpload} />
 
         {/* Display uploaded files */}
         {files.length > 0 && (
@@ -65,5 +64,7 @@ export default function FileUploadDemo() {
         )}
         
       </div>
+    </div>
+    </div>
   );
 }
