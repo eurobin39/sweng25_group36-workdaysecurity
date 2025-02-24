@@ -71,10 +71,10 @@ export const FileUpload = ({
           <GridPattern />
         </div>
         <div className="flex flex-col items-center justify-center">
-          <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-base">
-            Upload file
+          <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-2xl">
+            Upload script(s) here
           </p>
-          <p className="relative z-20 font-sans font-normal text-neutral-400 dark:text-neutral-400 text-base mt-2">
+          <p className="relative z-20 font-sans font-normal text-neutral-700 dark:text-neutral-300 text-base mt-2">
             Drag or drop your files here or click to upload
           </p>
           <div className="relative w-full mt-10 max-w-xl mx-auto">
@@ -173,6 +173,6 @@ export const FileUpload = ({
 export function GridPattern() {
   
   return (
-    <div className="absolute inset-0 bg-orange-500"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600"></div>
   );
 }
