@@ -20,7 +20,7 @@ export default function HomePage() {
             backgroundPosition: "center", 
           }}>
 
-      <h1 className="text-blue-900 text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-400 drop-shadow-lg animate-bounce">
+      <h1 className="text-blue-900 text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-blue-900 drop-shadow-lg animate-bounce">
         What is your role?
       </h1>
       
