@@ -16,9 +16,14 @@ export default function FileUploadDemo() {
   return (
     <div>
     <NavBar />
-    <div className= "h-screen bg-gradient-to-br from-blue-600 to-blue-300 flex flex-col items-center justify-start pt-20">
+    <div className= "h-screen bg-gradient-to-br from-blue-600 to-blue-300 flex flex-col items-center justify-start pt-20"
+          style={{
+            backgroundImage: "url('/images/securityBackground.jpg')", 
+            backgroundSize: "cover", 
+            backgroundPosition: "center", 
+          }}>
     
-      <div className="w-full max-w-6xl mx-auto min-h-96 border bg-orange-300 dark:bg-orange-600 border-neutral-200 dark:border-neutral-100 rounded-lg p-4">
+      <div className="w-full max-w-6xl mx-auto min-h-96 border bg-blue-800 dar:bg-blue-400 border-neutral-200 dark:border-neutral-100 rounded-lg p-4">
       
         <FileUpload onChange={handleFileUpload} />
 

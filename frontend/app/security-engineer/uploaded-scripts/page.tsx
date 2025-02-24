@@ -11,14 +11,19 @@ export default function LoadingButtonsTransition() {
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000); // 3 seconds timer
+    }, 4000); // 4 seconds timer
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div>
     <NavBar />
-    <div className= "h-screen bg-gradient-to-br from-blue-600 to-blue-300 flex flex-col items-center justify-start pt-20">
+    <div className= "h-screen bg-gradient-to-br from-blue-600 to-blue-300 flex flex-col items-center justify-start pt-20"
+          style={{
+            backgroundImage: "url('/images/securityBackground.jpg')", 
+            backgroundSize: "cover", 
+            backgroundPosition: "center", 
+          }}>
     <Box
       sx={{
         display: "flex",
@@ -32,8 +37,8 @@ export default function LoadingButtonsTransition() {
           size="large"
           variant="outlined"
           disabled={loading}
-          startIcon={<CircularProgress size={24} sx={{ color: "white" }} />} // White spinner
-          sx={{ fontSize: "1.5rem", fontWeight: "bold", color: "white", borderColor: "white" }} // White text and border
+          startIcon={<CircularProgress size={50} sx={{ color: "white" }} />} // White spinner
+          sx={{ fontSize: "1.5rem", fontWeight: "bold", color: "blue", borderColor: "blue" }} // White text and border
         >
           Uploading scripts...
         </Button>

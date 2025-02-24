@@ -13,27 +13,32 @@ export default function HomePage() {
     <NavBar />
 
 
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-600 to-blue-300">
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-600 to-blue-300"
+          style={{
+            backgroundImage: "url('/images/securityBackground.jpg')", 
+            backgroundSize: "cover", 
+            backgroundPosition: "center", 
+          }}>
 
-      <h1 className="text-white text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-400 drop-shadow-lg animate-bounce">
+      <h1 className="text-blue-900 text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-400 drop-shadow-lg animate-bounce">
         What is your role?
       </h1>
       
-      <div className="flex justify-center space-x-12 p-10">
+      <div className="flex justify-center space-x-6 p-10">
         <a
           href="https://gitlab.scss.tcd.ie/tmanea/sweng25_group36-workdaysecurity/-/pipelines"
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-4 px-12 rounded-lg text-2xl shadow-xl transition-all"
+          className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white font-bold py-4 px-12 rounded-lg text-2xl shadow-xl transition-all"
         >
           Software Engineer
         </a>
-        <button
-          className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-4 px-12 rounded-lg text-2xl shadow-xl transition-all"
+        <a
+          className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white font-bold py-4 px-12 rounded-lg text-2xl shadow-xl transition-all"
           onClick={() => router.push("/security-engineer")}
         >
           Security Engineer
-        </button>
+        </a>
         <button
         className="mt-6 hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
         style={{ background: "var(--secondary)" }}

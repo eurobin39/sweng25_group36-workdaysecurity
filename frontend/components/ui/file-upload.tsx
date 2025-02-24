@@ -173,6 +173,6 @@ export const FileUpload = ({
 export function GridPattern() {
   
   return (
-    <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600"></div>
   );
 }
