@@ -6,7 +6,7 @@ datasources:
     url: database-1.c7k0w6yq8dlr.eu-west-1.rds.amazonaws.com:5432
     user: grafana_user
     secureJsonData:
-      password: password1234
+      password: awsrdsPassword1234
     jsonData:
       sslmode: "disable"
       database: ZAP_DB
