@@ -57,6 +57,8 @@ run_pen_test:
     # Kill any existing ZAP processes
     - pkill -f zap || true
     - sleep 2
+    # Check if Juice Shop is accessible
+    - curl --retry 10 --retry-delay 5 -sSf http://localhost:3000 || (echo "Juice Shop is not accessible" && exit 1)
   script:
     # Run your command and capture its output.
     - mkdir -p SecOps/artifacts
@@ -64,10 +66,10 @@ run_pen_test:
     # Use a random port between 8090-8099 to avoid conflicts
     - export ZAP_PORT=$((8090 + RANDOM % 10))
     - echo "Starting ZAP on port $ZAP_PORT"
-    # Add -port parameter to specify custom port
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP failed to start" && exit 1)
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP script execution failed" && exit 1)
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP script execution failed" && exit 1)
+    # Use the correct path for ZAP in the Docker container
+    - zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP failed to start" && exit 1)
+    - zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP script execution failed" && exit 1)
+    - zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP script execution failed" && exit 1)
     - END_TIME=$(date +%s)
     - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
