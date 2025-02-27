@@ -25,7 +25,8 @@ start_services:
   services:
     - docker:dind
   tags:
-    - tudor-mac
+    # - tudor-mac
+    - yaroslav-mac
   script:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
@@ -51,7 +52,8 @@ extract_metadata:
 run_pen_test:
   stage: run_pen_test
   tags:
-    - tudor-mac
+    # - tudor-mac
+    - yaroslav-mac
   image: owasp/zap2docker-stable
   script:
     # Run your command and capture its output.
@@ -102,7 +104,8 @@ save_results:
     - ls -la
 
   tags:
-    - tudor-mac
+    # - tudor-mac
+    - yaroslav-mac
 
   script:
     # Make sure we're still in our virtual environment when running the script
@@ -123,7 +126,8 @@ grafana_visualization:
   - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/security/
   - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager/
   tags:
-    - tudor-mac
+    # - tudor-mac
+    - yaroslav-mac
   script:
   - echo "Stopping any existing Grafana container..."
   - docker stop grafana || true
