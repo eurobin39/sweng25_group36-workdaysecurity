@@ -40,10 +40,10 @@ extract_metadata:
   tags:
     - tudor-mac
   script:
-    - python3 py-scripts/extract_gitlab_metadata.py
+- python3 SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   artifacts:
     paths:
-      - $CI_PROJECT_DIR/data/metadata.json
+      - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
     when: always
 
 
@@ -55,26 +55,23 @@ run_pen_test:
   image: owasp/zap2docker-stable
   script:
     # Run your command and capture its output.
-    - mkdir -p data
+    - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_fail.zst" > data/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/premium_key_get.zst" >> data/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_login_2.zst" >> data/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
     - END_TIME=$(date +%s)
-    - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/data/output.txt'
-    - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/data/output.txt'
-    - 'echo "Test Type: advanced" >> $CI_PROJECT_DIR/data/output.txt'
-    - 'echo "Category: general" >> $CI_PROJECT_DIR/data/output.txt'
-    - python3 py-scripts/json_processing.py $CI_PROJECT_DIR/data/output.txt $CI_PROJECT_DIR/data/output.json $CI_PROJECT_DIR/data/metadata.json
+    - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
+    - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
+    - 'echo "Test Type: advanced" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
+    - 'echo "Category: general" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
+    - python3 SecOps/pipeline/py-scripts/json_processing.py $CI_PROJECT_DIR/SecOps/artifacts/output.txt $CI_PROJECT_DIR/SecOps/artifacts/output.json $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   # Artifacts are saved even if the job fails:
   artifacts:
     when: always
     paths:
-      - $CI_PROJECT_DIR/data/output.txt
-      - $CI_PROJECT_DIR/data/output.json
-
-
-
+      - $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+      - $CI_PROJECT_DIR/SecOps/artifacts/output.json
 
 # 3️⃣ JSON data to PostgreSQL
 save_results:
@@ -110,11 +107,11 @@ save_results:
   script:
     # Make sure we're still in our virtual environment when running the script
     - source venv/bin/activate
-    - python3 py-scripts/send_test_results_to_SQL.py
+    - python3 SecOps/pipeline/py-scripts/send_test_results_to_SQL.py $CI_PROJECT_DIR/SecOps/artifacts/output.json
 
   artifacts:
     paths:
-      - data/
+      - SecOps/artifacts
     when: always
   allow_failure: false
 
