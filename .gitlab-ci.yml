@@ -144,6 +144,7 @@ grafana_visualization:
       -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       grafana/grafana:latest
 
+
   - sleep 10
 
   - echo "Checking Grafana logs..."
