@@ -67,12 +67,11 @@ export const FileUpload = ({
           onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
           className="hidden"
         />
-        <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
-          <GridPattern />
-        </div>
+        {/* Removed GridPattern */}
+        <div className="absolute inset-0 bg-blue-600 opacity-0"></div> {/* Solid color background */}
         <div className="flex flex-col items-center justify-center">
-          <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-2xl">
-            Upload script(s) here
+          <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-4xl">
+            Upload script(s) below
           </p>
           <p className="relative z-20 font-sans font-normal text-neutral-700 dark:text-neutral-300 text-base mt-2">
             Drag or drop your files here or click to upload
@@ -169,10 +168,3 @@ export const FileUpload = ({
     </div>
   );
 };
-
-export function GridPattern() {
-  
-  return (
-    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600"></div>
-  );
-}
