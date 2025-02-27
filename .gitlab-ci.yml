@@ -1,15 +1,9 @@
-#demo9eddsfdfds
+#demo9
 
+# TODO
 # include:
-#   - local: "pipeline-stages/eurosPart.yml"
-#   - local: "pipeline-stages/timsPart.yml"
-
-# stages:
-#   - start_services
-#   # - security_scan
-#   - run_pen_test
-#   - save_results
-#   - visualize
+#   - local: "pipeline/stages/eurosPart.yml"
+#   - local: "pipeline/stages/timsPart.yml"
 
 stages:
   - start_services
@@ -18,7 +12,7 @@ stages:
   - save_results
   - visualize
 
-# 1️⃣ Juice Shop
+# Stage 1 start target service
 start_services:
   image: docker:latest
   stage: start_services
@@ -30,13 +24,16 @@ start_services:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
     - echo "Starting Juice Shop..."
-    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
+    # changed the juice shop version bellow (added :latest-arm) might need to take it out if not using tudor-mac
+    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop:latest-arm
     - sleep 5
     - docker ps
 
 
+# Stage 2 extract necessary metadata
 extract_metadata:
   stage: extract_metadata
+
   tags:
     - tudor-mac
   script:
@@ -47,38 +44,28 @@ extract_metadata:
     when: always
 
 
-# Stage 2
+# Stage 3 run pen tests
 run_pen_test:
   stage: run_pen_test
   tags:
     - tudor-mac
-  image: owasp/zap2docker-stable
-  before_script:
-    # Kill any existing ZAP processes
-    - pkill -f zap || true
-    - sleep 2
-    # Check if Juice Shop is accessible
-    - curl --retry 10 --retry-delay 5 -sSf http://localhost:3000 || (echo "Juice Shop is not accessible" && exit 1)
+  image: ghcr.io/zaproxy/zaproxy:stable
   script:
     # Run your command and capture its output.
     - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    # Use a random port between 8090-8099 to avoid conflicts
-    - export ZAP_PORT=$((8090 + RANDOM % 10))
-    - echo "Starting ZAP on port $ZAP_PORT"
-    # Use the correct path for ZAP in the Docker container
-    - zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP failed to start" && exit 1)
-    - zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP script execution failed" && exit 1)
-    - zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP script execution failed" && exit 1)
+    # - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    # - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    # - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_fail.zst > data/output.txt
+    - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/premium_key_get.zst >> data/output.txt
+    - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_login_2.zst >> data/output.txt
     - END_TIME=$(date +%s)
     - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Test Type: advanced" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Category: general" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - python3 SecOps/pipeline/py-scripts/json_processing.py $CI_PROJECT_DIR/SecOps/artifacts/output.txt $CI_PROJECT_DIR/SecOps/artifacts/output.json $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
-  after_script:
-    # Cleanup: Kill ZAP process
-    - pkill -f zap || true
   # Artifacts are saved even if the job fails:
   artifacts:
     when: always
@@ -86,7 +73,10 @@ run_pen_test:
       - $CI_PROJECT_DIR/SecOps/artifacts/output.txt
       - $CI_PROJECT_DIR/SecOps/artifacts/output.json
 
-# 3️⃣ JSON data to PostgreSQL
+
+
+
+# Stage 4 save JSON data to PostgreSQL
 save_results:
   image: python:3.9
   stage: save_results
@@ -116,7 +106,6 @@ save_results:
 
   tags:
     - tudor-mac
-
   script:
     # Make sure we're still in our virtual environment when running the script
     - source venv/bin/activate
@@ -128,29 +117,24 @@ save_results:
     when: always
   allow_failure: false
 
-# 4️⃣ Grafana
+# Stage 5 Grafana
 grafana_visualization:
   stage: visualize
-
-  before_script:
-    - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/security/
-    - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager/
   tags:
     - tudor-mac
+    # yaroslav-mac
   script:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true
     - docker rm grafana || true
 
     - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
-    - docker run -d --name=grafana -p 4000:3000
+    - docker run -d --name=grafana
+        -p 4000:3000
         -v grafana_data:/var/lib/grafana
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/software:/etc/grafana/provisioning/dashboards/software
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/admin:/etc/grafana/provisioning/dashboards/admin
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
-        -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+        -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        -v $CI_PROJECT_DIR/Grafana/dashboards:/var/lib/grafana/dashboards
         grafana/grafana:latest
 
     - sleep 10
