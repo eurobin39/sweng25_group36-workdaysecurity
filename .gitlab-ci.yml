@@ -53,19 +53,30 @@ run_pen_test:
   tags:
     - tudor-mac
   image: owasp/zap2docker-stable
+  before_script:
+    # Kill any existing ZAP processes
+    - pkill -f zap || true
+    - sleep 2
   script:
     # Run your command and capture its output.
     - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    # Use a random port between 8090-8099 to avoid conflicts
+    - export ZAP_PORT=$((8090 + RANDOM % 10))
+    - echo "Starting ZAP on port $ZAP_PORT"
+    # Add -port parameter to specify custom port
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP failed to start" && exit 1)
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP script execution failed" && exit 1)
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -daemon -port ${ZAP_PORT} -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt || (echo "ZAP script execution failed" && exit 1)
     - END_TIME=$(date +%s)
     - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Test Type: advanced" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Category: general" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - python3 SecOps/pipeline/py-scripts/json_processing.py $CI_PROJECT_DIR/SecOps/artifacts/output.txt $CI_PROJECT_DIR/SecOps/artifacts/output.json $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+  after_script:
+    # Cleanup: Kill ZAP process
+    - pkill -f zap || true
   # Artifacts are saved even if the job fails:
   artifacts:
     when: always
