@@ -1,7 +1,7 @@
 "use client";
 
 import FormButton from "@/components/button";
-import Input from "../components/input";
+import Input from "../../components/input";
 import Link from "next/link";
 import { useActionState } from "react";
 import { login } from "./actions";

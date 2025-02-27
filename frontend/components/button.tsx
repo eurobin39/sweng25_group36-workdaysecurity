@@ -4,18 +4,15 @@ import { useFormStatus } from "react-dom";
 
 interface ButtonProps {
     text: string;
-    disabled?: boolean; // Optional disabled prop
-    className?: string; // Optional className prop for styling flexibility
+    disabled?: boolean; // Adding optional disabled prop
 }
 
-export default function Button({ text, disabled = false, className }: ButtonProps) {
+export default function Button({ text, disabled = false }: ButtonProps) {
     const { pending } = useFormStatus();
-
     return (
         <button
-            disabled={disabled || pending} // Disable if `disabled` is true or form is pending
-            className={`h-10 px-4 py-2 font-medium text-white bg-blue-500 rounded-lg transition duration-300 ease-in-out hover:bg-blue-500 disabled:bg-neutral-400 disabled:text-neutral-300 disabled:cursor-not-allowed ${className ?? ''}`}
-        >
+            disabled={disabled || pending} // Use disabled prop or pending state to disable the button
+            className={`primary-btn h-10 ${disabled || pending ? 'disabled:bg-neutral-400 disabled:text-neutral-300 disabled:cursor-not-allowed' : ''}`}>
             {pending ? "Loading..." : text}
         </button>
     );

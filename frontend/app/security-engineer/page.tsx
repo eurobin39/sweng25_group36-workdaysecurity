@@ -1,8 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { FileUpload } from "@/components/ui/file-upload";
+import { FileUpload } from "@/components/file-upload";
+import { useRouter } from "next/navigation";
 
 export default function FileUploadDemo() {
+  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
 
   const handleFileUpload = (files: File[]) => {
@@ -20,8 +22,8 @@ export default function FileUploadDemo() {
     >
       <FileUpload onChange={handleFileUpload} />
 
-      {/* Display uploaded files */}
-      {files.length > 0 && (
+        {/* Display uploaded files */}
+        {files.length > 0 && (
         <div className="mt-4">
           <h3 className="text-lg font-semibold" style={{ color: "var(--foreground)" }}>
             Uploaded Files:
