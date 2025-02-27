@@ -1,6 +1,6 @@
 "use client";
 
-import FormButton from "@/components/button";
+import Button from "@/components/button";
 import Input from "../../components/input";
 import Link from "next/link";
 import { useActionState } from "react";
@@ -44,7 +44,7 @@ export default function Login() {
                         className="rounded-lg border-gray-300 text-gray-600 shadow-sm focus:ring-indigo-600 focus:border-indigo-600"
                         errors={state?.fieldErrors.password}
                     />
-                    <FormButton
+                    <Button
                         text="Login"
                     />
                 </form>

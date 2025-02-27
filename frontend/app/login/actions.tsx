@@ -61,7 +61,6 @@ export async function login(prevState: any, formData: FormData) {
         if (ok) {
             const session = await getSession();
             session.id = user!.id;
-            session.role = user!.role; // save role on the session
             await session.save();
             console.log("User authenticated, redirecting...");
 
