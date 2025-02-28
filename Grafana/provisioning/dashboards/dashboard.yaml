@@ -1,11 +1,41 @@
 apiVersion: 1
 providers:
-  - name: "Security Test Dashboard"  
+  - name: "Security Test Dashboards"
     orgId: 1
     folder: "Security Tests"
     type: file
     disableDeletion: false
     editable: true
+    updateIntervalSeconds: 30
     options:
-      path: "/var/lib/grafana/dashboards/"  
+      path: "/etc/grafana/provisioning/dashboards/security/"
 
+  - name: "Security Test Manager Dashboards"
+    orgId: 1
+    folder: "Security Test Manager"
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 30
+    options:
+      path: "/etc/grafana/provisioning/dashboards/manager/"
+  
+  - name: "software Test Dashboards"
+    orgId: 1
+    folder: "software Test"
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 30
+    options:
+      path: "/etc/grafana/provisioning/dashboards/software/"
+
+  - name: "admin Dashboard"
+    orgId: 1
+    folder: "admin"
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 30
+    options:
+      path: "/etc/grafana/provisioning/dashboards/admin/"

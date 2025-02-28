@@ -2,40 +2,43 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image"; 
-import NavBar from "../components/ui/NavBar"; // Ensure the casing matches the file name
 
 export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div>
-    <NavBar />
+    <div
+      className="relative flex flex-col items-center justify-center min-h-screen text-white"
+      style={{
+        backgroundImage: "url('/secImg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed"
+      }}
+    >
+      {/* 오버레이 효과 추가 */}
+      <div className="absolute inset-0 bg-black opacity-50"></div>
 
-
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-600 to-blue-300">
-      <h1 className="text-white text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-400 drop-shadow-lg animate-bounce">
-        What is your role?
-      </h1>
-      
-      <div className="flex space-x-6">
-        <a
-          href="https://gitlab.scss.tcd.ie/tmanea/sweng25_group36-workdaysecurity/-/pipelines"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all no-underline"
-        >
-          Software Engineer
-        </a>
+      {/* 헤더 */}
+      <header className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-10">
+        <h1 className="text-2xl font-bold">SecuriDay</h1>
         <button
-          className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg transition-all"
-          onClick={() => router.push("/security-engineer")}
+          onClick={() => router.push("/login")}
+          className="px-6 py-3 text-lg font-semibold bg-white text-purple-700 rounded-lg shadow-lg hover:bg-gray-100 transition-all"
         >
-          Security Engineer
+          Login
         </button>
+      </header>
+
+      {/* 메인 컨텐츠 */}
+      <div className="text-center z-10">
+        <h2 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6">
+          Automated Security <br /> Seamless Development.
+        </h2>
+        <p className="text-lg text-gray-200 max-w-xl mx-auto">
+          From Commit to Security in One Flow.
+        </p>
       </div>
     </div>
-    </div>
-    
   );
 }

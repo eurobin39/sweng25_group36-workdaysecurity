@@ -4,12 +4,13 @@ datasources:
     type: postgres
     access: proxy
     url: database-1.c7k0w6yq8dlr.eu-west-1.rds.amazonaws.com:5432
-    user: grafana_user
+    user: postgres
     secureJsonData:
-      password: password1234
+      password: awsrdsPassword1234
     jsonData:
       sslmode: "disable"
       database: ZAP_DB
       postgresVersion: 1400
       timescaledb: false
-    readOnly: false
+    readOnly: false 
+ 
