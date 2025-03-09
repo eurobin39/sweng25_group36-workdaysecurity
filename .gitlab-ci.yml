@@ -105,7 +105,7 @@ save_results:
     - ls -la
 
   tags:
-    - tudor-mac
+    - bin-runner
 
   script:
     # Make sure we're still in our virtual environment when running the script
