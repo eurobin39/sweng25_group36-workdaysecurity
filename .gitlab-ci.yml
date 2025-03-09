@@ -123,8 +123,8 @@ grafana_visualization:
   stage: visualize
 
   before_script:
-  - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/security/
-  - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager/
+  - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/security/
+  - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/manager/
   tags:
     - bin-runner
     # yaroslav-mac
@@ -137,9 +137,9 @@ grafana_visualization:
     - docker run -d --name=grafana
         -p 4000:3000
         -v grafana_data:/var/lib/grafana
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-        -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-        -v $CI_PROJECT_DIR/grafana/dashboards:/var/lib/grafana/dashboards
+        -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+        -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        -v $CI_PROJECT_DIR/Grafana/dashboards:/var/lib/grafana/dashboards
         grafana/grafana:latest
 
     - sleep 20
