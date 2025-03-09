@@ -142,10 +142,10 @@ grafana_visualization:
       -v $CI_PROJECT_DIR/Grafana/dashboards:/var/lib/grafana/dashboards
       grafana/grafana:latest
 
-    - sleep 20
+  - sleep 20
 
   - echo "Checking Grafana logs..."
   - docker logs grafana
 
-    - echo "Testing Grafana provisioning..."
-    - curl -s -u admin:admin http://localhost:4000/api/search?query=
+  - echo "Testing Grafana provisioning..."
+  - curl -s -u admin:admin http://localhost:4000/api/search?query=
