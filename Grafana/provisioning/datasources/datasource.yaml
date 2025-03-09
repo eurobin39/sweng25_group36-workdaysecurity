@@ -3,12 +3,12 @@ datasources:
   - name: PostgreSQL
     type: postgres
     access: proxy
-    url: database-1.c7k0w6yq8dlr.eu-west-1.rds.amazonaws.com:5432
+    url: localhost:5432
     user: postgres
     secureJsonData:
       password: awsrdsPassword1234
     jsonData:
-      sslmode: "disable"
+      sslmode: "enable"
       database: ZAP_DB
       postgresVersion: 1400
       timescaledb: false
