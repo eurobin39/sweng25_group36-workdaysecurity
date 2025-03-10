@@ -136,12 +136,12 @@ grafana_visualization:
   - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
   - docker run -d --name=grafana -p 4000:3000
       -v grafana_data:/var/lib/grafana
-      -v ~/project/sweng25_group36-workdaysecurity/grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security
-      -v ~/project/sweng25_group36-workdaysecurity/grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager
-      -v ~/project/sweng25_group36-workdaysecurity/grafana/provisioning/dashboards/software:/etc/grafana/provisioning/dashboards/software
-      -v ~/project/sweng25_group36-workdaysecurity/grafana/provisioning/dashboards/admin:/etc/grafana/provisioning/dashboards/admin
-      -v ~/project/sweng25_group36-workdaysecurity/grafana/provisioning/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
-      -v ~/project/sweng25_group36-workdaysecurity/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security
+      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager
+      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/software:/etc/grafana/provisioning/dashboards/software
+      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/admin:/etc/grafana/provisioning/dashboards/admin
+      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       grafana/grafana:latest
 
   - sleep 20
