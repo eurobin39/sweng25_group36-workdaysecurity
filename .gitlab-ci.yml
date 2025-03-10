@@ -59,9 +59,9 @@ run_pen_test:
     # Run your command and capture its output.
     - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+     - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
     - END_TIME=$(date +%s)
     - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
@@ -104,8 +104,7 @@ save_results:
     - ls -la
 
   tags:
-    # - tudor-mac
-    - tudor-mac
+    - bin-runner
 
   script:
     # Make sure we're still in our virtual environment when running the script
@@ -126,8 +125,7 @@ grafana_visualization:
   - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/security/
   - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager/
   tags:
-    # - tudor-mac
-    - tudor-mac
+    - bin-runner
   script:
   - echo "Stopping any existing Grafana container..."
   - docker stop grafana || true
