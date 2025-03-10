@@ -25,8 +25,7 @@ start_services:
   services:
     - docker:dind
   tags:
-    # - tudor-mac
-    - tudor-mac
+    - bin-runner
   script:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
@@ -39,7 +38,7 @@ start_services:
 extract_metadata:
   stage: extract_metadata
   tags:
-    - tudor-mac
+    - bin-runner
   script:
     - python3 SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   artifacts:
@@ -52,8 +51,7 @@ extract_metadata:
 run_pen_test:
   stage: run_pen_test
   tags:
-    # - tudor-mac
-    - tudor-mac
+    - bin-runner
   image: owasp/zap2docker-stable
   script:
     # Run your command and capture its output.
