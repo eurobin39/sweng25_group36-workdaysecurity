@@ -26,12 +26,12 @@ const formSchema = z.object({
         .toLowerCase()
         .refine(checkEmailExists, "User does not exist"),
     password: z
-        .string()
-        .min(10)
-        .regex(
-            PASSWORD_REGEX,
-            "Password must have lowercase, UPPERCASE, number, and special character!"
-        ),
+        .string(),
+        // .min(10)
+        // .regex(
+        //     PASSWORD_REGEX,
+        //     "Password must have lowercase, UPPERCASE, number, and special character!"
+        // ),
 });
 
 export async function login(prevState, formData) {
