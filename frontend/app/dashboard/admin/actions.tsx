@@ -50,6 +50,39 @@ export async function findUser(username: string) {
 }
 
 /**
+ * Get all users with "Pending" role
+ */
+export async function getPendingUsers() {
+  try {
+    const pendingUsers = await db.user.findMany({
+      where: {
+        role: "Pending",
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+      },
+      orderBy: {
+        id: 'desc', // Show newest users first
+      },
+    });
+
+    return { 
+      success: true, 
+      users: pendingUsers 
+    };
+  } catch (error) {
+    console.error("Error fetching pending users:", error);
+    return { 
+      success: false, 
+      error: "An error occurred while fetching pending users" 
+    };
+  }
+}
+
+/**
  * Update a user's role
  */
 export async function updateUserRole(username: string, newRole: string) {
@@ -70,7 +103,7 @@ export async function updateUserRole(username: string, newRole: string) {
     }
 
     // Validate the role is one of the acceptable values
-    const validRoles = ["Security Engineer", "Software Engineer", "Manager", "Admin"];
+    const validRoles = ["Pending", "Security Engineer", "Software Engineer", "Manager", "Admin"];
     if (!validRoles.includes(newRole)) {
       return { 
         success: false, 

@@ -1,17 +1,35 @@
 "use client";
 
-import { ShieldCheck, UserCog } from "lucide-react";
+import { ShieldCheck, UserCog, UserPlus, Users, Search } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import { updateUserRole, findUser } from "./actions";
+import { useState, useEffect } from "react";
+import { updateUserRole, findUser, getPendingUsers } from "./actions";
 
 export default function AdminDashboard() {
   const [username, setUsername] = useState("");
   const [newRole, setNewRole] = useState("");
   const [searchedUser, setSearchedUser] = useState(null);
+  const [pendingUsers, setPendingUsers] = useState([]);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // "success" or "error"
   const [isLoading, setIsLoading] = useState(false);
+  const [tab, setTab] = useState("pending"); // "pending" or "search"
+
+  // Fetch pending users on component mount
+  useEffect(() => {
+    const fetchPendingUsers = async () => {
+      try {
+        const result = await getPendingUsers();
+        if (result.success) {
+          setPendingUsers(result.users);
+        }
+      } catch (error) {
+        console.error("Error fetching pending users:", error);
+      }
+    };
+
+    fetchPendingUsers();
+  }, []);
 
   const handleSearch = async () => {
     if (!username) {
@@ -43,27 +61,28 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleRoleUpdate = async () => {
-    if (!searchedUser || !newRole) {
-      setMessage("Please search for a user and select a role");
-      setMessageType("error");
-      return;
-    }
-
+  const handleRoleUpdate = async (userToUpdate, role) => {
     setIsLoading(true);
     
     try {
-      const result = await updateUserRole(searchedUser.username, newRole);
+      const result = await updateUserRole(userToUpdate, role);
       
       if (result.success) {
-        setMessage(`Successfully updated ${searchedUser.username}'s role to ${newRole}`);
+        setMessage(`Successfully updated ${userToUpdate}'s role to ${role}`);
         setMessageType("success");
         
-        // Update the displayed user data
-        setSearchedUser({
-          ...searchedUser,
-          role: newRole
-        });
+        // Update the displayed user data if this is the searched user
+        if (searchedUser && searchedUser.username === userToUpdate) {
+          setSearchedUser({
+            ...searchedUser,
+            role: role
+          });
+        }
+        
+        // If updating a pending user, remove them from the pending list
+        if (role !== "Pending") {
+          setPendingUsers(prev => prev.filter(user => user.username !== userToUpdate));
+        }
       } else {
         setMessage(result.error || "Failed to update role");
         setMessageType("error");
@@ -82,80 +101,161 @@ export default function AdminDashboard() {
       <h1 className="text-4xl font-bold">Admin Dashboard</h1>
       <p className="text-gray-300 mt-2 mb-8">Manage users, permissions, and system settings.</p>
 
+      {/* Tabs */}
+      <div className="flex mb-6 bg-gray-800 rounded-lg overflow-hidden">
+        <button
+          onClick={() => setTab("pending")}
+          className={`px-6 py-3 flex items-center ${tab === "pending" ? "bg-yellow-700 text-white" : "bg-gray-700 text-gray-300"}`}
+        >
+          <UserPlus className="w-5 h-5 mr-2" />
+          Pending Approvals
+        </button>
+        <button
+          onClick={() => setTab("search")}
+          className={`px-6 py-3 flex items-center ${tab === "search" ? "bg-yellow-700 text-white" : "bg-gray-700 text-gray-300"}`}
+        >
+          <Search className="w-5 h-5 mr-2" />
+          User Search
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
         {/* Left column: User Role Management */}
         <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
-          <div className="flex items-center mb-4">
-            <UserCog className="w-6 h-6 text-yellow-400 mr-2" />
-            <h2 className="text-xl font-semibold">User Role Management</h2>
-          </div>
-          
-          <div className="space-y-4">
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="username" className="text-sm text-gray-300">Username</label>
-              <div className="flex space-x-2">
-                <input
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="flex-1 px-3 py-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  placeholder="Enter username"
-                />
-                <button
-                  onClick={handleSearch}
-                  disabled={isLoading}
-                  className="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-md transition-colors disabled:opacity-50"
-                >
-                  {isLoading ? "Searching..." : "Search"}
-                </button>
+          {tab === "pending" ? (
+            <>
+              <div className="flex items-center mb-4">
+                <UserPlus className="w-6 h-6 text-yellow-400 mr-2" />
+                <h2 className="text-xl font-semibold">Pending Role Assignments</h2>
               </div>
-            </div>
-            
-            {searchedUser && (
-              <div className="space-y-4 mt-4 p-4 border border-gray-700 rounded-md">
-                <div className="grid grid-cols-2 gap-2">
-                  <p className="text-sm text-gray-400">Username:</p>
-                  <p>{searchedUser.username}</p>
-                  
-                  <p className="text-sm text-gray-400">Email:</p>
-                  <p>{searchedUser.email}</p>
-                  
-                  <p className="text-sm text-gray-400">Current Role:</p>
-                  <p>{searchedUser.role}</p>
+              
+              {pendingUsers.length === 0 ? (
+                <div className="text-center py-8 text-gray-400">
+                  <Users className="w-12 h-12 mb-3 mx-auto" />
+                  <p>No pending users at this time</p>
                 </div>
-                
+              ) : (
+                <div className="space-y-4">
+                  {pendingUsers.map(user => (
+                    <div key={user.id} className="p-4 border border-gray-700 rounded-md">
+                      <div className="grid grid-cols-2 gap-2 mb-4">
+                        <p className="text-sm text-gray-400">Username:</p>
+                        <p>{user.username}</p>
+                        
+                        <p className="text-sm text-gray-400">Email:</p>
+                        <p>{user.email}</p>
+                        
+                        <p className="text-sm text-gray-400">Status:</p>
+                        <p className="text-amber-400">Awaiting Role Assignment</p>
+                      </div>
+                      
+                      <div className="flex flex-col space-y-2">
+                        <label className="text-sm text-gray-300">Assign Role</label>
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handleRoleUpdate(user.username, "Security Engineer")}
+                            disabled={isLoading}
+                            className="flex-1 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md transition-colors disabled:opacity-50"
+                          >
+                            Security
+                          </button>
+                          <button
+                            onClick={() => handleRoleUpdate(user.username, "Software Engineer")}
+                            disabled={isLoading}
+                            className="flex-1 py-2 bg-green-600 hover:bg-green-500 text-white rounded-md transition-colors disabled:opacity-50"
+                          >
+                            Software
+                          </button>
+                          <button
+                            onClick={() => handleRoleUpdate(user.username, "Manager")}
+                            disabled={isLoading}
+                            className="flex-1 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-md transition-colors disabled:opacity-50"
+                          >
+                            Manager
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="flex items-center mb-4">
+                <UserCog className="w-6 h-6 text-yellow-400 mr-2" />
+                <h2 className="text-xl font-semibold">User Role Management</h2>
+              </div>
+              
+              <div className="space-y-4">
                 <div className="flex flex-col space-y-2">
-                  <label htmlFor="role" className="text-sm text-gray-300">New Role</label>
-                  <select
-                    id="role"
-                    value={newRole}
-                    onChange={(e) => setNewRole(e.target.value)}
-                    className="px-3 py-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  >
-                    <option value="Security Engineer">Security Engineer</option>
-                    <option value="Software Engineer">Software Engineer</option>
-                    <option value="Manager">Manager</option>
-                    <option value="Admin">Admin</option>
-                  </select>
+                  <label htmlFor="username" className="text-sm text-gray-300">Username</label>
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      id="username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="flex-1 px-3 py-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      placeholder="Enter username"
+                    />
+                    <button
+                      onClick={handleSearch}
+                      disabled={isLoading}
+                      className="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-md transition-colors disabled:opacity-50"
+                    >
+                      {isLoading ? "Searching..." : "Search"}
+                    </button>
+                  </div>
                 </div>
                 
-                <button
-                  onClick={handleRoleUpdate}
-                  disabled={isLoading || newRole === searchedUser.role}
-                  className="w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md transition-colors disabled:opacity-50"
-                >
-                  {isLoading ? "Updating..." : "Update Role"}
-                </button>
+                {searchedUser && (
+                  <div className="space-y-4 mt-4 p-4 border border-gray-700 rounded-md">
+                    <div className="grid grid-cols-2 gap-2">
+                      <p className="text-sm text-gray-400">Username:</p>
+                      <p>{searchedUser.username}</p>
+                      
+                      <p className="text-sm text-gray-400">Email:</p>
+                      <p>{searchedUser.email}</p>
+                      
+                      <p className="text-sm text-gray-400">Current Role:</p>
+                      <p>{searchedUser.role}</p>
+                    </div>
+                    
+                    <div className="flex flex-col space-y-2">
+                      <label htmlFor="role" className="text-sm text-gray-300">New Role</label>
+                      <select
+                        id="role"
+                        value={newRole}
+                        onChange={(e) => setNewRole(e.target.value)}
+                        className="px-3 py-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Security Engineer">Security Engineer</option>
+                        <option value="Software Engineer">Software Engineer</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Admin">Admin</option>
+                      </select>
+                    </div>
+                    
+                    <button
+                      onClick={() => handleRoleUpdate(searchedUser.username, newRole)}
+                      disabled={isLoading || newRole === searchedUser.role}
+                      className="w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md transition-colors disabled:opacity-50"
+                    >
+                      {isLoading ? "Updating..." : "Update Role"}
+                    </button>
+                  </div>
+                )}
               </div>
-            )}
-            
-            {message && (
-              <div className={`p-3 rounded-md ${messageType === 'success' ? 'bg-green-800' : 'bg-red-800'}`}>
-                {message}
-              </div>
-            )}
-          </div>
+            </>
+          )}
+          
+          {message && (
+            <div className={`p-3 mt-4 rounded-md ${messageType === 'success' ? 'bg-green-800' : 'bg-red-800'}`}>
+              {message}
+            </div>
+          )}
         </div>
         
         {/* Right column: Grafana and other links */}
