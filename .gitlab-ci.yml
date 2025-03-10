@@ -37,7 +37,7 @@ extract_metadata:
   tags:
     - bin-runner
   script:
-    - python3 SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+    - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   artifacts:
     paths:
       - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
