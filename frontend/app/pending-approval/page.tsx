@@ -14,7 +14,7 @@ export default function PendingApprovalPage() {
         </p>
         <p className="mt-4">
           Your account is currently pending approval from an administrator.
-          You'll be notified when your account has been approved and a role has been assigned.
+          You&apos;ll be notified when your account has been approved and a role has been assigned.
         </p>
         <p className="mt-4 text-amber-100">
           Please check back later or contact your administrator for more information.

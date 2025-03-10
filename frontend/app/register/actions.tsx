@@ -58,7 +58,17 @@ const formSchema = z.object({
     path: ["confirmPassword"],
 });
 
-export async function createAccount(prevState: any, formData: FormData) {
+export async function createAccount(
+    prevState: { 
+      fieldErrors?: { 
+        username?: string[], 
+        email?: string[], 
+        password?: string[], 
+        confirmPassword?: string[] 
+      } 
+    } | null, 
+    formData: FormData
+  ) {
     const data = {
         username: formData.get("username"),
         email: formData.get("email"),

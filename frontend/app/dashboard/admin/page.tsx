@@ -5,26 +5,34 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { updateUserRole, findUser, getPendingUsers } from "./actions";
 
+// Define types for our data structures
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+}
+
 export default function AdminDashboard() {
-  const [username, setUsername] = useState("");
-  const [newRole, setNewRole] = useState("");
-  const [searchedUser, setSearchedUser] = useState(null);
-  const [pendingUsers, setPendingUsers] = useState([]);
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState(""); // "success" or "error"
-  const [isLoading, setIsLoading] = useState(false);
-  const [tab, setTab] = useState("pending"); // "pending" or "search"
+  const [username, setUsername] = useState<string>("");
+  const [newRole, setNewRole] = useState<string>("");
+  const [searchedUser, setSearchedUser] = useState<User | null>(null);
+  const [pendingUsers, setPendingUsers] = useState<User[]>([]);
+  const [message, setMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<string>(""); // "success" or "error"
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [tab, setTab] = useState<"pending" | "search">("pending"); // "pending" or "search"
 
   // Fetch pending users on component mount
   useEffect(() => {
     const fetchPendingUsers = async () => {
       try {
         const result = await getPendingUsers();
-        if (result.success) {
+        if (result.success && result.users) {
           setPendingUsers(result.users);
         }
-      } catch (error) {
-        console.error("Error fetching pending users:", error);
+      } catch {
+        console.error("Error fetching pending users");
       }
     };
 
@@ -53,7 +61,7 @@ export default function AdminDashboard() {
         setMessage("User not found");
         setMessageType("error");
       }
-    } catch (error) {
+    } catch {
       setMessage("Error searching for user");
       setMessageType("error");
     } finally {
@@ -61,14 +69,14 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleRoleUpdate = async (userToUpdate, role) => {
+  const handleRoleUpdate = async (userToUpdate: string, role: string) => {
     setIsLoading(true);
     
     try {
       const result = await updateUserRole(userToUpdate, role);
       
       if (result.success) {
-        setMessage(`Successfully updated ${userToUpdate}'s role to ${role}`);
+        setMessage(`Successfully updated ${userToUpdate}&apos;s role to ${role}`);
         setMessageType("success");
         
         // Update the displayed user data if this is the searched user
@@ -87,7 +95,7 @@ export default function AdminDashboard() {
         setMessage(result.error || "Failed to update role");
         setMessageType("error");
       }
-    } catch (error) {
+    } catch {
       setMessage("Error updating user role");
       setMessageType("error");
     } finally {
@@ -252,9 +260,9 @@ export default function AdminDashboard() {
           )}
           
           {message && (
-            <div className={`p-3 mt-4 rounded-md ${messageType === 'success' ? 'bg-green-800' : 'bg-red-800'}`}>
-              {message}
-            </div>
+            <div className={`p-3 mt-4 rounded-md ${messageType === 'success' ? 'bg-green-800' : 'bg-red-800'}`}
+                 dangerouslySetInnerHTML={{ __html: message }}
+            />
           )}
         </div>
         

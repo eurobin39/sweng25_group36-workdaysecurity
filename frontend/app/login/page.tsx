@@ -52,7 +52,7 @@ export default function Login() {
                 {/* create Account */}
                 <div className="mt-4 text-center">
                     <p className="text-gray-500 text-sm">
-                        Don't have an account?{" "}
+                        Don&apos;t have an account?{" "}
                         <Link href="/register" className="text-blue-500 hover:underline">
                             Sign up
                         </Link>

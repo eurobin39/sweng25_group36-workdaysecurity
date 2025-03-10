@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import getSession from "@/lib/session";
 import { redirect } from "next/navigation";
 
-const checkEmailExists = async (email) => {
+const checkEmailExists = async (email: string) => {
     const user = await db.user.findUnique({
         where: {
             email,
@@ -34,7 +34,7 @@ const formSchema = z.object({
         ),
 });
 
-export async function login(prevState, formData) {
+export async function login(prevState: any, formData: FormData) {
     const data = {
         email: formData.get("email"),
         password: formData.get("password"),

@@ -37,8 +37,7 @@ export default function FileUploadDemo() {
       >
         {/* FileUpload component with matching background */}
         <FileUpload
-          onChange={handleFileUpload}
-          style={{ background: "rgb(30, 58, 138)" }} // Set the background color to match page
+          onChange={handleFileUpload} // Set the background color to match page
         />
 
         {/* Upload & Done Buttons */}
