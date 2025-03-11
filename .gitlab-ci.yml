@@ -121,7 +121,7 @@ save_results:
 # Stage 5 Grafana
 grafana_visualization:
   stage: visualize
-
+  
   before_script:
   - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/security/
   - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/manager/
@@ -131,22 +131,19 @@ grafana_visualization:
   - echo "Stopping any existing Grafana container..."
   - docker stop grafana || true
   - docker rm grafana || true
-
+  
   - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
-  - docker run -d --name=grafana -p 4000:3000
+  - docker run -d --name=grafana --network=host
       -v grafana_data:/var/lib/grafana
-      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security
-      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager
-      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/software:/etc/grafana/provisioning/dashboards/software
-      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/admin:/etc/grafana/provisioning/dashboards/admin
       -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      -e "GF_SERVER_HTTP_PORT=4000"
       grafana/grafana:latest
-
+  
   - sleep 20
-
+  
   - echo "Checking Grafana logs..."
   - docker logs grafana
-
+  
   - echo "Testing Grafana provisioning..."
   - curl -s -u admin:admin http://localhost:4000/api/search?query=
