@@ -179,4 +179,4 @@ grafana_visualization:
   - docker logs grafana
   
   - echo "Testing Grafana provisioning..."
-  - curl -s -u admin:admin http://localhost:4000/api/search?query=
+  - curl -s -u admin:admin http://172.20.10.3:4000/api/search?query=

@@ -3,7 +3,7 @@ datasources:
   - name: PostgreSQL
     type: postgres
     access: proxy
-    url: host.docker.internal:5432
+    url: 172.20.10.3:5432
     user: postgres
     secureJsonData:
       password: awsrdsPassword1234
