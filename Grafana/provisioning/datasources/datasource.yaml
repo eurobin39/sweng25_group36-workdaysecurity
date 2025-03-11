@@ -3,13 +3,13 @@ datasources:
   - name: PostgreSQL
     type: postgres
     access: proxy
-    url: localhost:5432
+    url: host.docker.internal:5432
     user: postgres
     secureJsonData:
       password: awsrdsPassword1234
     jsonData:
       sslmode: "disable"
-      database: zap_db 
+      database: zap_db
       postgresVersion: 1400
       timescaledb: false
     readOnly: false
