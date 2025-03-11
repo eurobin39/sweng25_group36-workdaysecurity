@@ -127,7 +127,6 @@ grafana_visualization:
   - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/manager/
   tags:
     - bin-runner
-    # yaroslav-mac
   script:
   - echo "Stopping any existing Grafana container..."
   - docker stop grafana || true
@@ -140,18 +139,9 @@ grafana_visualization:
       -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager
       -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/software:/etc/grafana/provisioning/dashboards/software
       -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/admin:/etc/grafana/provisioning/dashboards/admin
-      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       grafana/grafana:latest
-
-  - sleep 20
-
-  - echo "Checking Grafana logs..."
-  - docker logs grafana
-
-  - echo "Testing Grafana provisioning..."
-  - curl -s -u admin:admin http://localhost:4000/api/search?query=
-
 
   - sleep 20
 
