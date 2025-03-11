@@ -23,11 +23,38 @@ start_services:
   script:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
-    - echo "Starting Juice Shop..."
-    # changed the juice shop version bellow (added :latest-arm) might need to take it out if not using bin-runner
+    
+    # Check and kill anything using port 3000
+    - echo "Checking for processes using port 3000..."
+    - >
+      PORT_PID=$(netstat -tulnp 2>/dev/null | grep ":3000 " | awk '{print $7}' | cut -d'/' -f1)
+      if [ ! -z "$PORT_PID" ]; then
+        echo "Found process using port 3000: PID $PORT_PID"
+        echo "Killing process on port 3000..."
+        kill -9 $PORT_PID || true
+        sleep 2
+      fi
+    
+    # Check for Docker containers using port 3000
+    - >
+      PORT_CONTAINER=$(docker ps -q --filter publish=3000)
+      if [ ! -z "$PORT_CONTAINER" ]; then
+        echo "Found container using port 3000: $PORT_CONTAINER"
+        echo "Stopping container..."
+        docker stop $PORT_CONTAINER
+        docker rm $PORT_CONTAINER
+      fi
+    
+    # Wait a moment for the port to be fully released
+    - sleep 3
+    
+    # Start Juice Shop
+    - echo "Starting Juice Shop on port 3000..."
     - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop:latest-arm
+    
     - sleep 5
     - docker ps
+    - echo "Juice Shop running on port 3000"
 
 
 # Stage 2 extract necessary metadata
