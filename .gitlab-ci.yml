@@ -24,42 +24,43 @@ start_services:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
     
-    # Create and run a shell script for the port checking and cleanup
+    # Create a simpler cleanup script focusing on Docker
     - |
       cat > cleanup_port.sh << 'EOF'
       #!/bin/bash
-      echo "Checking for processes using port 3000..."
-      PORT_PID=$(netstat -tulnp 2>/dev/null | grep ":3000 " | awk '{print $7}' | cut -d'/' -f1 || echo "")
-      if [ ! -z "$PORT_PID" ]; then
-        echo "Found process using port 3000: PID $PORT_PID"
-        echo "Killing process on port 3000..."
-        kill -9 $PORT_PID || true
-        sleep 2
-      fi
+      # First try to stop any container using port 3000
+      echo "Removing any containers using port 3000..."
+      docker ps -q --filter publish=3000 | xargs -r docker stop
+      docker ps -q --filter publish=3000 | xargs -r docker rm
       
-      echo "Checking for Docker containers using port 3000..."
-      PORT_CONTAINER=$(docker ps -q --filter publish=3000 || echo "")
-      if [ ! -z "$PORT_CONTAINER" ]; then
-        echo "Found container using port 3000: $PORT_CONTAINER"
-        echo "Stopping container..."
-        docker stop $PORT_CONTAINER
-        docker rm $PORT_CONTAINER
+      # If port is still in use, try to use a different port
+      if lsof -i :3000 >/dev/null 2>&1 || netstat -tuln 2>/dev/null | grep -q ":3000 "; then
+        echo "Port 3000 is still in use by a system process - will use port 3001 instead"
+        export JUICE_PORT=3001
+      else
+        export JUICE_PORT=3000
       fi
+      echo "JUICE_PORT=$JUICE_PORT" > port.env
       EOF
     
     - chmod +x cleanup_port.sh
     - ./cleanup_port.sh
+    - source port.env || export JUICE_PORT=3001
     
-    # Wait a moment for the port to be fully released
-    - sleep 3
-    
-    # Start Juice Shop
-    - echo "Starting Juice Shop on port 3000..."
-    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop:latest-arm
+    # Start Juice Shop with the decided port
+    - echo "Starting Juice Shop on port $JUICE_PORT..."
+    - docker run -d --name juice-shop -p $JUICE_PORT:3000 bkimminich/juice-shop:latest-arm
     
     - sleep 5
     - docker ps
-    - echo "Juice Shop running on port 3000"
+    - echo "Juice Shop running on port $JUICE_PORT"
+    
+    # Update any URLs in configurations to match the chosen port
+    - |
+      if [ "$JUICE_PORT" != "3000" ]; then
+        echo "Port was changed to $JUICE_PORT - updating any test URLs..."
+        find . -type f -name "*.zst" -o -name "*.json" | xargs -r sed -i "s/localhost:3000/localhost:$JUICE_PORT/g" || true
+      fi
 
 
 # Stage 2 extract necessary metadata
