@@ -25,6 +25,22 @@ def get_git_info():
         "repository": repository
     }
 
+def get_maintainer():
+    """Retrieve the identity of the maintainer.
+    
+    First, it attempts to get the value from the 'GITLAB_USER_NAME' environment variable.
+    If that is not available, it falls back to using the author name of the latest Git commit.
+    """
+    maintainer = os.getenv("GITLAB_USER_NAME")
+    if not maintainer:
+        try:
+            maintainer = subprocess.check_output(
+                ["git", "log", "-1", "--pretty=format:%an"]
+            ).decode().strip()
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Failed to fetch maintainer information: {e}")
+            maintainer = "unknown"
+    return maintainer
 
 def get_gitlab_metadata():
     """Fetch GitLab metadata using environment variables."""
@@ -38,10 +54,10 @@ def get_gitlab_metadata():
         "branch": git_info["branch"],
         "commitHash": git_info["commitHash"],
         "runner": os.getenv("CI_RUNNER_DESCRIPTION", os.getenv("CI_RUNNER_ID", "unknown")),
-        "projectId": os.getenv("CI_PROJECT_ID", "unknown")
+        "projectId": os.getenv("CI_PROJECT_ID", "unknown"),
+        "maintainer": get_maintainer()
     }
     return metadata
-
 
 def save_metadata_to_json():
     """Save metadata as a JSON file in the /artifacts directory."""
@@ -50,7 +66,7 @@ def save_metadata_to_json():
         print("❌ Failed to fetch metadata")
         return
 
-    # save to 1st argument path
+    # Save to the file path provided as the first command-line argument.
     metadata_relative_path = sys.argv[1]
 
     with open(metadata_relative_path, "w", encoding="utf-8") as f:
