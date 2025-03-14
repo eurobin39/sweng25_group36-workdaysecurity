@@ -11,9 +11,6 @@
 #   - save_results
 #   - visualize
 
-variables:
-  GIT_STRATEGY: clone
-  GIT_CLEAN_FLAGS: "-df"
 
 stages:
   - start_services
