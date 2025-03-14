@@ -11,6 +11,9 @@
 #   - save_results
 #   - visualize
 
+variables:
+  GIT_CLEAN_FLAGS: "-df"
+
 stages:
   - start_services
   - extract_metadata
