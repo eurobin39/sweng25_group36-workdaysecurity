@@ -177,6 +177,7 @@ grafana_visualization:
         grafana/grafana:latest  
 
 
+
     - sleep 10
 
     - echo "Checking Grafana logs..."
