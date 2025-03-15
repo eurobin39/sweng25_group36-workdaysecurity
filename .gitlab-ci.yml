@@ -169,7 +169,10 @@ grafana_visualization:
     - sudo chown -R gitlab-runner:gitlab-runner $CI_PROJECT_DIR/Grafana
     - sudo chmod -R u+rwX $CI_PROJECT_DIR/Grafana
     - echo "Directory status:"
-    - ls -la $CI_PROJECT_DIR/Grafana
+    - ls -la $CI_PROJECT_DIR/Grafana/provisioning
+    - ls -la $CI_PROJECT_DIR/Grafana/provisioning/datasources
+    - ls -la $CI_PROJECT_DIR/Grafana/provisioning/dashboards
+
   script:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true
@@ -177,8 +180,8 @@ grafana_visualization:
     - echo "Starting Grafana..."
     - docker run -d --name=grafana --network=host
         --user "$(id -u gitlab-runner):$(id -g gitlab-runner)"
-        -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/Grafana/provisioning/datasources
-        -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/Grafana/provisioning/dashboards
+        -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
         -v grafana_data:/var/lib/grafana
         -e "GF_SERVER_HTTP_PORT=4000"
         grafana/grafana:latest
