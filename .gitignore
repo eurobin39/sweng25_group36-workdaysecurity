@@ -44,3 +44,4 @@ zap-reports/
 
 # Windows specific
 Thumbs.db
+grafana/provisioning
