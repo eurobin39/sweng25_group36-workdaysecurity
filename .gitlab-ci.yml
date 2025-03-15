@@ -162,14 +162,14 @@ grafana_visualization:
     - bin-runner
   before_script:
     - echo "Starting cleanup at $(date)"
-    - sudo rm -rf $CI_PROJECT_DIR/grafana || true
+    - sudo rm -rf $CI_PROJECT_DIR/Grafana || true
     - echo "Creating directories at $(date)"
     - mkdir -p $CI_PROJECT_DIR/Grafana/provisioning/datasources
     - mkdir -p $CI_PROJECT_DIR/Grafana/provisioning/dashboards
-    - sudo chown -R gitlab-runner:gitlab-runner $CI_PROJECT_DIR/grafana
-    - sudo chmod -R u+rwX $CI_PROJECT_DIR/grafana
+    - sudo chown -R gitlab-runner:gitlab-runner $CI_PROJECT_DIR/Grafana
+    - sudo chmod -R u+rwX $CI_PROJECT_DIR/Grafana
     - echo "Directory status:"
-    - ls -la $CI_PROJECT_DIR/grafana
+    - ls -la $CI_PROJECT_DIR/Grafana
   script:
     - echo "Stopping any existing Grafana container..."
     - docker stop grafana || true
