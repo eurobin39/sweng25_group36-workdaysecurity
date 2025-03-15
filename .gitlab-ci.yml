@@ -6,10 +6,16 @@
 #   - local: "pipeline/stages/timsPart.yml"
 
 before_script:
-  - rm -rf $CI_PROJECT_DIR/grafana/provisioning || true  
+  - echo "Starting cleanup at $(date)"
+  - rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
+  - echo "Creating directories at $(date)"
   - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/datasources
   - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/dashboards
-  - chmod -R u+rwX $CI_PROJECT_DIR/grafana/provisioning  
+  - echo "Setting permissions at $(date)"
+  - chmod -R u+rwX $CI_PROJECT_DIR/grafana/provisioning
+  - echo "Directory status after setup:"
+  - ls -la $CI_PROJECT_DIR/grafana/provisioning
+  - echo "Running as user: $(whoami)"
 
 stages:
   - start_services
