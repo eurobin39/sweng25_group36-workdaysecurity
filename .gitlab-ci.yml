@@ -170,7 +170,7 @@ grafana_visualization:
     - docker rm grafana || true
 
     - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
-    - docker run -d --name=grafana --network=localhost 
+    - docker run -d --name=grafana --network=localhost  
         -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security 
         -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager 
         -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/software:/etc/grafana/provisioning/dashboards/software
