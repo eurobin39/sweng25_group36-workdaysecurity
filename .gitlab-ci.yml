@@ -165,7 +165,7 @@ grafana_visualization:
   before_script:
     - echo "Starting cleanup at $(date)"
     - sudo rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
-    - echo "Creating directories at $(date)"
+    - echo "Creating directories at $(date)" 
 
   tags:
     - bin-runner
