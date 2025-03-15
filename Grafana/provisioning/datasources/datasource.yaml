@@ -3,7 +3,7 @@ datasources:
   - name: PostgreSQL
     type: postgres
     access: proxy
-    url: 172.20.10.12:5432
+    url: 172.20.10.12:5432  # This is the IP address of the PostgreSQL server
     user: postgres
     secureJsonData:
       password: awsrdsPassword1234
