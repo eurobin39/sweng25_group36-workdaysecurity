@@ -9,12 +9,7 @@
 #  GIT_STRATEGY: clone   
 
 before_script:
-  - echo "Starting cleanup at $(date)"
   - rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
-  - echo "Creating directories at $(date)"
-  - echo "Setting permissions at $(date)"
-  - chmod -R u+rwX $CI_PROJECT_DIR/grafana/provisioning
-  - echo "Directory status after setup:"  
 
 stages:
   - start_services
