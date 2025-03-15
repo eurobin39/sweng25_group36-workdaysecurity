@@ -15,7 +15,6 @@ before_script:
   - chmod -R u+rwX $CI_PROJECT_DIR/grafana/provisioning
   - echo "Directory status after setup:"
   - ls -la $CI_PROJECT_DIR/grafana/provisioning
-  - echo "Running as user: $(whoami)"
 
 stages:
   - start_services
