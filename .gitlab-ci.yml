@@ -166,6 +166,7 @@ grafana_visualization:
     - echo "Starting cleanup at $(date)"
     - sudo rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
     - echo "Creating directories at $(date)"
+
   tags:
     - bin-runner
   script:
@@ -190,5 +191,4 @@ grafana_visualization:
   - echo "Testing Grafana provisioning..."
   - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query=
 
-  after_script:
-  - sudo chown -R gitlab-runner:gitlab-runner $CI_PROJECT_DIR/grafana/provisioning || true
+
