@@ -186,6 +186,6 @@ grafana_visualization:
     - echo "Checking Grafana logs..."
     - docker logs grafana
 
-    - echo "Testing Grafana provisioning..."
-    
+    - echo "Testing Grafana provisioning..." 
+
     - curl -s -u admin:admin http://172.22.10.12:4000/api/search?query=
