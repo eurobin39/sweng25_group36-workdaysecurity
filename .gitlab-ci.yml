@@ -163,7 +163,6 @@ grafana_visualization:
   stage: visualize
 
   before_script:
-    - echo "Running on commit: $(git rev-parse HEAD)"
     - sudo rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
     - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/datasources
     - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/dashboards
