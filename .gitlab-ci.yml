@@ -167,11 +167,16 @@ grafana_visualization:
   
   - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
   - docker run -d --name=grafana --network=host
-      -v grafana_data:/var/lib/grafana
-      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      -e "GF_SERVER_HTTP_PORT=4000"
+      -v grafana_data:/var/lib/grafana 
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security 
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager 
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/software:/etc/grafana/provisioning/dashboards/software
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/admin:/etc/grafana/provisioning/dashboards/admin
+      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml 
+      -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
       grafana/grafana:latest
+
+
   
   - sleep 20
   
