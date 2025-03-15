@@ -16,6 +16,7 @@ stages:
 start_services:
   image: docker:latest
   stage: start_services
+
   services:
     - docker:dind
   tags:
