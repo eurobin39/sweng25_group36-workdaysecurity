@@ -132,7 +132,7 @@ save_results:
     - python3 --version
     - pip list
 
-    # Show our working directory and contents
+    # Show our working directory and content
     - echo "Current directory structure:"
     - pwd
     - ls -la
