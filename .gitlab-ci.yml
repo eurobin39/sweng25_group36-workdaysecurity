@@ -6,7 +6,7 @@
 #   - local: "pipeline/stages/timsPart.yml"
 
 variables:
-  GIT_STRATEGY: clone  
+  GIT_STRATEGY: clone   
 
 before_script:
   - echo "Starting cleanup at $(date)"
