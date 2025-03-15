@@ -176,8 +176,6 @@ grafana_visualization:
         -e "GF_SERVER_HTTP_PORT=4000" 
         grafana/grafana:latest  
 
-
-
     - sleep 10
 
     - echo "Checking Grafana logs..."
