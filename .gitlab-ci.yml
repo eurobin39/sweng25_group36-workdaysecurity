@@ -16,13 +16,6 @@ stages:
   - save_results
   - visualize
 
-stages:
-  - start_services
-  - extract_metadata
-  - run_pen_test
-  - save_results
-  - visualize
-
 # Stage 1 start target service
 start_services:
   image: docker:latest
@@ -168,8 +161,7 @@ save_results:
 grafana_visualization:
 
   stage: visualize
-  
-  before_script:
+
   before_script:
     - echo "Running on commit: $(git rev-parse HEAD)"
     - sudo rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
