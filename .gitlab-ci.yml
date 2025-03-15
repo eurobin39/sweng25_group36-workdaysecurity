@@ -182,6 +182,7 @@ grafana_visualization:
   
   - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
   - docker run -d --name=grafana --network=host
+      --user "$(id -u gitlab-runner):$(id -g gitlab-runner)"
       -v grafana_data:/var/lib/grafana
       -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
@@ -195,3 +196,6 @@ grafana_visualization:
   
   - echo "Testing Grafana provisioning..."
   - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query=
+
+  after_script:
+  - sudo chown -R gitlab-runner:gitlab-runner $CI_PROJECT_DIR/grafana/provisioning || true
