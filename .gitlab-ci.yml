@@ -174,9 +174,8 @@ grafana_visualization:
       -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/admin:/etc/grafana/provisioning/dashboards/admin
       -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml 
       -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
+      -e "GF_SERVER_HTTP_PORT=4000"
       grafana/grafana:latest
-
-
   
   - sleep 20
   
