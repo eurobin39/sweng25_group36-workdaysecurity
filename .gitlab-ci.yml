@@ -164,8 +164,6 @@ grafana_visualization:
     - echo "Starting cleanup at $(date)"
     - sudo rm -rf $CI_PROJECT_DIR/grafana || true
     - echo "Creating directories at $(date)"
-    - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/datasources
-    - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/dashboards
     - sudo chown -R gitlab-runner:gitlab-runner $CI_PROJECT_DIR/grafana
     - sudo chmod -R u+rwX $CI_PROJECT_DIR/grafana
     - echo "Directory status:"
@@ -184,7 +182,7 @@ grafana_visualization:
         grafana/grafana:latest
     - sleep 20
     - echo "Checking Grafana logs..."
-    - docker logs grafana
+    # docker logs grafana
     - echo "Testing Grafana provisioning..."
     - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query= || echo "curl failed with $?"
 
