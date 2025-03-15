@@ -5,8 +5,8 @@
 #   - local: "pipeline/stages/eurosPart.yml"
 #   - local: "pipeline/stages/timsPart.yml"
 
-variables:
-  GIT_STRATEGY: clone   
+#variables:
+#  GIT_STRATEGY: clone   
 
 before_script:
   - echo "Starting cleanup at $(date)"
