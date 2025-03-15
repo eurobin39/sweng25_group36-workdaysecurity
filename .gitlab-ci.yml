@@ -5,11 +5,9 @@
 #   - local: "pipeline/stages/eurosPart.yml"
 #   - local: "pipeline/stages/timsPart.yml"
 
-#variables:
-#  GIT_STRATEGY: clone   
+variables:
+  GIT_STRATEGY: clone   
 
-before_script:
-  - rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
 
 stages:
   - start_services
@@ -168,11 +166,22 @@ save_results:
 
 # Stage 5 Grafana
 grafana_visualization:
+
   stage: visualize
   
   before_script:
-  - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/security/
-  - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/manager/
+  before_script:
+    - echo "Running on commit: $(git rev-parse HEAD)"
+    - echo "Starting cleanup at $(date)"
+    - sudo rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
+    - echo "Creating directories at $(date)"
+    - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/datasources
+    - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/dashboards
+    - echo "Setting permissions at $(date)"
+    - chown -R $(whoami):$(whoami) $CI_PROJECT_DIR/grafana/provisioning
+    - chmod -R u+rwX $CI_PROJECT_DIR/grafana/provisioning
+    - echo "Directory status after setup:"
+    - ls -la $CI_PROJECT_DIR/grafana/provisioning
   tags:
     - bin-runner
   script:
