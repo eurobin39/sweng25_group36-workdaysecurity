@@ -162,8 +162,9 @@ grafana_visualization:
     - bin-runner
   script:
   - echo "Stopping any existing Grafana container..."
-  - docker stop grafana || true
-  - docker rm grafana || true
+  - docker stop grafana 
+  - docker rm grafana 
+  - docker volume rm grafana_data
   
   - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
   - docker run -d --name=grafana --network=host
