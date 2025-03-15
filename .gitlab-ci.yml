@@ -5,6 +5,9 @@
 #   - local: "pipeline/stages/eurosPart.yml"
 #   - local: "pipeline/stages/timsPart.yml"
 
+variables:
+  GIT_STRATEGY: clone  
+
 before_script:
   - echo "Starting cleanup at $(date)"
   - rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
