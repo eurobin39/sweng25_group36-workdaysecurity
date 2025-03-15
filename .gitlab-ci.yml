@@ -15,7 +15,6 @@ before_script:
   - echo "Setting permissions at $(date)"
   - chmod -R u+rwX $CI_PROJECT_DIR/grafana/provisioning
   - echo "Directory status after setup:"
-  - ls -la $CI_PROJECT_DIR/grafana/provisioning
 
 stages:
   - start_services
