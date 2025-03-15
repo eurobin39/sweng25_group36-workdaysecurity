@@ -163,12 +163,16 @@ grafana_visualization:
   stage: visualize
 
   before_script:
+    - echo "Starting cleanup at $(date)"
     - sudo rm -rf $CI_PROJECT_DIR/grafana/provisioning || true
+    - echo "Creating directories at $(date)"
     - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/datasources
     - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/dashboards
+    - echo "Setting permissions at $(date)"
     - chown -R $(whoami):$(whoami) $CI_PROJECT_DIR/grafana/provisioning
     - chmod -R u+rwX $CI_PROJECT_DIR/grafana/provisioning
-    - ls -la $CI_PROJECT_DIR/grafana/provisioning  
+    - echo "Directory status after setup:"
+    - ls -la $CI_PROJECT_DIR/grafana/provisioning 
   tags:
     - bin-runner
   script:
