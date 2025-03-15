@@ -177,7 +177,7 @@ grafana_visualization:
     - mkdir -p $CI_PROJECT_DIR/grafana/provisioning/dashboards
     - chown -R $(whoami):$(whoami) $CI_PROJECT_DIR/grafana/provisioning
     - chmod -R u+rwX $CI_PROJECT_DIR/grafana/provisioning
-    - ls -la $CI_PROJECT_DIR/grafana/provisioning
+    - ls -la $CI_PROJECT_DIR/grafana/provisioning  
   tags:
     - bin-runner
   script:
