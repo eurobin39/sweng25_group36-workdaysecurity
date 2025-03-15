@@ -164,6 +164,8 @@ grafana_visualization:
     - echo "Starting cleanup at $(date)"
     - sudo rm -rf $CI_PROJECT_DIR/grafana || true
     - echo "Creating directories at $(date)"
+    - mkdir -p $CI_PROJECT_DIR/Grafana/provisioning/datasources
+    - mkdir -p $CI_PROJECT_DIR/Grafana/provisioning/dashboards
     - sudo chown -R gitlab-runner:gitlab-runner $CI_PROJECT_DIR/grafana
     - sudo chmod -R u+rwX $CI_PROJECT_DIR/grafana
     - echo "Directory status:"
@@ -175,15 +177,19 @@ grafana_visualization:
     - echo "Starting Grafana..."
     - docker run -d --name=grafana --network=host
         --user "$(id -u gitlab-runner):$(id -g gitlab-runner)"
-        -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-        -v $CI_PROJECT_DIR/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+        -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/Grafana/provisioning/datasources
+        -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/Grafana/provisioning/dashboards
         -v grafana_data:/var/lib/grafana
         -e "GF_SERVER_HTTP_PORT=4000"
         grafana/grafana:latest
     - sleep 20
     - echo "Checking Grafana logs..."
     # docker logs grafana
-    - echo "Testing Grafana provisioning..."
+    - docker exec grafana ls -la /etc/grafana/provisioning/datasources/
+    - docker exec grafana ls -la /etc/grafana/provisioning/dashboards/
+    - docker exec grafana cat /etc/grafana/provisioning/datasources/datasource.yaml || echo "No datasource.yaml found"
+    - docker exec grafana cat /etc/grafana/provisioning/dashboards/dashboard.yaml || echo "No dashboard.yaml found"
+    - echo "Testing Grafana..."
     - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query= || echo "curl failed with $?"
 
 
