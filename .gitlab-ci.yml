@@ -151,33 +151,46 @@ save_results:
     when: always
   allow_failure: false
 
+
 # Stage 5 Grafana
 grafana_visualization:
   stage: visualize
   
   before_script:
-  - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/security/
-  - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/manager/
+    - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/security/
+    - ls -l $CI_PROJECT_DIR/Grafana/provisioning/dashboards/manager/
+
   tags:
     - bin-runner
+
   script:
-  - echo "Stopping any existing Grafana container..."
-  - docker stop grafana 
-  - docker rm grafana 
-  - docker volume rm grafana_data
-  
-  - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
-  - docker run -d --name=grafana --network=host
-      -v grafana_data:/var/lib/grafana
-      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      -v ~/project/sweng25_group36-workdaysecurity/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      -e "GF_SERVER_HTTP_PORT=4000"
-      grafana/grafana:latest
-  
-  - sleep 10
-  
-  - echo "Checking Grafana logs..."
-  - docker logs grafana
-  
-  - echo "Testing Grafana provisioning..."
-  - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query=
+    - echo "Stopping any existing Grafana container..."
+    - docker stop grafana || true
+    - docker rm grafana || true
+    - docker volume rm grafana_data || true
+
+    - echo "Creating Grafana network..."
+    - docker network create grafana_net || true
+
+    - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
+    - docker run -d --name=grafana --network=grafana_net 
+        -v grafana_data:/var/lib/grafana 
+        -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards 
+        -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
+        -e "GF_SERVER_HTTP_PORT=4000" 
+        -e "GF_DATABASE_TYPE=postgres" 
+        grafana/grafana:latest
+
+    - sleep 10
+
+    - echo "Checking running containers..."
+    - docker ps -a
+
+    - echo "Inspecting Grafana container..."
+    - docker inspect grafana | grep "State"
+
+    - echo "Checking Grafana logs..."
+    - docker logs grafana
+
+    - echo "Testing Grafana provisioning..."
+    - curl -s -u admin:admin http://localhost:4000/api/search?query=
