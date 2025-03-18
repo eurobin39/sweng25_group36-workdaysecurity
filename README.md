@@ -5,6 +5,31 @@
 
 An automated framework that integrates security testing into development pipelines, ensuring vulnerabilities don't reappear once fixed.
 
+## How to navigate
+Our project consist of 2 parts
+1. Web application used for managing and statistics observation
+    - Folders: frontend; Grafana
+    - Technologies used: Grafana, Next.js
+2. SecOps folder - the backbone of our project, ci pipeline automation, it has it's own README.md
+    - Folders: SecOps
+    - Technologies used: Python, gitlab-ci, Docker, ZAP/Zest
+
+## Folder structure
+```
+frontend/                               # Frontend-related code and resources
+Grafana/                                # Grafana configuration
+└── provisioning/                       # Holds provisioning configs for Grafana
+SecOps/                                 # Security Operations resources
+├── artifacts/                          # Contains artifacts generated during SecOps processes
+├── pipeline/                           # Automation pipeline scripts
+│   ├── py-scripts/                     # Python scripts used in the pipeline
+│   ├── stages/                         # Defines different stages of the pipeline
+│   └── README.md                       # Documentation for pipeline setup (IMPORTANT)
+└── zest-scripts/                       # Zest scripts for security testing and automation
+utils/                                  # Utility scripts and helpers
+README.md                               # Project documentation and overview
+```
+
 
 ## Documentation
 
@@ -23,4 +48,3 @@ _Euro Bae_ - baee@tcd.ie
 _Nicu Cirstean_ - cirstean@tcd.ie
 _Eoin Bande_ - bandee@tcd.ie
 _Timothy Tay_ - ttay@tcd.ie
-
