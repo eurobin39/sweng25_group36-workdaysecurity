@@ -11,7 +11,7 @@ export default function ManagerDashboard() {
       <p className="text-gray-200 mt-2">Track performance, reports, and analytics.</p>
 
       <Link
-        href="http://localhost:4000/d/security-test-manager-dashboard/security-test-manager-dashboard?orgId=1&from=now-6h&to=now&timezone=browser&var-repository=sweng25_group36-workdaysecurity"
+        href="http://172.20.10.12:4000/d/security-test-manager-dashboard/security-test-manager-dashboard?orgId=1&from=now-6h&to=now&timezone=browser&var-repository=sweng25_group36-workdaysecurity"
         target="_blank"
         className="mt-6"
       >

@@ -270,7 +270,7 @@ export default function AdminDashboard() {
         <div className="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center justify-center">
           <h2 className="text-xl font-semibold mb-6">System Analytics</h2>
           <Link
-            href="http://localhost:4000/d/admin-dashboard/admin-dashboard?orgId=1&from=now-6h&to=now&timezone=browser"
+            href="http://172.20.10.12:4000/d/admin-dashboard/admin-dashboard?orgId=1&from=now-6h&to=now&timezone=browser"
             target="_blank"
           >
             <button className="px-6 py-3 bg-gray-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:bg-gray-500 hover:scale-105 mb-4 w-60">
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
           </Link>
           
           <Link
-            href="http://localhost:4000/dashboards"
+            href="http://172.20.10.3:4000/dashboards"
             target="_blank"
           >
             <button className="px-6 py-3 bg-gray-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:bg-gray-500 hover:scale-105 w-60">
