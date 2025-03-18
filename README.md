@@ -37,6 +37,8 @@ README.md                               # Project documentation and overview
 
 [User Stories](https://gitlab.scss.tcd.ie/tmanea/sweng25_group36-workdaysecurity/-/wikis/uploads/5214fc3a3efb8922dc56900c0a84b763/User_Stories.pdf)
 
+### Dataflow diagram
+[dataflow](utils/dataflow18March.png)
 
 ## Authors
 
