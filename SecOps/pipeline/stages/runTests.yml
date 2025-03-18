@@ -1,0 +1,29 @@
+stages:
+  - run_pen_test
+
+run_pen_test:
+  stage: run_pen_test
+  tags:
+    - bin-runner
+  image: ghcr.io/zaproxy/zaproxy:stable
+  script:
+    # Run your command and capture its output.
+    - mkdir -p data
+    - START_TIME=$(date +%s)
+
+    # Add your tests using this example
+    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scrips/sql_injection_user_get_demo.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+
+
+    - END_TIME=$(date +%s)
+    - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
+    - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
+    - 'echo "Test Type: advanced" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
+    - 'echo "Category: general" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
+    - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/json_processing.py $CI_PROJECT_DIR/SecOps/artifacts/output.txt $CI_PROJECT_DIR/SecOps/artifacts/output.json $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+  # Artifacts are saved even if the job fails:
+  artifacts:
+    when: always
+    paths:
+      - $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+      - $CI_PROJECT_DIR/SecOps/artifacts/output.json
