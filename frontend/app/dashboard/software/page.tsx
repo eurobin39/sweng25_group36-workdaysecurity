@@ -11,7 +11,7 @@ export default function SoftwareEngineerDashboard() {
       <p className="text-gray-200 mt-2">Develop, test, and deploy applications efficiently.</p>
 
       <Link
-        href="http://localhost:4000/d/security-test-dashboard/security-test-dashboard?orgId=1&from=now-6h&to=now&timezone=browser"
+        href="http://172.20.10.12:4000/d/security-test-dashboard/security-test-dashboard?orgId=1&from=now-6h&to=now&timezone=browser"
         target="_blank"
         className="mt-6"
       >

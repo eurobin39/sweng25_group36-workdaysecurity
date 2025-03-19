@@ -1,15 +1,9 @@
-#demo9eddsfdfdss1scs
+#demo9eddsfdfdssd
 
 # include:
-#   - local: "pipeline-stages/eurosPart.yml"
-#   - local: "pipeline-stages/timsPart.yml"
+#   - local: "pipeline/stages/eurosPart.yml"
+#   - local: "pipeline/stages/timsPart.yml"
 
-# stages:
-#   - start_services
-#   # - security_scan
-#   - run_pen_test
-#   - save_results
-#   - visualize
 
 
 stages:
@@ -19,50 +13,88 @@ stages:
   - save_results
   - visualize
 
-# 1️⃣ Juice Shop
+# Stage 1 start target service
 start_services:
   image: docker:latest
   stage: start_services
+
   services:
     - docker:dind
   tags:
-    # - tim-mac
-    - tim-mac
+    - bin-runner
   script:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
-    - echo "Starting Juice Shop..."
-    - docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
+
+    # Create a simpler cleanup script focusing on Docker
+    - |
+      cat > cleanup_port.sh << 'EOF'
+      #!/bin/bash
+      # First try to stop any container using port 3000
+      echo "Removing any containers using port 3000..."
+      docker ps -q --filter publish=3000 | xargs -r docker stop
+      docker ps -q --filter publish=3000 | xargs -r docker rm
+
+      # If port is still in use, try to use a different port
+      if lsof -i :3000 >/dev/null 2>&1 || netstat -tuln 2>/dev/null | grep -q ":3000 "; then
+        echo "Port 3000 is still in use by a system process - will use port 3001 instead"
+        export JUICE_PORT=3001
+      else
+        export JUICE_PORT=3000
+      fi
+      echo "JUICE_PORT=$JUICE_PORT" > port.env
+      EOF
+
+    - chmod +x cleanup_port.sh
+    - ./cleanup_port.sh
+    - source port.env || export JUICE_PORT=3001
+
+    # Start Juice Shop with the decided port
+    - echo "Starting Juice Shop on port $JUICE_PORT..."
+    - docker run -d --name juice-shop -p $JUICE_PORT:3000 bkimminich/juice-shop:latest-arm
+
     - sleep 5
     - docker ps
+    - echo "Juice Shop running on port $JUICE_PORT"
+
+    # Update any URLs in configurations to match the chosen port
+    - |
+      if [ "$JUICE_PORT" != "3000" ]; then
+        echo "Port was changed to $JUICE_PORT - updating any test URLs..."
+        find . -type f -name "*.zst" -o -name "*.json" | xargs -r sed -i "s/localhost:3000/localhost:$JUICE_PORT/g" || true
+      fi
 
 
+# Stage 2 extract necessary metadata
 extract_metadata:
   stage: extract_metadata
+
   tags:
-    - tim-mac
+    - bin-runner
   script:
-    - python3 SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+    - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   artifacts:
     paths:
       - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
     when: always
 
 
-# Stage 2
+# Stage 3 run pen tests
 run_pen_test:
   stage: run_pen_test
   tags:
-    # - tim-mac
-    - tim-mac
-  image: owasp/zap2docker-stable
+    - bin-runner
+  image: ghcr.io/zaproxy/zaproxy:stable
   script:
     # Run your command and capture its output.
     - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_fail.zst > data/output.txt
+    # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/premium_key_get.zst >> data/output.txt
+    # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_login_2.zst >> data/output.txt
     - END_TIME=$(date +%s)
     - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
@@ -76,7 +108,10 @@ run_pen_test:
       - $CI_PROJECT_DIR/SecOps/artifacts/output.txt
       - $CI_PROJECT_DIR/SecOps/artifacts/output.json
 
-# 3️⃣ JSON data to PostgreSQL
+
+
+
+# Stage 4 save JSON data to PostgreSQL
 save_results:
   image: python:3.9
   stage: save_results
@@ -99,14 +134,13 @@ save_results:
     - python3 --version
     - pip list
 
-    # Show our working directory and contents
+    # Show our working directory and content
     - echo "Current directory structure:"
     - pwd
     - ls -la
 
   tags:
-    # - tim-mac
-    - tim-mac
+    - bin-runner
 
   script:
     # Make sure we're still in our virtual environment when running the script
@@ -119,37 +153,37 @@ save_results:
     when: always
   allow_failure: false
 
-# 4️⃣ Grafana
+
+# Stage 5 Grafana
+
 grafana_visualization:
   stage: visualize
-
-  before_script:
-  - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/security/
-  - ls -l $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager/
   tags:
-    # - tim-mac
-    - tim-mac
+    - bin-runner
+  before_script:
+    - echo "Directory status:"
+    - ls -la $CI_PROJECT_DIR/Grafana/provisioning
+    - ls -la $CI_PROJECT_DIR/Grafana/provisioning/datasources
+    - ls -la $CI_PROJECT_DIR/Grafana/provisioning/dashboards
+
   script:
-  - echo "Stopping any existing Grafana container..."
-  - docker stop grafana || true
-  - docker rm grafana || true
-
-  - echo "Starting Grafana with PostgreSQL as its database and provisioning settings..."
-  - docker run -d --name=grafana -p 4000:3000
-      -v grafana_data:/var/lib/grafana
-      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/security:/etc/grafana/provisioning/dashboards/security
-      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/manager:/etc/grafana/provisioning/dashboards/manager
-      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/software:/etc/grafana/provisioning/dashboards/software
-      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/admin:/etc/grafana/provisioning/dashboards/admin
-      -v $CI_PROJECT_DIR/grafana/provisioning/dashboards/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
-      -v $CI_PROJECT_DIR/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      grafana/grafana:latest
-
-
-  - sleep 10
-
-  - echo "Checking Grafana logs..."
-  - docker logs grafana
-
-  - echo "Testing Grafana provisioning..."
-  - curl -s -u admin:admin http://localhost:4000/api/search?query=
+    - echo "Stopping any existing Grafana container..."
+    - docker stop grafana || true
+    - docker rm grafana || true
+    - echo "Starting Grafana..."
+    - docker run -d --name=grafana --network=host
+        --user "$(id -u gitlab-runner):$(id -g gitlab-runner)"
+        -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+        -v grafana_data:/var/lib/grafana
+        -e "GF_SERVER_HTTP_PORT=4000"
+        grafana/grafana:latest
+    - sleep 20
+    - echo "Checking Grafana logs..."
+    # docker logs grafana
+    - docker exec grafana ls -la /etc/grafana/provisioning/datasources/
+    - docker exec grafana ls -la /etc/grafana/provisioning/dashboards/
+    - docker exec grafana cat /etc/grafana/provisioning/datasources/datasource.yaml || echo "No datasource.yaml found"
+    - docker exec grafana cat /etc/grafana/provisioning/dashboards/dashboard.yaml || echo "No dashboard.yaml found"
+    - echo "Testing Grafana..."
+    - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query= || echo "curl failed with $?"

@@ -26,12 +26,12 @@ const formSchema = z.object({
         .toLowerCase()
         .refine(checkEmailExists, "User does not exist"),
     password: z
-        .string()
-        .min(10)
-        .regex(
-            PASSWORD_REGEX,
-            "Password must have lowercase, UPPERCASE, number, and special character!"
-        ),
+        .string(),
+        // .min(10)
+        // .regex(
+        //     PASSWORD_REGEX,
+        //     "Password must have lowercase, UPPERCASE, number, and special character!"
+        // ),
 });
 
 export async function login(prevState: any, formData: FormData) {
@@ -40,7 +40,7 @@ export async function login(prevState: any, formData: FormData) {
         password: formData.get("password"),
     };
 
-    const result = await formSchema.spa(data);
+    const result = await formSchema.safeParseAsync(data);
 
     if (!result.success) {
         return result.error.flatten();
@@ -52,20 +52,25 @@ export async function login(prevState: any, formData: FormData) {
             select: {
                 id: true,
                 password: true,
-                role: true, // Role check
+                role: true,
             },
         });
 
-        const ok = await bcrypt.compare(result.data.password, user!.password ?? "xxxx");
+        const ok = await bcrypt.compare(result.data.password, user?.password ?? "xxxx");
 
         if (ok) {
             const session = await getSession();
-            session.id = user!.id;
+            session.id = user?.id;
             await session.save();
             console.log("User authenticated, redirecting...");
 
+            // Check if user's role is still pending
+            if (user?.role === "Pending") {
+                redirect("/pending-approval");
+            }
+
             // Role redirection
-            switch (user!.role) {
+            switch (user?.role) {
                 case "Admin":
                     redirect("/dashboard/admin");
                     break;

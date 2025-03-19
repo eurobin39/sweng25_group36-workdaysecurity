@@ -56,7 +56,7 @@ export default function LoadingButtonsTransition() {
                 backgroundColor: "#1565C0",
                 "&:hover": { backgroundColor: "#0D47A1" },
               }}
-              onClick={() => window.open("http://localhost:4000", "_blank")}
+              onClick={() => window.open("http://172.20.10.12:4000", "_blank")}
             >
               Open Grafana
             </Button>

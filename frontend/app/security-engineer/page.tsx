@@ -37,8 +37,7 @@ export default function FileUploadDemo() {
       >
         {/* FileUpload component with matching background */}
         <FileUpload
-          onChange={handleFileUpload}
-          style={{ background: "rgb(30, 58, 138)" }} // Set the background color to match page
+          onChange={handleFileUpload} // Set the background color to match page
         />
 
         {/* Upload & Done Buttons */}
@@ -61,7 +60,7 @@ export default function FileUploadDemo() {
               </button>
             ) : (
               <Link
-              href="http://localhost:4000/d/security-test-dashboard/security-test-dashboard?orgId=1&from=now-6h&to=now&timezone=browser"
+              href="http://172.20.10.12:4000/d/security-test-dashboard/security-test-dashboard?orgId=1&from=now-6h&to=now&timezone=browser"
               target="_blank"
              >
               <button className="px-6 py-3 bg-blue-700 text-white text-2xl border-2 border-white font-semibold rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:bg-blue-500 hover:scale-105">
