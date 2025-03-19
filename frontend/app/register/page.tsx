@@ -5,11 +5,9 @@ import { useActionState } from "react";
 import { createAccount } from "./actions";
 import Button from "@/components/button";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function CreateAccount() {
   const [state, action] = useActionState(createAccount, null);
-  const [role, setRole] = useState("");
 
   return (
     <div
@@ -60,28 +58,9 @@ export default function CreateAccount() {
             errors={state?.fieldErrors.confirmPassword}
           />
 
-          {/* Role dropdown */}
-          <div>
-
-            <select
-              name="role"
-              id="role"
-              required
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="w-full rounded-lg border-gray-300 text-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            >
-              <option value="" disabled>
-                Select a Role
-              </option>
-              <option value="Security Engineer">Security Engineer</option>
-              <option value="Software Engineer">Software Engineer</option>
-              <option value="Manager">Manager</option>
-              {/*<option value="Admin">Admin</option>*/}
-            </select>
-            {state?.fieldErrors.role && (
-              <p className="text-red-500 text-sm mt-1">{state.fieldErrors.role}</p>
-            )}
+          {/* Note about role assignment */}
+          <div className="text-center text-sm text-gray-500 p-2 bg-gray-100 rounded-lg">
+            Your account will need to be approved by an administrator before access is granted.
           </div>
 
           <Button text="Create Account" />

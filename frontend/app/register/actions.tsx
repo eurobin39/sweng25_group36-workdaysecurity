@@ -7,19 +7,14 @@ import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import getSession from "@/lib/session"
 
-
 const checkPassWord = ({ password, confirmPassword }: { password: string, confirmPassword: string }) =>
     password === confirmPassword;
-
-
-
 
 const formSchema = z.object({
     username: z.string().min(3).max(10).trim().toLowerCase(),
     email: z.string().email().toLowerCase(),
     password: z.string().min(10).regex(PASSWORD_REGEX, "password must have lowercase, UPPERCASE, number and special Character!"),
     confirmPassword: z.string().min(10),
-    role: z.string()
 }).superRefine(async ({ username }, ctx) => {
     const user = await db.user.findUnique({
         where: {
@@ -63,13 +58,22 @@ const formSchema = z.object({
     path: ["confirmPassword"],
 });
 
-export async function createAccount(prevState: any, formData: FormData) {
+export async function createAccount(
+    prevState: { 
+      fieldErrors?: { 
+        username?: string[], 
+        email?: string[], 
+        password?: string[], 
+        confirmPassword?: string[] 
+      } 
+    } | null, 
+    formData: FormData
+  ) {
     const data = {
         username: formData.get("username"),
         email: formData.get("email"),
         password: formData.get("password"),
         confirmPassword: formData.get("confirmPassword"),
-        role: formData.get("role")
     };
 
     const result = await formSchema.safeParseAsync(data);
@@ -83,7 +87,7 @@ export async function createAccount(prevState: any, formData: FormData) {
                 username: result.data.username,
                 email: result.data.email,
                 password: hashedPassword,
-                role: result.data.role,
+                role: "Pending", // Automatically assign "Pending" role
             },
             select: {
                 id: true,
@@ -93,6 +97,6 @@ export async function createAccount(prevState: any, formData: FormData) {
 
         session.id = user.id
         await session.save();
-        redirect("/login");
+        redirect("/pending-approval"); // Redirect to a pending approval page
     }
 }
