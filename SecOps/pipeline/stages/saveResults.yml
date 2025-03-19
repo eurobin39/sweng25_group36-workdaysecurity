@@ -1,0 +1,46 @@
+stages:
+  - extract_metadata
+  - save_results
+
+
+extract_metadata:
+  stage: extract_metadata
+  tags:
+    - bin-runner
+  script:
+    - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+    when: always
+
+ 
+save_results:
+  image: python:3.9
+  stage: save_results
+  needs:
+    - run_pen_test
+  before_script:
+    # Create a virtual environment
+    - python3 -m venv venv
+
+    # Activate the virtual environment
+    - source venv/bin/activate
+
+    # Now we can safely install packages in our isolated environment
+    - python3 -m pip install --upgrade pip
+    - python3 -m pip install psycopg2-binary python-dotenv
+
+  tags:
+    - bin-runner
+
+  script:
+    # Make sure we're still in our virtual environment when running the script
+    - source venv/bin/activate
+    - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/send_test_results_to_SQL.py $CI_PROJECT_DIR/SecOps/artifacts/output.json
+
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/SecOps/artifacts
+    when: always
+  allow_failure: false
