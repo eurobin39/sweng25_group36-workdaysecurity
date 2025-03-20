@@ -26,7 +26,7 @@ start_services:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
 
-    # Create a simpler cleanup script focusing on Docker
+    # Create a simpler cleanup script focusing on Docker   
     - |
       cat > cleanup_port.sh << 'EOF'
       #!/bin/bash
