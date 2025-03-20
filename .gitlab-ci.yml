@@ -1,8 +1,7 @@
-#demo9eddsfdfdssd
 
-# include:
-#   - local: "pipeline/stages/eurosPart.yml"
-#   - local: "pipeline/stages/timsPart.yml"
+#include:
+#    - local: 'SecOps/pipeline/stages/runTests.yml'
+#    - local: 'SecOps/pipeline/stages/saveResults.yml'
 
 
 
