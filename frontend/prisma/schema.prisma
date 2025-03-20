@@ -21,6 +21,7 @@ model User {
   role     String
   team     Team?  @relation(fields: [teamId], references: [id])
   teamId   Int?
+  projects String[] @default([])
 }
 
 model Team {
