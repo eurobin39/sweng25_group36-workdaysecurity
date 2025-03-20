@@ -150,3 +150,205 @@ export async function updateUserRole(username: string, newRole: string) {
     };
   }
 }
+
+/**
+ * Create a new team
+ */
+export async function createTeam(teamName: string) {
+  try {
+    if (!teamName || teamName.trim() === "") {
+      return {
+        success: false,
+        error: "Team name is required"
+      };
+    }
+
+    // Check if team already exists
+    const existingTeam = await db.team.findUnique({
+      where: {
+        name: teamName.trim(),
+      },
+    });
+
+    if (existingTeam) {
+      return {
+        success: false,
+        error: "A team with this name already exists"
+      };
+    }
+
+    // Create the new team
+    const team = await db.team.create({
+      data: {
+        name: teamName.trim(),
+      },
+    });
+
+    return {
+      success: true,
+      team
+    };
+  } catch (error) {
+    console.error("Error creating team:", error);
+    return {
+      success: false,
+      error: "An error occurred while creating the team"
+    };
+  }
+}
+
+/**
+ * Get all teams
+ */
+export async function getAllTeams() {
+  try {
+    const teams = await db.team.findMany({
+      include: {
+        users: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            role: true,
+          },
+        },
+      },
+    });
+
+    return {
+      success: true,
+      teams
+    };
+  } catch (error) {
+    console.error("Error fetching teams:", error);
+    return {
+      success: false,
+      error: "An error occurred while fetching teams"
+    };
+  }
+}
+
+/**
+ * Update a user's team
+ */
+export async function updateUserTeam(username: string, teamName: string) {
+  try {
+    if (!username || username.trim() === "") {
+      return {
+        success: false,
+        error: "Username is required"
+      };
+    }
+
+    if (!teamName || teamName.trim() === "") {
+      return {
+        success: false,
+        error: "Team name is required"
+      };
+    }
+
+    // Check if user exists
+    const user = await db.user.findUnique({
+      where: {
+        username: username.trim(),
+      },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        error: "User not found"
+      };
+    }
+
+    // Check if team exists
+    const team = await db.team.findUnique({
+      where: {
+        name: teamName.trim(),
+      },
+    });
+
+    if (!team) {
+      return {
+        success: false,
+        error: "Team not found"
+      };
+    }
+
+    // Update user's team
+    await db.user.update({
+      where: {
+        username: username.trim(),
+      },
+      data: {
+        team: {
+          connect: {
+            name: teamName.trim(),
+          },
+        },
+      },
+    });
+
+    return {
+      success: true,
+      message: `Successfully updated ${username}'s team to ${teamName}`
+    };
+  } catch (error) {
+    console.error("Error updating user team:", error);
+    return {
+      success: false,
+      error: "An error occurred while updating the user's team"
+    };
+  }
+}
+
+/**
+ * Remove a user from their team
+ */
+export async function removeUserFromTeam(username: string) {
+  try {
+    if (!username || username.trim() === "") {
+      return {
+        success: false,
+        error: "Username is required"
+      };
+    }
+
+    // Check if user exists
+    const user = await db.user.findUnique({
+      where: {
+        username: username.trim(),
+      },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        error: "User not found"
+      };
+    }
+
+    // Remove user from team
+    await db.user.update({
+      where: {
+        username: username.trim(),
+      },
+      data: {
+        team: {
+          disconnect: true,
+        },
+      },
+    });
+
+    return {
+      success: true,
+      message: `Successfully removed ${username} from their team`
+    };
+  } catch (error) {
+    console.error("Error removing user from team:", error);
+    return {
+      success: false,
+      error: "An error occurred while removing the user from their team"
+    };
+  }
+}
