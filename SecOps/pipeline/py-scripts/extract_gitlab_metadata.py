@@ -26,27 +26,38 @@ def get_git_info():
     }
 
 def get_maintainer():
-    """Retrieve the identity of the maintainer.
+    """Retrieve the identity and email of the maintainer.
     
-    First, it attempts to get the value from the 'GITLAB_USER_NAME' environment variable.
-    If that is not available, it falls back to using the author name of the latest Git commit.
+    It first checks for the 'GITLAB_USER_NAME' and 'GITLAB_USER_EMAIL' environment variables.
+    If they are not available, it falls back to using the author name and email of the latest Git commit.
     """
-    maintainer = os.getenv("GITLAB_USER_NAME")
-    if not maintainer:
+    maintainer_name = os.getenv("GITLAB_USER_NAME")
+    maintainer_email = os.getenv("GITLAB_USER_EMAIL")
+
+    if not maintainer_name or not maintainer_email:
         try:
-            maintainer = subprocess.check_output(
+            maintainer_name = subprocess.check_output(
                 ["git", "log", "-1", "--pretty=format:%an"]
+            ).decode().strip()
+            maintainer_email = subprocess.check_output(
+                ["git", "log", "-1", "--pretty=format:%ae"]
             ).decode().strip()
         except subprocess.CalledProcessError as e:
             print(f"❌ Failed to fetch maintainer information: {e}")
-            maintainer = "unknown"
-    return maintainer
+            maintainer_name, maintainer_email = "unknown", "unknown"
+    
+    return {
+        "name": maintainer_name,
+        "email": maintainer_email
+    }
 
 def get_gitlab_metadata():
     """Fetch GitLab metadata using environment variables."""
     git_info = get_git_info()
     if not git_info:
         return None
+
+    maintainer = get_maintainer()
 
     metadata = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -55,7 +66,7 @@ def get_gitlab_metadata():
         "commitHash": git_info["commitHash"],
         "runner": os.getenv("CI_RUNNER_DESCRIPTION", os.getenv("CI_RUNNER_ID", "unknown")),
         "projectId": os.getenv("CI_PROJECT_ID", "unknown"),
-        "maintainer": get_maintainer()
+        "maintainer": maintainer
     }
     return metadata
 
