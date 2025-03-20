@@ -29,6 +29,14 @@ model Team {
   users User[]
 }
 
+model Project {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  users     User[]
+  startDate DateTime @default(now())
+  status    String?
+}
+
 model security_test_results {
   id                  Int          @id @default(autoincrement())
   commit_hash         String       @unique
