@@ -47,8 +47,8 @@ def get_maintainer():
             maintainer_name, maintainer_email = "unknown", "unknown"
     
     return {
-        "name": maintainer_name,
-        "email": maintainer_email
+        "uploader_name": maintainer_name,
+        "uploader_email": maintainer_email
     }
 
 def get_gitlab_metadata():
