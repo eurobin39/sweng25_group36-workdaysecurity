@@ -12,7 +12,7 @@ run_pen_test:
     - START_TIME=$(date +%s)
 
     # Add your tests using this example
-    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scrips/sql_injection_user_get_demo.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_user_get_demo.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
 
 
     - END_TIME=$(date +%s)
