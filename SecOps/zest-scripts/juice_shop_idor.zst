@@ -1,0 +1,2112 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/",
+  "zestVersion": "0.3",
+  "title": "juice-shop-idor",
+  "description": "A template standalone script",
+  "prefix": "",
+  "type": "StandAlone",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "url": "http://localhost:3000/rest/user/login",
+      "data": "{\"email\":\"jim@juice-sh.op\",\"password\":\"ncc-1701\"}",
+      "method": "POST",
+      "headers": "Content-Type: application/json\r\nContent-Length: 49\r\nOrigin: http://localhost:3000\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/user/login",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 804\r\nETag: W/\"324-8MGXfKGLEKUpPzmc/xrWGwFn/3A\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 09:58:38 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"authentication\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\",\"bid\":2,\"umail\":\"jim@juice-sh.op\"}}",
+        "statusCode": 200,
+        "responseTimeInMs": 51,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 804,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810318398,
+      "cookies": [],
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/1",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/1",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 1310\r\nETag: W/\"51e-tsn79OTzZR9uaOv0d1fMSJeeVkY\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":{\"id\":1,\"coupon\":null,\"UserId\":1,\"createdAt\":\"2025-03-24T09:40:25.401Z\",\"updatedAt\":\"2025-03-24T09:40:25.401Z\",\"Products\":[{\"id\":1,\"name\":\"Apple Juice (1000ml)\",\"description\":\"The all-time classic.\",\"price\":1.99,\"deluxePrice\":0.99,\"image\":\"apple_juice.jpg\",\"createdAt\":\"2025-03-24T09:40:25.380Z\",\"updatedAt\":\"2025-03-24T09:40:25.380Z\",\"deletedAt\":null,\"BasketItem\":{\"ProductId\":1,\"BasketId\":1,\"id\":1,\"quantity\":2,\"createdAt\":\"2025-03-24T09:40:25.405Z\",\"updatedAt\":\"2025-03-24T09:40:25.405Z\"}},{\"id\":2,\"name\":\"Orange Juice (1000ml)\",\"description\":\"Made from oranges hand-picked by Uncle Dittmeyer.\",\"price\":2.99,\"deluxePrice\":2.49,\"image\":\"orange_juice.jpg\",\"createdAt\":\"2025-03-24T09:40:25.380Z\",\"updatedAt\":\"2025-03-24T09:40:25.380Z\",\"deletedAt\":null,\"BasketItem\":{\"ProductId\":2,\"BasketId\":1,\"id\":2,\"quantity\":3,\"createdAt\":\"2025-03-24T09:40:25.405Z\",\"updatedAt\":\"2025-03-24T09:40:25.405Z\"}},{\"id\":3,\"name\":\"Eggfruit Juice (500ml)\",\"description\":\"Now with even more exotic flavour.\",\"price\":8.99,\"deluxePrice\":8.99,\"image\":\"eggfruit_juice.jpg\",\"createdAt\":\"2025-03-24T09:40:25.380Z\",\"updatedAt\":\"2025-03-24T09:40:25.380Z\",\"deletedAt\":null,\"BasketItem\":{\"ProductId\":3,\"BasketId\":1,\"id\":3,\"quantity\":1,\"createdAt\":\"2025-03-24T09:40:25.405Z\",\"updatedAt\":\"2025-03-24T09:40:25.405Z\"}}]}}",
+        "statusCode": 200,
+        "responseTimeInMs": 204,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 1310,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521228,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "rootExpression": {
+        "code": 200,
+        "not": false,
+        "elementType": "ZestExpressionStatusCode"
+      },
+      "ifStatements": [
+        {
+          "message": "User Basket IDOR, fail, Unable to access other user baskets, Successfully accessed user baskets, High, High, Attempted to access other user baskets and succeeded.",
+          "index": 4,
+          "enabled": true,
+          "elementType": "ZestActionPrint"
+        }
+      ],
+      "elseStatements": [
+        {
+          "message": "User Basket IDOR, pass, Unable to access other user baskets, Did not successfully access other user baskets, NA, NA, Attempted to access other user baskets and was unable to bypass.",
+          "index": 5,
+          "enabled": true,
+          "elementType": "ZestActionPrint"
+        }
+      ],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestConditional"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/2",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/2",
+        "headers": "HTTP/1.1 304 Not Modified\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nETag: W/\"589-lnrzipprhpXN8EBpb12frbUMlfc\"\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "",
+        "statusCode": 304,
+        "responseTimeInMs": 135,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 304,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 0,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521228,
+      "cookies": [],
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "rootExpression": {
+        "code": 200,
+        "not": false,
+        "elementType": "ZestExpressionStatusCode"
+      },
+      "ifStatements": [
+        {
+          "message": "User Basket IDOR, fail, Unable to access other user baskets, Successfully accessed user baskets, High, High, Attempted to access other user baskets and succeeded.",
+          "index": 4,
+          "enabled": true,
+          "elementType": "ZestActionPrint"
+        }
+      ],
+      "elseStatements": [
+        {
+          "message": "User Basket IDOR, pass, Unable to access other user baskets, Did not successfully access other user baskets, NA, NA, Attempted to access other user baskets and was unable to bypass.",
+          "index": 5,
+          "enabled": true,
+          "elementType": "ZestActionPrint"
+        }
+      ],
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestConditional"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/3",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/3",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 557\r\nETag: W/\"22d-QVY8KJyjVzKtsOs/TL8Xtr1wHo0\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":{\"id\":3,\"coupon\":null,\"UserId\":3,\"createdAt\":\"2025-03-24T09:40:25.401Z\",\"updatedAt\":\"2025-03-24T09:40:25.401Z\",\"Products\":[{\"id\":4,\"name\":\"Raspberry Juice (1000ml)\",\"description\":\"Made from blended Raspberry Pi, water and sugar.\",\"price\":4.99,\"deluxePrice\":4.99,\"image\":\"raspberry_juice.jpg\",\"createdAt\":\"2025-03-24T09:40:25.380Z\",\"updatedAt\":\"2025-03-24T09:40:25.380Z\",\"deletedAt\":null,\"BasketItem\":{\"ProductId\":4,\"BasketId\":3,\"id\":5,\"quantity\":1,\"createdAt\":\"2025-03-24T09:40:25.405Z\",\"updatedAt\":\"2025-03-24T09:40:25.405Z\"}}]}}",
+        "statusCode": 200,
+        "responseTimeInMs": 124,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 557,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521229,
+      "cookies": [],
+      "index": 8,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/4",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/4",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 558\r\nETag: W/\"22e-WVt5/DSEz5ghhUgZE17vRA5muBA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":{\"id\":4,\"coupon\":null,\"UserId\":11,\"createdAt\":\"2025-03-24T09:40:25.401Z\",\"updatedAt\":\"2025-03-24T09:40:25.401Z\",\"Products\":[{\"id\":4,\"name\":\"Raspberry Juice (1000ml)\",\"description\":\"Made from blended Raspberry Pi, water and sugar.\",\"price\":4.99,\"deluxePrice\":4.99,\"image\":\"raspberry_juice.jpg\",\"createdAt\":\"2025-03-24T09:40:25.380Z\",\"updatedAt\":\"2025-03-24T09:40:25.380Z\",\"deletedAt\":null,\"BasketItem\":{\"ProductId\":4,\"BasketId\":4,\"id\":6,\"quantity\":2,\"createdAt\":\"2025-03-24T09:40:25.405Z\",\"updatedAt\":\"2025-03-24T09:40:25.405Z\"}}]}}",
+        "statusCode": 200,
+        "responseTimeInMs": 223,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 558,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521229,
+      "cookies": [],
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/5",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/5",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 946\r\nETag: W/\"3b2-SFl17hZV+tYTuoePgN5HHmjprPg\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":{\"id\":5,\"coupon\":null,\"UserId\":16,\"createdAt\":\"2025-03-24T09:40:25.401Z\",\"updatedAt\":\"2025-03-24T09:40:25.401Z\",\"Products\":[{\"id\":3,\"name\":\"Eggfruit Juice (500ml)\",\"description\":\"Now with even more exotic flavour.\",\"price\":8.99,\"deluxePrice\":8.99,\"image\":\"eggfruit_juice.jpg\",\"createdAt\":\"2025-03-24T09:40:25.380Z\",\"updatedAt\":\"2025-03-24T09:40:25.380Z\",\"deletedAt\":null,\"BasketItem\":{\"ProductId\":3,\"BasketId\":5,\"id\":7,\"quantity\":5,\"createdAt\":\"2025-03-24T09:40:25.405Z\",\"updatedAt\":\"2025-03-24T09:40:25.405Z\"}},{\"id\":4,\"name\":\"Raspberry Juice (1000ml)\",\"description\":\"Made from blended Raspberry Pi, water and sugar.\",\"price\":4.99,\"deluxePrice\":4.99,\"image\":\"raspberry_juice.jpg\",\"createdAt\":\"2025-03-24T09:40:25.380Z\",\"updatedAt\":\"2025-03-24T09:40:25.380Z\",\"deletedAt\":null,\"BasketItem\":{\"ProductId\":4,\"BasketId\":5,\"id\":8,\"quantity\":2,\"createdAt\":\"2025-03-24T09:40:25.405Z\",\"updatedAt\":\"2025-03-24T09:40:25.405Z\"}}]}}",
+        "statusCode": 200,
+        "responseTimeInMs": 142,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 946,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521231,
+      "cookies": [],
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/6",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/6",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 240,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521231,
+      "cookies": [],
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/7",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/7",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 151,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521232,
+      "cookies": [],
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/8",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/8",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 256,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521232,
+      "cookies": [],
+      "index": 13,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/9",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/9",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 273,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521233,
+      "cookies": [],
+      "index": 14,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/10",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/10",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 288,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521235,
+      "cookies": [],
+      "index": 15,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/11",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/11",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 164,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521236,
+      "cookies": [],
+      "index": 16,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/12",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/12",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 173,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521237,
+      "cookies": [],
+      "index": 17,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/13",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/13",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 300,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521237,
+      "cookies": [],
+      "index": 18,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/14",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/14",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 182,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521238,
+      "cookies": [],
+      "index": 19,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/15",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/15",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 314,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521238,
+      "cookies": [],
+      "index": 20,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/16",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/16",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 196,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521239,
+      "cookies": [],
+      "index": 21,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/17",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/17",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 100,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521354,
+      "cookies": [],
+      "index": 22,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/18",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/18",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 110,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521364,
+      "cookies": [],
+      "index": 23,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/19",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/19",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 116,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521374,
+      "cookies": [],
+      "index": 24,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/20",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/20",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 123,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521385,
+      "cookies": [],
+      "index": 25,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/21",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/21",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 122,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521401,
+      "cookies": [],
+      "index": 26,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/22",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/22",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 128,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521411,
+      "cookies": [],
+      "index": 27,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/23",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/23",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 134,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521420,
+      "cookies": [],
+      "index": 28,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/24",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/24",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 269,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521433,
+      "cookies": [],
+      "index": 29,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/25",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/25",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 137,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521435,
+      "cookies": [],
+      "index": 30,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/26",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/26",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 127,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521452,
+      "cookies": [],
+      "index": 31,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/27",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/27",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 132,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521455,
+      "cookies": [],
+      "index": 32,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/28",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/28",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 130,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521472,
+      "cookies": [],
+      "index": 33,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/29",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/29",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 135,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521476,
+      "cookies": [],
+      "index": 34,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/30",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/30",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 129,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521489,
+      "cookies": [],
+      "index": 35,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/31",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/31",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 136,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521491,
+      "cookies": [],
+      "index": 36,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/32",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/32",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 134,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521507,
+      "cookies": [],
+      "index": 37,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/33",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/33",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 157,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521509,
+      "cookies": [],
+      "index": 38,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/34",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/34",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 217,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521523,
+      "cookies": [],
+      "index": 39,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/35",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/35",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 155,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521523,
+      "cookies": [],
+      "index": 40,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/36",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/36",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 148,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521538,
+      "cookies": [],
+      "index": 41,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/37",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/37",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 155,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521540,
+      "cookies": [],
+      "index": 42,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/38",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/38",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 145,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521553,
+      "cookies": [],
+      "index": 43,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/39",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/39",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 148,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521555,
+      "cookies": [],
+      "index": 44,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/40",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/40",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 135,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521572,
+      "cookies": [],
+      "index": 45,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/41",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/41",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 131,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521580,
+      "cookies": [],
+      "index": 46,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/42",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/42",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 128,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521587,
+      "cookies": [],
+      "index": 47,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/43",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/43",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 115,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521603,
+      "cookies": [],
+      "index": 48,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/44",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/44",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 111,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521612,
+      "cookies": [],
+      "index": 49,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/45",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/45",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 108,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521619,
+      "cookies": [],
+      "index": 50,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/46",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/46",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 104,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521628,
+      "cookies": [],
+      "index": 51,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/47",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/47",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 93,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521642,
+      "cookies": [],
+      "index": 52,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/48",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/48",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 74,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521667,
+      "cookies": [],
+      "index": 53,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/49",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/49",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 68,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521678,
+      "cookies": [],
+      "index": 54,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/basket/50",
+      "data": "",
+      "method": "GET",
+      "headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImppbUBqdWljZS1zaC5vcCIsInBhc3N3b3JkIjoiZTU0MWNhN2VjZjcyYjhkMTI4NjQ3NGZjNjEzZTVlNDUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMTI3LjAuMC4xIiwicHJvZmlsZUltYWdlIjoiYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo0MDoyNS4yOTkgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNS0wMy0yNCAwOTo1NToyOS4wMjMgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNzQyODEwMzE4fQ.Ylpk5N7YSsbBDtMgvOfCDDW5fThwz3_A4FIuaXzI-LJgsxsCZKElUx7b01fNNIHRbxWZwGMx91veDqb5A4Wokwb5kcRIitjEAD2kGUEnMv--_iGk_yA7Zlj0w0hPWpEmfNIssvi3subUGRv7S1sezu_MF9XasrkiDai46DKPxKY\r\nPriority: u\u003d0\r\n",
+      "response": {
+        "url": "http://localhost:3000/rest/basket/50",
+        "headers": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nFeature-Policy: payment \u0027self\u0027\r\nX-Recruiting: /#/jobs\r\nContent-Type: application/json; charset\u003dutf-8\r\nContent-Length: 32\r\nETag: W/\"20-bff5r/a5MyNNWy9hjn8a8pOLDxA\"\r\nVary: Accept-Encoding\r\nDate: Mon, 24 Mar 2025 10:02:01 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout\u003d5\r\n\r\n",
+        "body": "{\"status\":\"success\",\"data\":null}",
+        "statusCode": 200,
+        "responseTimeInMs": 79,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        },
+        {
+          "rootExpression": {
+            "length": 32,
+            "approx": 1,
+            "variableName": "response.body",
+            "not": false,
+            "elementType": "ZestExpressionLength"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1742810521687,
+      "cookies": [],
+      "index": 55,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}
