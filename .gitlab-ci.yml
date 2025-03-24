@@ -26,7 +26,7 @@ start_services:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
 
-    # Create a simpler cleanup script focusing on Docker
+    # Create a simpler cleanup script focusing on Docker  
     - |
       cat > cleanup_port.sh << 'EOF'
       #!/bin/bash
@@ -86,12 +86,12 @@ run_pen_test:
     - bin-runner
   image: ghcr.io/zaproxy/zaproxy:stable
   script:
-    # Run your command and capture its output.
+    # Run your command and capture its output..
     - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /home/gitlab-runner/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/zest-scrips/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_fail.zst > data/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/premium_key_get.zst >> data/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_login_2.zst >> data/output.txt
