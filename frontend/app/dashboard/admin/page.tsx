@@ -1,9 +1,9 @@
 "use client";
 
-import { ShieldCheck, UserCog, UserPlus, Users, Search } from "lucide-react";
+import { ShieldCheck, UserCog, UserPlus, Users, Search, Users2 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { updateUserRole, findUser, getPendingUsers } from "./actions";
+import { updateUserRole, findUser, getPendingUsers, createTeam, getAllTeams, updateUserTeam, removeUserFromTeam } from "./actions";
 
 // Define types for our data structures
 interface User {
@@ -11,6 +11,13 @@ interface User {
   username: string;
   email: string;
   role: string;
+  teamId?: number;
+}
+
+interface Team {
+  id: number;
+  name: string;
+  users: User[];
 }
 
 export default function AdminDashboard() {
@@ -21,22 +28,34 @@ export default function AdminDashboard() {
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<string>(""); // "success" or "error"
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [tab, setTab] = useState<"pending" | "search">("pending"); // "pending" or "search"
+  const [tab, setTab] = useState<"pending" | "search" | "teams">("pending"); // "pending", "search", or "teams"
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [newTeamName, setNewTeamName] = useState<string>("");
+  const [selectedTeam, setSelectedTeam] = useState<string>("");
+  const [selectedUser, setSelectedUser] = useState<string>("");
 
-  // Fetch pending users on component mount
+  // Fetch pending users and teams on component mount
   useEffect(() => {
-    const fetchPendingUsers = async () => {
+    const fetchData = async () => {
       try {
-        const result = await getPendingUsers();
-        if (result.success && result.users) {
-          setPendingUsers(result.users);
+        const [pendingResult, teamsResult] = await Promise.all([
+          getPendingUsers(),
+          getAllTeams()
+        ]);
+        
+        if (pendingResult.success && pendingResult.users) {
+          setPendingUsers(pendingResult.users);
+        }
+        
+        if (teamsResult.success && teamsResult.teams) {
+          setTeams(teamsResult.teams);
         }
       } catch {
-        console.error("Error fetching pending users");
+        console.error("Error fetching data");
       }
     };
 
-    fetchPendingUsers();
+    fetchData();
   }, []);
 
   const handleSearch = async () => {
@@ -103,6 +122,97 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleCreateTeam = async () => {
+    if (!newTeamName) {
+      setMessage("Please enter a team name");
+      setMessageType("error");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const result = await createTeam(newTeamName);
+      
+      if (result.success) {
+        setMessage(`Successfully created team: ${newTeamName}`);
+        setMessageType("success");
+        setNewTeamName("");
+        
+        // Refresh teams list
+        const teamsResult = await getAllTeams();
+        if (teamsResult.success && teamsResult.teams) {
+          setTeams(teamsResult.teams);
+        }
+      } else {
+        setMessage(result.error || "Failed to create team");
+        setMessageType("error");
+      }
+    } catch {
+      setMessage("Error creating team");
+      setMessageType("error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleUpdateUserTeam = async () => {
+    if (!selectedUser || !selectedTeam) {
+      setMessage("Please select both a user and a team");
+      setMessageType("error");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const result = await updateUserTeam(selectedUser, selectedTeam);
+      
+      if (result.success) {
+        setMessage(result.message);
+        setMessageType("success");
+        
+        // Refresh teams list
+        const teamsResult = await getAllTeams();
+        if (teamsResult.success && teamsResult.teams) {
+          setTeams(teamsResult.teams);
+        }
+      } else {
+        setMessage(result.error || "Failed to update user's team");
+        setMessageType("error");
+      }
+    } catch {
+      setMessage("Error updating user's team");
+      setMessageType("error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoveUserFromTeam = async (username: string) => {
+    setIsLoading(true);
+    try {
+      const result = await removeUserFromTeam(username);
+      
+      if (result.success) {
+        setMessage(result.message);
+        setMessageType("success");
+        
+        // Refresh teams list
+        const teamsResult = await getAllTeams();
+        if (teamsResult.success && teamsResult.teams) {
+          setTeams(teamsResult.teams);
+        }
+      } else {
+        setMessage(result.error || "Failed to remove user from team");
+        setMessageType("error");
+      }
+    } catch {
+      setMessage("Error removing user from team");
+      setMessageType("error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-800 to-gray-900 text-white">
       <ShieldCheck className="w-16 h-16 text-yellow-400 mb-4" />
@@ -125,7 +235,23 @@ export default function AdminDashboard() {
           <Search className="w-5 h-5 mr-2" />
           User Search
         </button>
+        <button
+          onClick={() => setTab("teams")}
+          className={`px-6 py-3 flex items-center ${tab === "teams" ? "bg-yellow-700 text-white" : "bg-gray-700 text-gray-300"}`}
+        >
+          <Users2 className="w-5 h-5 mr-2" />
+          Teams
+        </button>
       </div>
+
+      {/* Message Display */}
+      {message && (
+        <div className={`mb-4 p-4 rounded-md ${
+          messageType === "success" ? "bg-green-600" : "bg-red-600"
+        }`}>
+          {message}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
         {/* Left column: User Role Management */}
@@ -188,7 +314,7 @@ export default function AdminDashboard() {
                 </div>
               )}
             </>
-          ) : (
+          ) : tab === "search" ? (
             <>
               <div className="flex items-center mb-4">
                 <UserCog className="w-6 h-6 text-yellow-400 mr-2" />
@@ -257,12 +383,104 @@ export default function AdminDashboard() {
                 )}
               </div>
             </>
-          )}
-          
-          {message && (
-            <div className={`p-3 mt-4 rounded-md ${messageType === 'success' ? 'bg-green-800' : 'bg-red-800'}`}
-                 dangerouslySetInnerHTML={{ __html: message }}
-            />
+          ) : (
+            <>
+              <div className="flex items-center mb-4">
+                <Users2 className="w-6 h-6 text-yellow-400 mr-2" />
+                <h2 className="text-xl font-semibold">Team Management</h2>
+              </div>
+              
+              {/* Create New Team */}
+              <div className="mb-6 p-4 border border-gray-700 rounded-md">
+                <h3 className="text-lg font-semibold mb-2">Create New Team</h3>
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    value={newTeamName}
+                    onChange={(e) => setNewTeamName(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    placeholder="Enter team name"
+                  />
+                  <button
+                    onClick={handleCreateTeam}
+                    disabled={isLoading}
+                    className="px-4 py-2 bg-green-600 hover:bg-green-500 text-white rounded-md transition-colors disabled:opacity-50"
+                  >
+                    Create
+                  </button>
+                </div>
+              </div>
+
+              {/* Assign User to Team */}
+              <div className="mb-6 p-4 border border-gray-700 rounded-md">
+                <h3 className="text-lg font-semibold mb-2">Assign User to Team</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm text-gray-300 mb-1">Select User</label>
+                    <select
+                      value={selectedUser}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedUser(e.target.value)}
+                      className="w-full px-3 py-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    >
+                      <option value="">Select a user</option>
+                      {teams.flatMap(team => team.users).map(user => (
+                        <option key={user.id} value={user.username}>
+                          {user.username} ({user.role})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-300 mb-1">Select Team</label>
+                    <select
+                      value={selectedTeam}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedTeam(e.target.value)}
+                      className="w-full px-3 py-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    >
+                      <option value="">Select a team</option>
+                      {teams.map(team => (
+                        <option key={team.id} value={team.name}>
+                          {team.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <button
+                    onClick={handleUpdateUserTeam}
+                    disabled={isLoading}
+                    className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md transition-colors disabled:opacity-50"
+                  >
+                    Assign to Team
+                  </button>
+                </div>
+              </div>
+
+              {/* Teams List */}
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Teams</h3>
+                <div className="space-y-4">
+                  {teams.map(team => (
+                    <div key={team.id} className="p-4 border border-gray-700 rounded-md">
+                      <h4 className="font-semibold mb-2">{team.name}</h4>
+                      <div className="space-y-2">
+                        {team.users.map(user => (
+                          <div key={user.id} className="flex items-center justify-between">
+                            <span>{user.username} ({user.role})</span>
+                            <button
+                              onClick={() => handleRemoveUserFromTeam(user.username)}
+                              disabled={isLoading}
+                              className="px-2 py-1 text-sm bg-red-600 hover:bg-red-500 text-white rounded-md transition-colors disabled:opacity-50"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
           )}
         </div>
         
