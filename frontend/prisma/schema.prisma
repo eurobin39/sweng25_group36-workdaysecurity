@@ -19,6 +19,23 @@ model User {
   username String @unique
   password String
   role     String
+  team     Team?  @relation(fields: [teamId], references: [id])
+  teamId   Int?
+  projects Project[]
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  users     User[]
+  startDate DateTime @default(now())
+  status    String?
+}
+
+model Team {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  users User[]
 }
 
 model security_test_results {
