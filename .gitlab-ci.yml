@@ -21,7 +21,7 @@ start_services:
   services:
     - docker:dind
   tags:
-    - bin-runner
+    - tim-mac
   script:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
@@ -70,7 +70,7 @@ extract_metadata:
   stage: extract_metadata
 
   tags:
-    - bin-runner
+    - tim-mac
   script:
     - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   artifacts:
@@ -83,15 +83,24 @@ extract_metadata:
 run_pen_test:
   stage: run_pen_test
   tags:
-    - bin-runner
+    - tim-mac
   image: ghcr.io/zaproxy/zaproxy:stable
   script:
     # Run your command and capture its output..
     - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    # For tim-mac where functionality is being tested
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    
+
+    # For Raspberry Pi:
+    # - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    # - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    # - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+    
+    # Unsure for what this is
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_fail.zst > data/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/premium_key_get.zst >> data/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_login_2.zst >> data/output.txt
@@ -140,7 +149,7 @@ save_results:
     - ls -la
 
   tags:
-    - bin-runner
+    - tim-mac
 
   script:
     # Make sure we're still in our virtual environment when running the script
@@ -159,7 +168,7 @@ save_results:
 grafana_visualization:
   stage: visualize
   tags:
-    - bin-runner
+    - tim-mac
   before_script:
     - echo "Directory status:"
     - ls -la $CI_PROJECT_DIR/Grafana/provisioning

