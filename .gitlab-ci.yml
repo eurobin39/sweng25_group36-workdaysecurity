@@ -7,11 +7,11 @@
 
 
 stages:
-  - start_services
-  - extract_metadata
+  #- start_services
+  #- extract_metadata
   - run_pen_test
   - save_results
-  - visualize
+  #- visualize
 
 # Stage 1 start target service
 start_services:
