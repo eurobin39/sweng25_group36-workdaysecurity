@@ -14,69 +14,69 @@ stages:
   #- visualize
 
 # Stage 1 start target service
-start_services:
-  image: docker:latest
-  stage: start_services
+# start_services:
+#   image: docker:latest
+#   stage: start_services
 
-  services:
-    - docker:dind
-  tags:
-    - tim-mac
-  script:
-    - echo "Checking if Juice Shop is already running..."
-    - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
+#   services:
+#     - docker:dind
+#   tags:
+#     - tim-mac
+#   script:
+#     - echo "Checking if Juice Shop is already running..."
+#     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
 
-    # Create a simpler cleanup script focusing on Docker  
-    - |
-      cat > cleanup_port.sh << 'EOF'
-      #!/bin/bash
-      # First try to stop any container using port 3000
-      echo "Removing any containers using port 3000..."
-      docker ps -q --filter publish=3000 | xargs -r docker stop
-      docker ps -q --filter publish=3000 | xargs -r docker rm
+#     # Create a simpler cleanup script focusing on Docker  
+#     - |
+#       cat > cleanup_port.sh << 'EOF'
+#       #!/bin/bash
+#       # First try to stop any container using port 3000
+#       echo "Removing any containers using port 3000..."
+#       docker ps -q --filter publish=3000 | xargs -r docker stop
+#       docker ps -q --filter publish=3000 | xargs -r docker rm
 
-      # If port is still in use, try to use a different port
-      if lsof -i :3000 >/dev/null 2>&1 || netstat -tuln 2>/dev/null | grep -q ":3000 "; then
-        echo "Port 3000 is still in use by a system process - will use port 3001 instead"
-        export JUICE_PORT=3001
-      else
-        export JUICE_PORT=3000
-      fi
-      echo "JUICE_PORT=$JUICE_PORT" > port.env
-      EOF
+#       # If port is still in use, try to use a different port
+#       if lsof -i :3000 >/dev/null 2>&1 || netstat -tuln 2>/dev/null | grep -q ":3000 "; then
+#         echo "Port 3000 is still in use by a system process - will use port 3001 instead"
+#         export JUICE_PORT=3001
+#       else
+#         export JUICE_PORT=3000
+#       fi
+#       echo "JUICE_PORT=$JUICE_PORT" > port.env
+#       EOF
 
-    - chmod +x cleanup_port.sh
-    - ./cleanup_port.sh
-    - source port.env || export JUICE_PORT=3001
+#     - chmod +x cleanup_port.sh
+#     - ./cleanup_port.sh
+#     - source port.env || export JUICE_PORT=3001
 
-    # Start Juice Shop with the decided port
-    - echo "Starting Juice Shop on port $JUICE_PORT..."
-    - docker run -d --name juice-shop -p $JUICE_PORT:3000 bkimminich/juice-shop:latest-arm
+#     # Start Juice Shop with the decided port
+#     - echo "Starting Juice Shop on port $JUICE_PORT..."
+#     - docker run -d --name juice-shop -p $JUICE_PORT:3000 bkimminich/juice-shop:latest-arm
 
-    - sleep 5
-    - docker ps
-    - echo "Juice Shop running on port $JUICE_PORT"
+#     - sleep 5
+#     - docker ps
+#     - echo "Juice Shop running on port $JUICE_PORT"
 
-    # Update any URLs in configurations to match the chosen port
-    - |
-      if [ "$JUICE_PORT" != "3000" ]; then
-        echo "Port was changed to $JUICE_PORT - updating any test URLs..."
-        find . -type f -name "*.zst" -o -name "*.json" | xargs -r sed -i "s/localhost:3000/localhost:$JUICE_PORT/g" || true
-      fi
+#     # Update any URLs in configurations to match the chosen port
+#     - |
+#       if [ "$JUICE_PORT" != "3000" ]; then
+#         echo "Port was changed to $JUICE_PORT - updating any test URLs..."
+#         find . -type f -name "*.zst" -o -name "*.json" | xargs -r sed -i "s/localhost:3000/localhost:$JUICE_PORT/g" || true
+#       fi
 
 
-# Stage 2 extract necessary metadata
-extract_metadata:
-  stage: extract_metadata
+# # Stage 2 extract necessary metadata
+# extract_metadata:
+#   stage: extract_metadata
 
-  tags:
-    - tim-mac
-  script:
-    - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
-  artifacts:
-    paths:
-      - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
-    when: always
+#   tags:
+#     - tim-mac
+#   script:
+#     - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+#   artifacts:
+#     paths:
+#       - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+#     when: always
 
 
 # Stage 3 run pen tests
