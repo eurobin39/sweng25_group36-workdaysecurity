@@ -7,89 +7,89 @@
 
 
 stages:
-  #- start_services
-  #- extract_metadata
+  - start_services
+  - extract_metadata
   - run_pen_test
   - save_results
-  #- visualize
+  - visualize
 
 # Stage 1 start target service
-# start_services:
-#   image: docker:latest
-#   stage: start_services
+start_services:
+  image: docker:latest
+  stage: start_services
 
-#   services:
-#     - docker:dind
-#   tags:
-#     - tim-mac
-#   script:
-#     - echo "Checking if Juice Shop is already running..."
-#     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
+  services:
+    - docker:dind
+  tags:
+    - bin-runner
+  script:
+    - echo "Checking if Juice Shop is already running..."
+    - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
 
-#     # Create a simpler cleanup script focusing on Docker  
-#     - |
-#       cat > cleanup_port.sh << 'EOF'
-#       #!/bin/bash
-#       # First try to stop any container using port 3000
-#       echo "Removing any containers using port 3000..."
-#       docker ps -q --filter publish=3000 | xargs -r docker stop
-#       docker ps -q --filter publish=3000 | xargs -r docker rm
+    # Create a simpler cleanup script focusing on Docker  
+    - |
+      cat > cleanup_port.sh << 'EOF'
+      #!/bin/bash
+      # First try to stop any container using port 3000
+      echo "Removing any containers using port 3000..."
+      docker ps -q --filter publish=3000 | xargs -r docker stop
+      docker ps -q --filter publish=3000 | xargs -r docker rm
 
-#       # If port is still in use, try to use a different port
-#       if lsof -i :3000 >/dev/null 2>&1 || netstat -tuln 2>/dev/null | grep -q ":3000 "; then
-#         echo "Port 3000 is still in use by a system process - will use port 3001 instead"
-#         export JUICE_PORT=3001
-#       else
-#         export JUICE_PORT=3000
-#       fi
-#       echo "JUICE_PORT=$JUICE_PORT" > port.env
-#       EOF
+      # If port is still in use, try to use a different port
+      if lsof -i :3000 >/dev/null 2>&1 || netstat -tuln 2>/dev/null | grep -q ":3000 "; then
+        echo "Port 3000 is still in use by a system process - will use port 3001 instead"
+        export JUICE_PORT=3001
+      else
+        export JUICE_PORT=3000
+      fi
+      echo "JUICE_PORT=$JUICE_PORT" > port.env
+      EOF
 
-#     - chmod +x cleanup_port.sh
-#     - ./cleanup_port.sh
-#     - source port.env || export JUICE_PORT=3001
+    - chmod +x cleanup_port.sh
+    - ./cleanup_port.sh
+    - source port.env || export JUICE_PORT=3001
 
-#     # Start Juice Shop with the decided port
-#     - echo "Starting Juice Shop on port $JUICE_PORT..."
-#     - docker run -d --name juice-shop -p $JUICE_PORT:3000 bkimminich/juice-shop:latest-arm
+    # Start Juice Shop with the decided port
+    - echo "Starting Juice Shop on port $JUICE_PORT..."
+    - docker run -d --name juice-shop -p $JUICE_PORT:3000 bkimminich/juice-shop:latest-arm
 
-#     - sleep 5
-#     - docker ps
-#     - echo "Juice Shop running on port $JUICE_PORT"
+    - sleep 5
+    - docker ps
+    - echo "Juice Shop running on port $JUICE_PORT"
 
-#     # Update any URLs in configurations to match the chosen port
-#     - |
-#       if [ "$JUICE_PORT" != "3000" ]; then
-#         echo "Port was changed to $JUICE_PORT - updating any test URLs..."
-#         find . -type f -name "*.zst" -o -name "*.json" | xargs -r sed -i "s/localhost:3000/localhost:$JUICE_PORT/g" || true
-#       fi
+    # Update any URLs in configurations to match the chosen port
+    - |
+      if [ "$JUICE_PORT" != "3000" ]; then
+        echo "Port was changed to $JUICE_PORT - updating any test URLs..."
+        find . -type f -name "*.zst" -o -name "*.json" | xargs -r sed -i "s/localhost:3000/localhost:$JUICE_PORT/g" || true
+      fi
 
 
-# # Stage 2 extract necessary metadata
-# extract_metadata:
-#   stage: extract_metadata
+# Stage 2 extract necessary metadata
+extract_metadata:
+  stage: extract_metadata
 
-#   tags:
-#     - tim-mac
-#   script:
-#     - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
-#   artifacts:
-#     paths:
-#       - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
-#     when: always
+  tags:
+    - bin-runner
+  script:
+    - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
+    when: always
 
 
 # Stage 3 run pen tests
 run_pen_test:
   stage: run_pen_test
   tags:
-    - tim-mac
+    - bin-runner
   image: ghcr.io/zaproxy/zaproxy:stable
   script:
     # Run your command and capture its output..
     - mkdir -p SecOps/artifacts
     - START_TIME=$(date +%s)
-    # For tim-mac where functionality is being tested
+    # For tim-mac where functionality was tested
     - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
     - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
     - /System/Volumes/Data/Applications/ZAP.app/Contents/Java/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
@@ -100,11 +100,15 @@ run_pen_test:
     # - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_fail.zst" > $CI_PROJECT_DIR/SecOps/artifacts/output.txt
     # - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/premium_key_get.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
     # - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/sql_injection_login_2.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
-    
+    # - /home/zap/zap.sh -cmd -script "$CI_PROJECT_DIR/SecOps/zest-scripts/idor_basket1.zst" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt
+
+
     # Unsure for what this is
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_fail.zst > data/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/premium_key_get.zst >> data/output.txt
     # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/sql_injection_login_2.zst >> data/output.txt
+    # - docker run -v ./zest-scripts:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -script wrk/idor_basket1.zst >> data/output.txt
+
     - END_TIME=$(date +%s)
     - 'echo "Time taken: $((END_TIME - START_TIME)) seconds" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
     - 'echo "Test Suite: Zest Security Tests" >> $CI_PROJECT_DIR/SecOps/artifacts/output.txt'
@@ -150,7 +154,7 @@ save_results:
     - ls -la
 
   tags:
-    - tim-mac
+    - bin-runner
 
   script:
     # Make sure we're still in our virtual environment when running the script
@@ -166,34 +170,34 @@ save_results:
 
 # Stage 5 Grafana
 
-# grafana_visualization:
-#   stage: visualize
-#   tags:
-#     - tim-mac
-#   before_script:
-#     - echo "Directory status:"
-#     - ls -la $CI_PROJECT_DIR/Grafana/provisioning
-#     - ls -la $CI_PROJECT_DIR/Grafana/provisioning/datasources
-#     - ls -la $CI_PROJECT_DIR/Grafana/provisioning/dashboards
+grafana_visualization:
+  stage: visualize
+  tags:
+    - bin-runner
+  before_script:
+    - echo "Directory status:"
+    - ls -la $CI_PROJECT_DIR/Grafana/provisioning
+    - ls -la $CI_PROJECT_DIR/Grafana/provisioning/datasources
+    - ls -la $CI_PROJECT_DIR/Grafana/provisioning/dashboards
 
-#   script:
-#     - echo "Stopping any existing Grafana container..."
-#     - docker stop grafana || true
-#     - docker rm grafana || true
-#     - echo "Starting Grafana..."
-#     - docker run -d --name=grafana --network=host
-#         --user "$(id -u gitlab-runner):$(id -g gitlab-runner)"
-#         -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-#         -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-#         -v grafana_data:/var/lib/grafana
-#         -e "GF_SERVER_HTTP_PORT=4000"
-#         grafana/grafana:latest
-#     - sleep 20
-#     - echo "Checking Grafana logs..."
-#     # docker logs grafana
-#     - docker exec grafana ls -la /etc/grafana/provisioning/datasources/
-#     - docker exec grafana ls -la /etc/grafana/provisioning/dashboards/
-#     - docker exec grafana cat /etc/grafana/provisioning/datasources/datasource.yaml || echo "No datasource.yaml found"
-#     - docker exec grafana cat /etc/grafana/provisioning/dashboards/dashboard.yaml || echo "No dashboard.yaml found"
-#     - echo "Testing Grafana..."
-#     - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query= || echo "curl failed with $?"
+  script:
+    - echo "Stopping any existing Grafana container..."
+    - docker stop grafana || true
+    - docker rm grafana || true
+    - echo "Starting Grafana..."
+    - docker run -d --name=grafana --network=host
+        --user "$(id -u gitlab-runner):$(id -g gitlab-runner)"
+        -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+        -v grafana_data:/var/lib/grafana
+        -e "GF_SERVER_HTTP_PORT=4000"
+        grafana/grafana:latest
+    - sleep 20
+    - echo "Checking Grafana logs..."
+    # docker logs grafana
+    - docker exec grafana ls -la /etc/grafana/provisioning/datasources/
+    - docker exec grafana ls -la /etc/grafana/provisioning/dashboards/
+    - docker exec grafana cat /etc/grafana/provisioning/datasources/datasource.yaml || echo "No datasource.yaml found"
+    - docker exec grafana cat /etc/grafana/provisioning/dashboards/dashboard.yaml || echo "No dashboard.yaml found"
+    - echo "Testing Grafana..."
+    - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query= || echo "curl failed with $?"
