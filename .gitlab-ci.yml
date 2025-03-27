@@ -165,34 +165,34 @@ save_results:
 
 # Stage 5 Grafana
 
-grafana_visualization:
-  stage: visualize
-  tags:
-    - tim-mac
-  before_script:
-    - echo "Directory status:"
-    - ls -la $CI_PROJECT_DIR/Grafana/provisioning
-    - ls -la $CI_PROJECT_DIR/Grafana/provisioning/datasources
-    - ls -la $CI_PROJECT_DIR/Grafana/provisioning/dashboards
+# grafana_visualization:
+#   stage: visualize
+#   tags:
+#     - tim-mac
+#   before_script:
+#     - echo "Directory status:"
+#     - ls -la $CI_PROJECT_DIR/Grafana/provisioning
+#     - ls -la $CI_PROJECT_DIR/Grafana/provisioning/datasources
+#     - ls -la $CI_PROJECT_DIR/Grafana/provisioning/dashboards
 
-  script:
-    - echo "Stopping any existing Grafana container..."
-    - docker stop grafana || true
-    - docker rm grafana || true
-    - echo "Starting Grafana..."
-    - docker run -d --name=grafana --network=host
-        --user "$(id -u gitlab-runner):$(id -g gitlab-runner)"
-        -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-        -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-        -v grafana_data:/var/lib/grafana
-        -e "GF_SERVER_HTTP_PORT=4000"
-        grafana/grafana:latest
-    - sleep 20
-    - echo "Checking Grafana logs..."
-    # docker logs grafana
-    - docker exec grafana ls -la /etc/grafana/provisioning/datasources/
-    - docker exec grafana ls -la /etc/grafana/provisioning/dashboards/
-    - docker exec grafana cat /etc/grafana/provisioning/datasources/datasource.yaml || echo "No datasource.yaml found"
-    - docker exec grafana cat /etc/grafana/provisioning/dashboards/dashboard.yaml || echo "No dashboard.yaml found"
-    - echo "Testing Grafana..."
-    - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query= || echo "curl failed with $?"
+#   script:
+#     - echo "Stopping any existing Grafana container..."
+#     - docker stop grafana || true
+#     - docker rm grafana || true
+#     - echo "Starting Grafana..."
+#     - docker run -d --name=grafana --network=host
+#         --user "$(id -u gitlab-runner):$(id -g gitlab-runner)"
+#         -v $CI_PROJECT_DIR/Grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+#         -v $CI_PROJECT_DIR/Grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+#         -v grafana_data:/var/lib/grafana
+#         -e "GF_SERVER_HTTP_PORT=4000"
+#         grafana/grafana:latest
+#     - sleep 20
+#     - echo "Checking Grafana logs..."
+#     # docker logs grafana
+#     - docker exec grafana ls -la /etc/grafana/provisioning/datasources/
+#     - docker exec grafana ls -la /etc/grafana/provisioning/dashboards/
+#     - docker exec grafana cat /etc/grafana/provisioning/datasources/datasource.yaml || echo "No datasource.yaml found"
+#     - docker exec grafana cat /etc/grafana/provisioning/dashboards/dashboard.yaml || echo "No dashboard.yaml found"
+#     - echo "Testing Grafana..."
+#     - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query= || echo "curl failed with $?"
