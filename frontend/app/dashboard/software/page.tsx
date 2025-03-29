@@ -291,7 +291,7 @@ export default function SoftwareEngineerDashboard() {
             <>
               <h2 className="text-xl font-semibold mb-6">System Analytics</h2>
               <Link
-                href="http://172.20.10.12:4000/d/security-test-dashboard/security-test-dashboard?orgId=1&from=now-6h&to=now&timezone=browser"
+                href="http://localhost:4000/d/security-test-dashboard/security-test-dashboard?orgId=1&from=now-6h&to=now&timezone=browser"
                 target="_blank"
               >
                 <button className="px-6 py-3 bg-lime-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:bg-lime-500 hover:scale-105 w-60">

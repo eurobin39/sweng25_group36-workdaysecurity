@@ -12,3 +12,15 @@ variables:
     includeAll: true
     allValue: "'ALL'"
     sort: 1
+
+  - name: Branch
+    type: query
+    label: "Branch"
+    hide: 0
+    query: "SELECT DISTINCT branch FROM security_test_results ORDER BY branch;"
+    datasource: PostgreSQL
+    refresh: 2
+    multi: true
+    includeAll: true
+    allValue: "'ALL'"
+    sort: 1

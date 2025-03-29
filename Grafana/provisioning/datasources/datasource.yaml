@@ -3,13 +3,13 @@ datasources:
   - name: PostgreSQL
     type: postgres
     access: proxy
-    url: 172.20.10.12:5432  # This is the IP address of the PostgreSQL
-    user: postgres
+    url: sweng36.postgres.database.azure.com:5432  # This is the IP address of the PostgreSQL
+    user: eurobae
     secureJsonData:
-      password: awsrdsPassword1234
+      password: Dkfvksmreo12!
     jsonData:
-      sslmode: "disable"
-      database: zap_db
+      sslmode: "require"
+      database: ZAP_DB
       postgresVersion: 1400
       timescaledb: false
     readOnly: false

@@ -21,8 +21,7 @@ start_services:
   services:
     - docker:dind
   tags:
-    #- bin-runner
-    - euro-mac
+    - bin-runner
   script:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
@@ -71,8 +70,7 @@ extract_metadata:
   stage: extract_metadata
 
   tags:
-    #- bin-runner
-    - euro-mac
+    - bin-runner
   script:
     - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   artifacts:
@@ -85,8 +83,7 @@ extract_metadata:
 run_pen_test:
   stage: run_pen_test
   tags:
-    #- bin-runner
-    - euro-mac
+    - bin-runner
   image: ghcr.io/zaproxy/zaproxy:stable
   script:
     # Run your command and capture its output.
@@ -143,8 +140,7 @@ save_results:
     - ls -la
 
   tags:
-    #- bin-runner
-    - euro-mac
+    - bin-runner
 
   script:
     # Make sure we're still in our virtual environment when running the script
@@ -163,8 +159,7 @@ save_results:
 grafana_visualization:
   stage: visualize
   tags:
-    #- bin-runner
-    - euro-mac
+    - bin-runner
   before_script:
     - echo "Directory status:"
     - ls -la $CI_PROJECT_DIR/Grafana/provisioning
@@ -191,4 +186,4 @@ grafana_visualization:
     - docker exec grafana cat /etc/grafana/provisioning/datasources/datasource.yaml || echo "No datasource.yaml found"
     - docker exec grafana cat /etc/grafana/provisioning/dashboards/dashboard.yaml || echo "No dashboard.yaml found"
     - echo "Testing Grafana..."
-    - curl -s -u admin:admin http://172.20.10.12:4000/api/search?query= || echo "curl failed with $?"
+    - curl -s -u admin:admin http://localhost:4000/api/search?query= || echo "curl failed with $?"
