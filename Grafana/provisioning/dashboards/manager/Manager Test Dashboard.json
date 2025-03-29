@@ -15,11 +15,11 @@
         }
       ]
     },
-    "description": "Management Dashboard for security test results",
+    "description": "Visualization of security test results",
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 20,
+    "id": 6,
     "links": [],
     "panels": [
       {
@@ -41,12 +41,8 @@
                   "value": null
                 },
                 {
-                  "color": "#EAB839",
-                  "value": 10
-                },
-                {
                   "color": "red",
-                  "value": 15
+                  "value": 10
                 }
               ]
             }
@@ -55,20 +51,21 @@
         },
         "gridPos": {
           "h": 4,
-          "w": 9,
-          "x": 2,
+          "w": 7,
+          "x": 0,
           "y": 0
         },
-        "id": 7,
+        "id": 13,
         "options": {
           "minVizHeight": 75,
           "minVizWidth": 75,
           "orientation": "auto",
           "reduceOptions": {
             "calcs": [
-              "lastNotNull"
+              "uniqueValues"
             ],
-            "fields": "",
+            "fields": "/^fail_rate$/",
+            "limit": 5,
             "values": true
           },
           "showThresholdLabels": false,
@@ -85,7 +82,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "SELECT \n    status, COUNT(*) AS count\nFROM security_test_results\nGROUP BY status;\n",
+            "rawSql": "SELECT \n    branch,\n    COUNT(status) AS total_tests,  \n    SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) AS failed_tests,\n    (SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) * 100.0 / COUNT(status)) AS fail_rate\nFROM security_test_results\nGROUP BY branch\nORDER BY fail_rate DESC\nLIMIT 3;\n",
             "refId": "A",
             "sql": {
               "columns": [
@@ -106,7 +103,7 @@
             }
           }
         ],
-        "title": "Test Result(Overall)",
+        "title": "Branches with High Failure Rate",
         "type": "gauge"
       },
       {
@@ -117,7 +114,7 @@
         "fieldConfig": {
           "defaults": {
             "color": {
-              "mode": "palette-classic"
+              "mode": "continuous-BlPu"
             },
             "custom": {
               "axisBorderShow": false,
@@ -132,7 +129,7 @@
                 "tooltip": false,
                 "viz": false
               },
-              "lineWidth": 0,
+              "lineWidth": 1,
               "scaleDistribution": {
                 "type": "linear"
               },
@@ -140,18 +137,8 @@
                 "mode": "off"
               }
             },
-            "mappings": [
-              {
-                "options": {
-                  "sweng25_group36_workdaysecurity": {
-                    "color": "red",
-                    "index": 0,
-                    "text": "SWENG25"
-                  }
-                },
-                "type": "value"
-              }
-            ],
+            "mappings": [],
+            "min": 0,
             "thresholds": {
               "mode": "absolute",
               "steps": [
@@ -169,130 +156,12 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 5,
-          "w": 4,
-          "x": 11,
+          "h": 7,
+          "w": 8,
+          "x": 7,
           "y": 0
         },
-        "id": 2,
-        "options": {
-          "barRadius": 0.15,
-          "barWidth": 0.24,
-          "colorByField": "repository",
-          "fullHighlight": false,
-          "groupWidth": 0.7,
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "orientation": "auto",
-          "showValue": "auto",
-          "stacking": "none",
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          },
-          "xTickLabelRotation": 0,
-          "xTickLabelSpacing": 0
-        },
-        "pluginVersion": "11.5.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "grafana-postgresql-datasource",
-              "uid": "PCC52D03280B7034C"
-            },
-            "editorMode": "code",
-            "format": "table",
-            "rawQuery": true,
-            "rawSql": "SELECT \n    repository,\n    ROUND(\n        (SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) * 100.0) / COUNT(*), 2\n    ) AS success_rate\nFROM security_test_results\nGROUP BY repository\nORDER BY success_rate DESC;\n",
-            "refId": "A",
-            "sql": {
-              "columns": [
-                {
-                  "parameters": [],
-                  "type": "function"
-                }
-              ],
-              "groupBy": [
-                {
-                  "property": {
-                    "type": "string"
-                  },
-                  "type": "groupBy"
-                }
-              ],
-              "limit": 50
-            }
-          }
-        ],
-        "title": "Success Rate / Repo",
-        "type": "barchart"
-      },
-      {
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "PCC52D03280B7034C"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "continuous-GrYlRd"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisGridShow": true,
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "fillOpacity": 100,
-              "gradientMode": "opacity",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineWidth": 4,
-              "scaleDistribution": {
-                "log": 2,
-                "type": "symlog"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "#EAB839",
-                  "value": 10
-                },
-                {
-                  "color": "red",
-                  "value": 20
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 5,
-          "w": 7,
-          "x": 15,
-          "y": 0
-        },
-        "id": 8,
+        "id": 9,
         "options": {
           "barRadius": 0,
           "barWidth": 0.97,
@@ -325,7 +194,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "SELECT \n    project_id, \n    COUNT(*) AS total_tests,\n    SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) AS passed_tests,\n    ROUND(100.0 * SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) / COUNT(*)::numeric, 2) AS pass_rate\nFROM security_test_results\nGROUP BY project_id\nORDER BY total_tests DESC;\n\n",
+            "rawSql": "SELECT \n    a.name AS assertion_name,\n    str.branch,\n    COUNT(*) AS fail_count\nFROM assertions a\nJOIN security_test_results str ON a.commit_hash = str.commit_hash\nWHERE a.status = 'fail'\n  AND (\n      '${branch:raw}' = 'All' \n      OR str.branch = ANY(STRING_TO_ARRAY('${branch:csv}', ','))\n  )\nGROUP BY assertion_name, str.branch\nORDER BY \n    CASE WHEN '${branch:raw}' = 'All' THEN str.branch ELSE '' END,\n    fail_count DESC\nLIMIT 10;",
             "refId": "A",
             "sql": {
               "columns": [
@@ -346,91 +215,8 @@
             }
           }
         ],
-        "title": "Security Test Execution & Success Rate by Project",
+        "title": "Failing Assertions",
         "type": "barchart"
-      },
-      {
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "PCC52D03280B7034C"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              }
-            },
-            "mappings": []
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 7,
-          "w": 9,
-          "x": 2,
-          "y": 4
-        },
-        "id": 6,
-        "options": {
-          "displayLabels": [],
-          "legend": {
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "pieType": "donut",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "11.5.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "grafana-postgresql-datasource",
-              "uid": "PCC52D03280B7034C"
-            },
-            "editorMode": "code",
-            "format": "table",
-            "rawQuery": true,
-            "rawSql": "SELECT \n    branch, \n    status, \n    COUNT(*) AS count\nFROM security_test_results\nGROUP BY branch, status\nORDER BY branch;\n",
-            "refId": "A",
-            "sql": {
-              "columns": [
-                {
-                  "parameters": [],
-                  "type": "function"
-                }
-              ],
-              "groupBy": [
-                {
-                  "property": {
-                    "type": "string"
-                  },
-                  "type": "groupBy"
-                }
-              ],
-              "limit": 50
-            }
-          }
-        ],
-        "title": "Branch Test Result",
-        "type": "piechart"
       },
       {
         "datasource": {
@@ -494,11 +280,11 @@
         },
         "gridPos": {
           "h": 6,
-          "w": 11,
-          "x": 11,
-          "y": 5
+          "w": 9,
+          "x": 15,
+          "y": 0
         },
-        "id": 3,
+        "id": 8,
         "options": {
           "legend": {
             "calcs": [],
@@ -522,7 +308,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "SELECT \n    DATE(timestamp) AS test_date, \n    repository,\n    COUNT(*) AS total_tests,\n    SUM(CASE WHEN vulnerability_found = TRUE THEN 1 ELSE 0 END) AS vulnerabilities_detected,\n    ROUND(AVG(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) * 100.0, 2) AS avg_fail_rate\nFROM security_test_results\nWHERE timestamp >= NOW() - INTERVAL '30 days'\nGROUP BY test_date, repository\nORDER BY test_date ASC, repository;\n",
+            "rawSql": "WITH \n-- 1. 일별 기본 데이터 계산 (브랜치별)\ndaily_security_stats AS (\n  SELECT \n    DATE(timestamp) AS test_date,\n    branch,\n    COUNT(*) AS total_tests,\n    SUM(CASE WHEN vulnerability_found THEN 1 ELSE 0 END) AS vulnerabilities_found,\n    SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) AS failed_tests\n  FROM security_test_results\n  WHERE (\n    '${branch:raw}' = 'All' \n    OR branch = ANY(STRING_TO_ARRAY('${branch:csv}', ','))\n  )\n  GROUP BY DATE(timestamp), branch\n),\n\n-- 2. 누적 데이터 계산 (브랜치별)\ncumulative_security_stats AS (\n  SELECT\n    test_date,\n    branch,\n    -- 누적 테스트 수\n    SUM(total_tests) OVER (PARTITION BY branch ORDER BY test_date) AS cumulative_tests,\n    -- 누적 취약점 발견 수\n    SUM(vulnerabilities_found) OVER (PARTITION BY branch ORDER BY test_date) AS cumulative_vulnerabilities,\n    -- 누적 실패 테스트 수\n    SUM(failed_tests) OVER (PARTITION BY branch ORDER BY test_date) AS cumulative_failures,\n    -- 누적 취약점 비율 (취약점 발견 수 / 전체 테스트 수)\n    ROUND(\n      SUM(vulnerabilities_found) OVER (PARTITION BY branch ORDER BY test_date) * 100.0 / \n      NULLIF(SUM(total_tests) OVER (PARTITION BY branch ORDER BY test_date), 0),\n    2) AS vulnerability_rate\n  FROM daily_security_stats\n)\n\n-- 3. 최종 결과 (브랜치별)\nSELECT\n  test_date,\n  branch,\n  vulnerability_rate,\n  -- 7일 이동 평균 (추세선 부드럽게 표현)\n  ROUND(\n    AVG(vulnerability_rate) OVER (PARTITION BY branch ORDER BY test_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW),\n  2) AS moving_avg_7day,\n  -- 주간 변화율 (전주 대비 변화)\n  ROUND(\n    vulnerability_rate - LAG(vulnerability_rate, 7) OVER (PARTITION BY branch ORDER BY test_date),\n  2) AS week_over_week_change\nFROM cumulative_security_stats\nORDER BY branch, test_date;",
             "refId": "A",
             "sql": {
               "columns": [
@@ -565,12 +351,8 @@
                   "value": null
                 },
                 {
-                  "color": "#EAB839",
-                  "value": 30
-                },
-                {
                   "color": "red",
-                  "value": 40
+                  "value": 50
                 }
               ]
             }
@@ -578,28 +360,26 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 3,
-          "w": 9,
-          "x": 2,
-          "y": 11
+          "h": 7,
+          "w": 7,
+          "x": 0,
+          "y": 4
         },
-        "id": 4,
+        "id": 11,
         "options": {
-          "colorMode": "background",
-          "graphMode": "area",
-          "justifyMode": "center",
+          "minVizHeight": 75,
+          "minVizWidth": 75,
           "orientation": "auto",
-          "percentChangeColorMode": "standard",
           "reduceOptions": {
             "calcs": [
               "lastNotNull"
             ],
-            "fields": "/.*/",
+            "fields": "",
             "values": false
           },
-          "showPercentChange": false,
-          "textMode": "auto",
-          "wideLayout": true
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
         },
         "pluginVersion": "11.5.0",
         "targets": [
@@ -611,7 +391,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "SELECT \n    test_type, \n    COUNT(*) AS failed_count\nFROM security_test_results\nWHERE status = 'fail' AND timestamp >= NOW() - INTERVAL '30 days'\nGROUP BY test_type\nORDER BY failed_count DESC\nLIMIT 10;\n",
+            "rawSql": "SELECT \n    str.branch,\n    COUNT(*) AS total_assertions,\n    SUM(CASE WHEN a.status = 'pass' THEN 1 ELSE 0 END) AS passed_assertions,\n    SUM(CASE WHEN a.status = 'fail' THEN 1 ELSE 0 END) AS failed_assertions,\n    ROUND(100.0 * SUM(CASE WHEN a.status = 'pass' THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 2) AS pass_rate,\n    ROUND(100.0 * SUM(CASE WHEN a.status = 'fail' THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 2) AS fail_rate\nFROM assertions a\nJOIN security_test_results str ON a.commit_hash = str.commit_hash\nWHERE (\n    '${branch:raw}' = 'All' \n    OR str.branch = ANY(STRING_TO_ARRAY('${branch:csv}', ','))\n)\nGROUP BY str.branch\nORDER BY str.branch;",
             "refId": "A",
             "sql": {
               "columns": [
@@ -632,8 +412,8 @@
             }
           }
         ],
-        "title": "Top Failed Test Types",
-        "type": "stat"
+        "title": "Security Test Summary",
+        "type": "gauge"
       },
       {
         "datasource": {
@@ -643,7 +423,7 @@
         "fieldConfig": {
           "defaults": {
             "color": {
-              "mode": "palette-classic-by-name"
+              "mode": "palette-classic"
             },
             "custom": {
               "axisBorderShow": false,
@@ -688,7 +468,7 @@
                 },
                 {
                   "color": "red",
-                  "value": 10
+                  "value": 80
                 }
               ]
             }
@@ -697,11 +477,11 @@
         },
         "gridPos": {
           "h": 6,
-          "w": 11,
-          "x": 11,
-          "y": 11
+          "w": 9,
+          "x": 15,
+          "y": 6
         },
-        "id": 9,
+        "id": 15,
         "options": {
           "legend": {
             "calcs": [],
@@ -709,9 +489,6 @@
             "placement": "bottom",
             "showLegend": true
           },
-          "timezone": [
-            "browser"
-          ],
           "tooltip": {
             "hideZeros": false,
             "mode": "single",
@@ -728,7 +505,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "SELECT \n    DATE(timestamp) AS test_date, \n    COUNT(*) AS test_count\nFROM security_test_results\nWHERE timestamp >= NOW() - INTERVAL '30 days'\nGROUP BY test_date\nORDER BY test_date;\n",
+            "rawSql": "SELECT \n    DATE_TRUNC('hour', timestamp) AS hour,\n    branch,\n    SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) AS passed,\n    SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) AS failed,\n    ROUND(\n        (SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) * 100.0 / \n        NULLIF(COUNT(*), 0)),\n    2) AS pass_rate\nFROM security_test_results\nWHERE timestamp >= NOW() - INTERVAL '24 hours'\n  AND (\n      '${branch:raw}' = 'All' \n      OR branch = ANY(STRING_TO_ARRAY('${branch:csv}', ','))\n  )\nGROUP BY DATE_TRUNC('hour', timestamp), branch\nORDER BY branch, hour;",
             "refId": "A",
             "sql": {
               "columns": [
@@ -749,7 +526,7 @@
             }
           }
         ],
-        "title": "Test Execution Trend",
+        "title": "Last 24 Hours Test Results",
         "type": "timeseries"
       },
       {
@@ -762,6 +539,13 @@
             "color": {
               "mode": "thresholds"
             },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
             "mappings": [],
             "thresholds": {
               "mode": "absolute",
@@ -771,41 +555,70 @@
                   "value": null
                 },
                 {
-                  "color": "#EAB839",
-                  "value": 30
-                },
-                {
                   "color": "red",
-                  "value": 50
+                  "value": 80
                 }
               ]
             }
           },
-          "overrides": []
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "vulnerability_name"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 208
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "occurrence_count"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 142
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "risk_count"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 104
+                }
+              ]
+            }
+          ]
         },
         "gridPos": {
-          "h": 3,
-          "w": 9,
-          "x": 2,
-          "y": 14
+          "h": 10,
+          "w": 8,
+          "x": 7,
+          "y": 7
         },
-        "id": 5,
+        "id": 14,
         "options": {
-          "colorMode": "background",
-          "graphMode": "none",
-          "justifyMode": "center",
-          "orientation": "auto",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
             ],
-            "fields": "/^vulnerability_name$/",
-            "values": true
+            "show": false
           },
-          "showPercentChange": false,
-          "textMode": "value",
-          "wideLayout": true
+          "showHeader": true,
+          "sortBy": []
         },
         "pluginVersion": "11.5.0",
         "targets": [
@@ -817,7 +630,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "SELECT \n    name AS vulnerability_name,\n    COUNT(*) AS occurrence_count,\n    risk\nFROM assertions\nWHERE risk IN ('High', 'Critical')\nGROUP BY vulnerability_name, risk\nORDER BY occurrence_count DESC\nLIMIT 10;\n",
+            "rawSql": "SELECT \n    a.name AS vulnerability_name,\n    str.branch,\n    a.risk,\n    COUNT(*) AS risk_count\nFROM assertions a\nJOIN security_test_results str ON a.commit_hash = str.commit_hash\nWHERE a.risk IN ('High', 'Critical')\n  AND (\n      '${branch:raw}' = 'All' \n      OR str.branch = ANY(STRING_TO_ARRAY('${branch:csv}', ','))\n  )\nGROUP BY vulnerability_name, str.branch, a.risk\nORDER BY \n    CASE WHEN '${branch:raw}' = 'All' THEN str.branch ELSE '' END,\n    risk_count DESC\nLIMIT 10;",
             "refId": "A",
             "sql": {
               "columns": [
@@ -838,48 +651,271 @@
             }
           }
         ],
-        "title": "High-Risk Vulnerabilities",
-        "type": "stat"
+        "title": "Top High-Risk Security Issues",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "PCC52D03280B7034C"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-BlPu"
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 7,
+          "x": 0,
+          "y": 11
+        },
+        "id": 10,
+        "options": {
+          "displayMode": "gradient",
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "maxVizHeight": 300,
+          "minVizHeight": 16,
+          "minVizWidth": 8,
+          "namePlacement": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true,
+          "sizing": "auto",
+          "valueMode": "color"
+        },
+        "pluginVersion": "11.5.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "PCC52D03280B7034C"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \n    repository,\n    COUNT(DISTINCT commit_hash) AS commits_tested,\n    SUM(CASE WHEN vulnerability_found THEN 1 ELSE 0 END) AS vulnerabilities_found,\n    (SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) * 100.0 / COUNT(*)) AS pass_rate,\n    AVG(duration) AS avg_test_duration,\n    MAX(timestamp) AS last_test_time\nFROM security_test_results\nGROUP BY repository\nORDER BY pass_rate DESC;",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Pass Rate per Commit",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "PCC52D03280B7034C"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 9,
+          "x": 15,
+          "y": 12
+        },
+        "id": 12,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.5.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "PCC52D03280B7034C"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "WITH daily_stats AS (\n  SELECT\n    DATE(timestamp) AS test_date,\n    branch,\n    COUNT(*) AS total_tests,\n    SUM(CASE WHEN status = 'pass' THEN 1 ELSE 0 END) AS passed_tests,\n    SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) AS failed_tests\n  FROM security_test_results\n  WHERE (\n    '${branch:raw}' = 'All' \n    OR branch = ANY(STRING_TO_ARRAY('${branch:csv}', ','))\n  )\n  GROUP BY DATE(timestamp), branch\n),\ncumulative_stats AS (\n  SELECT\n    test_date,\n    branch,\n    total_tests,\n    passed_tests,\n    failed_tests,\n    SUM(total_tests) OVER (PARTITION BY branch ORDER BY test_date) AS cumulative_tests,\n    SUM(passed_tests) OVER (PARTITION BY branch ORDER BY test_date) AS cumulative_passed,\n    SUM(failed_tests) OVER (PARTITION BY branch ORDER BY test_date) AS cumulative_failed\n  FROM daily_stats\n)\nSELECT\n  test_date AS timestamp,\n  branch,\n  total_tests,\n  passed_tests,\n  failed_tests,\n  cumulative_tests,\n  cumulative_passed,\n  cumulative_failed,\n  -- 누적 성공률 계산\n  ROUND((cumulative_passed * 100.0 / NULLIF(cumulative_tests, 0)), 2) AS cumulative_pass_rate,\n  -- 일일 성공률\n  ROUND((passed_tests * 100.0 / NULLIF(total_tests, 0)), 2) AS daily_pass_rate,\n  -- 7일 이동 평균 성공률\n  ROUND(AVG(passed_tests * 100.0 / NULLIF(total_tests, 0)) OVER (\n    PARTITION BY branch\n    ORDER BY test_date \n    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW\n  ), 2) AS moving_avg_7day\nFROM cumulative_stats\nORDER BY branch, test_date;",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Test Pass/Fail Rate Over Time",
+        "type": "timeseries"
       }
     ],
     "preload": false,
     "schemaVersion": 40,
     "tags": [],
-    "templating": {
-      "list": [
-        {
-          "allowCustomValue": true,
-          "current": {
-            "text": [
-              "sweng25_group36-workdaysecurity"
-            ],
-            "value": [
-              "sweng25_group36-workdaysecurity"
-            ]
-          },
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "PCC52D03280B7034C"
-          },
-          "definition": "SELECT DISTINCT repository FROM security_test_results ORDER BY repository;",
-          "description": "",
-          "hide": 1,
-          "includeAll": false,
-          "multi": true,
-          "name": "repository",
-          "options": [],
-          "query": "SELECT DISTINCT repository FROM security_test_results ORDER BY repository;",
-          "refresh": 1,
-          "regex": "",
-          "sort": 1,
-          "type": "query"
-        }
-      ]
+   "templating": {
+  "list": [
+    {
+      "current": {
+        "text": [
+          "develop"
+        ],
+        "value": [
+          "develop"
+        ]
+      },
+      "definition": "SELECT DISTINCT branch FROM security_test_results ORDER BY branch",
+      "description": "Select the Branch(es)",
+      "includeAll": true,
+      "allValue": "All",
+      "label": "Branch",
+      "multi": true,
+      "name": "branch",
+      "options": [],
+      "query": "SELECT DISTINCT branch FROM security_test_results ORDER BY branch",
+      "refresh": 1,
+      "regex": "",
+      "sort": 1,
+      "type": "query"
     },
+    {
+      "current": {
+        "text": "All",
+        "value": "All"
+      },
+      "definition": "SELECT DISTINCT repository FROM security_test_results ORDER BY repository",
+      "description": "Select the Repository(ies)",
+      "includeAll": true,
+      "allValue": "All",
+      "label": "Repository",
+      "multi": true,
+      "name": "repository",
+      "options": [],
+      "query": "SELECT DISTINCT repository FROM security_test_results ORDER BY repository",
+      "refresh": 1,
+      "regex": "",
+      "sort": 1,
+      "type": "query"
+    }
+  ]
+},
     "timepicker": {},
     "timezone": "",
-    "title": "Security Test Manager Dashboard",
-    "uid": "security-test-manager-dashboard",
-    "version": 3,
+    "title": "software Test Dashboards",
+    "uid": "software-test-dashboard",
+    "version": 1,
     "weekStart": ""
   }
