@@ -21,7 +21,8 @@ start_services:
   services:
     - docker:dind
   tags:
-    - bin-runner
+    #- bin-runner
+    - euro-mac
   script:
     - echo "Checking if Juice Shop is already running..."
     - docker ps -a | grep "juice-shop" && docker rm -f juice-shop || echo "No existing container."
@@ -70,7 +71,8 @@ extract_metadata:
   stage: extract_metadata
 
   tags:
-    - bin-runner
+    #- bin-runner
+    - euro-mac
   script:
     - python3 $CI_PROJECT_DIR/SecOps/pipeline/py-scripts/extract_gitlab_metadata.py $CI_PROJECT_DIR/SecOps/artifacts/metadata.json
   artifacts:
@@ -83,7 +85,8 @@ extract_metadata:
 run_pen_test:
   stage: run_pen_test
   tags:
-    - bin-runner
+    #- bin-runner
+    - euro-mac
   image: ghcr.io/zaproxy/zaproxy:stable
   script:
     # Run your command and capture its output.
@@ -140,7 +143,8 @@ save_results:
     - ls -la
 
   tags:
-    - bin-runner
+    #- bin-runner
+    - euro-mac
 
   script:
     # Make sure we're still in our virtual environment when running the script
@@ -159,7 +163,8 @@ save_results:
 grafana_visualization:
   stage: visualize
   tags:
-    - bin-runner
+    #- bin-runner
+    - euro-mac
   before_script:
     - echo "Directory status:"
     - ls -la $CI_PROJECT_DIR/Grafana/provisioning
