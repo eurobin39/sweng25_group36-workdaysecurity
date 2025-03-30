@@ -29,6 +29,7 @@ export async function getManagerDashboardData() {
           select: {
             id: true,
             username: true,
+            role: true,
             teamId: true,
           },
         },

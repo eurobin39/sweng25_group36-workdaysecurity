@@ -99,6 +99,20 @@ export default function ManagerDashboard() {
         return "bg-gray-200 text-gray-800";
     }
   };
+
+  const getRoleBadgeStyle = (role: string) => {
+    switch (role.toLowerCase()) {
+      case "software engineer":
+        return "bg-emerald-200 text-emerald-800";
+      case "security engineer":
+        return "bg-sky-200 text-sky-800";
+      case "manager":
+        return "bg-violet-200 text-violet-800";
+      default:
+        return "bg-gray-300 text-gray-800";
+    }
+  };
+  
   
   
 
@@ -129,86 +143,153 @@ export default function ManagerDashboard() {
       </div>
 
       <div className="w-full max-w-6xl bg-gray-800 p-6 rounded-xl shadow-xl">
-        {tab === "projects" && (
-          <>
-            <h2 className="text-2xl font-semibold mb-4">Projects</h2>
-            <input
-              type="text"
-              placeholder="Search projects..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full mb-6 px-4 py-2 rounded-lg bg-gray-700 text-white"
-            />
-            <div className="space-y-6">
-              {data.projects
-                .filter((p) =>
-                  p.name.toLowerCase().includes(searchTerm.toLowerCase())
-                )
-                .map((project) => (
-                  <div
-                    key={project.id}
-                    className="flex justify-between items-center bg-gray-700 p-4 rounded-lg hover:bg-gray-600 transition-all"
-                  >
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-center h-full flex items-center">
-                        {project.name}
-                      </h3>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm text-gray-300">
-                        Team Members: {project.users.length}
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        {project.users.map((u) => u.username).join(", ") || "None"}
-                      </p>
-                      <Link href={getGrafanaUrl(project.repository)} target="_blank">
-                        <button className="mt-2 px-4 py-1 bg-pink-700 hover:bg-pink-600 text-sm rounded shadow">
-                          View Grafana
-                        </button>
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </>
-        )}
+      {tab === "projects" && (
+  <>
+    <h2 className="text-2xl font-semibold mb-4 text-center">Projects</h2>
+    <input
+      type="text"
+      placeholder="Search projects..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="w-full mb-6 px-4 py-2 rounded-lg bg-gray-700 text-white"
+    />
 
-        {tab === "urgent" && (
-          <>
-            <h2 className="text-2xl font-semibold mb-6 text-center">Urgent Vulnerabilities</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {data.projects.map((project) => {
-                const related = data.vulnerabilities.filter(
-                  (v) => v.projectId === project.id
-                );
-                return (
-                  <div
-                    key={project.id}
-                    className="bg-gray-700 p-4 rounded-xl shadow hover:bg-gray-600 transition-all"
-                  >
-                    <h3 className="text-lg font-bold text-white mb-2 text-center">
-                      {project.name}
-                    </h3>
-                    {related.length > 0 ? (
-                      <ul className="space-y-2">
-                        {related.map((vuln) => (
-                          <li
-                            key={vuln.id}
-                            className="p-2 rounded-md bg-red-600 text-red-100 font-semibold text-sm"
-                          >
-                            {vuln.title}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-sm text-gray-400 text-center">No urgent issues.</p>
-                    )}
-                  </div>
-                );
-              })}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+      {data.projects
+        .filter((p) =>
+          p.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .map((project) => (
+          <div
+            key={project.id}
+            className="w-full max-w-md bg-gray-700 p-5 rounded-xl shadow hover:bg-gray-600 transition-all flex flex-col justify-between"
+          >
+            
+            <h3 className="text-xl font-bold text-white text-center mb-3">
+              {project.name}
+            </h3>
+
+            
+            <div className="border-b border-gray-500 mb-3" />
+
+            
+            <div className="mb-4 text-sm text-gray-300 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold">Team Members</span>
+                <span className="bg-pink-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  {project.users.length}
+                </span>
+              </div>
+
+              {project.users.length > 0 ? (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {project.users.map((u) => (
+                    <span
+                      key={u.id}
+                      className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getRoleBadgeStyle(
+                        (u as any).role || "Unknown"
+                      )}`}
+                    >
+                      {(u as any).username}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-400 text-sm">No members assigned.</p>
+              )}
             </div>
+
+            
+            <div className="mt-auto text-center">
+              <Link href={getGrafanaUrl(project.repository)} target="_blank">
+                <button className="px-4 py-2 bg-pink-700 hover:bg-pink-600 text-sm rounded shadow font-semibold">
+                  View Grafana
+                </button>
+              </Link>
+            </div>
+          </div>
+        ))}
+    </div>
+  </>
+)}
+
+
+
+{tab === "urgent" && (
+  <>
+    <h2 className="text-2xl font-semibold mb-6 text-center">Urgent Vulnerabilities</h2>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <div className="col-span-1 bg-gray-800 p-4 rounded-xl">
+        <h3 className="text-lg font-semibold mb-4 text-center">Projects</h3>
+        <div className="space-y-3">
+          {data.projects.map((project) => {
+            const related = data.vulnerabilities.filter(
+              (v) => v.projectId === project.id
+            );
+            const hasIssues = related.length > 0;
+            return (
+              <button
+                key={project.id}
+                onClick={() => setExpandedUserId(project.id)}
+                className={`w-full text-left p-3 rounded-lg border transition-all ${
+                  expandedUserId === project.id
+                    ? "border-pink-500 bg-gray-700"
+                    : "border-gray-600 bg-gray-800"
+                } hover:bg-gray-700`}
+              >
+                <div className="flex justify-between items-center">
+                  <span className="text-white font-medium">{project.name}</span>
+                  {hasIssues ? (
+                    <span className="bg-red-600 text-red-100 text-xs font-bold px-2 py-0.5 rounded-full">
+                      {related.length} Issue{related.length > 1 ? "s" : ""}
+                    </span>
+                  ) : (
+                    <span className="bg-emerald-600 text-emerald-100 text-xs font-bold px-2 py-0.5 rounded-full">
+                      No Issues
+                    </span>
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      
+      <div className="col-span-2 bg-gray-800 p-6 rounded-xl">
+        {expandedUserId ? (
+          <>
+            <h3 className="text-xl font-bold mb-4 text-center">
+              Vulnerabilities in "{data.projects.find(p => p.id === expandedUserId)?.name}"
+            </h3>
+            {data.vulnerabilities.filter(v => v.projectId === expandedUserId).length > 0 ? (
+              <ul className="space-y-3">
+                {data.vulnerabilities
+                  .filter((v) => v.projectId === expandedUserId)
+                  .map((vuln) => (
+                    <li
+                      key={vuln.id}
+                      className="bg-red-600 text-red-100 p-3 rounded-md text-sm font-semibold"
+                    >
+                      {vuln.title}
+                    </li>
+                  ))}
+              </ul>
+            ) : (
+              <p className="text-center text-gray-400">No urgent issues in this project.</p>
+            )}
           </>
+        ) : (
+          <p className="text-center text-gray-400">
+            Select a project to view its vulnerabilities.
+          </p>
         )}
+      </div>
+    </div>
+  </>
+)}
+
 
         {tab === "grafana" && (
           <div className="text-center py-12">
@@ -247,7 +328,7 @@ export default function ManagerDashboard() {
       )
       .map((user) => (
         <div key={user.id} className="bg-gray-700 p-4 rounded-lg space-y-3">
-          {/* Username + Role */}
+          
           <div className="text-center font-medium">
             <span
               className={`${getRoleBadgeClass(
@@ -259,7 +340,7 @@ export default function ManagerDashboard() {
             {user.username}
           </div>
 
-          {/* Team Selection */}
+          
           <div className="text-center">
             <label className="block text-sm mb-1 text-gray-300">
               Assign to Team:
@@ -285,7 +366,7 @@ export default function ManagerDashboard() {
             </select>
           </div>
 
-          {/* Project Assignment */}
+          
           <div>
             <label className="block text-sm mb-1 text-gray-300 text-center">
               Assign to Projects:
@@ -342,7 +423,7 @@ export default function ManagerDashboard() {
               className="w-full mb-6 px-4 py-2 rounded-lg bg-gray-700 text-white"
             />
 
-            {/* Column headers */}
+            
             <div className="grid grid-cols-3 gap-4 items-center bg-gray-900 p-2 rounded-lg">
               <div className="text-center font-semibold border-r border-gray-700">User Name</div>
               <div className="text-center font-semibold border-r border-gray-700">Team Assignment</div>
@@ -357,7 +438,7 @@ export default function ManagerDashboard() {
                 .map((user) => (
                   <div key={user.id} className="bg-gray-700 p-4 rounded-lg">
                     <div className="grid grid-cols-3 gap-4 items-center">
-                      {/* Role + Username */}
+                      
                       <div className="text-center font-medium border-r border-gray-600 pr-4">
                         <span
                           className={`${getRoleBadgeClass(user.role)} text-xs font-semibold px-2 py-0.5 rounded-full mr-2`}
@@ -368,7 +449,7 @@ export default function ManagerDashboard() {
                       </div>
 
 
-                      {/* Team selection */}
+                      
                       <div className="text-center border-r border-gray-600 pr-4">
                         <select
                           value={user.teamId ?? ""}
@@ -391,7 +472,7 @@ export default function ManagerDashboard() {
                         </select>
                       </div>
 
-                      {/* Projects toggle */}
+                      
                       <div className="text-center">
                         <button
                           onClick={() =>
@@ -411,7 +492,7 @@ export default function ManagerDashboard() {
                       </div>
                     </div>
 
-                    {/* Expanded Project section */}
+                    
                     {expandedUserId === user.id && (
                       <div className="mt-4 pt-3 border-t border-gray-600">
                         <div className="p-3 bg-gray-800 rounded-lg">
