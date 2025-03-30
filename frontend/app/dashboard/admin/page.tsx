@@ -167,7 +167,7 @@ export default function AdminDashboard() {
       const result = await updateUserTeam(selectedUser, selectedTeam);
       
       if (result.success) {
-        setMessage(result.message);
+        setMessage(result.message || "");
         setMessageType("success");
         
         // Refresh teams list
@@ -193,7 +193,7 @@ export default function AdminDashboard() {
       const result = await removeUserFromTeam(username);
       
       if (result.success) {
-        setMessage(result.message);
+        setMessage(result.message || "");
         setMessageType("success");
         
         // Refresh teams list

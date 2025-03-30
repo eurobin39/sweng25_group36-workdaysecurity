@@ -8,6 +8,7 @@ export async function getManagerDashboardData() {
         id: true,
         username: true,
         teamId: true,
+        role: true,
         projects: {
           select: {
             id: true,

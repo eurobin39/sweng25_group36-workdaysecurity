@@ -8,94 +8,62 @@ interface Project {
   name: string;
   startDate: Date;
   status?: string;
-}
-
-interface SecurityTestData {
-  totalTests: number;
-  passedTests: number;
-  failedTests: number;
-  testActivity: number[];
+  repository: string;
+  latestStatus?: string;
+  vulnFound?: boolean;
+  lastTestDate?: Date;
+  members: { id: number; username: string }[];
 }
 
 interface UserData {
   projects: Project[];
-  securityTests: SecurityTestData;
 }
 
 export async function getSecurityEngineerDashboardData(): Promise<UserData> {
-  const session = await getSession();
-  const userId = session?.id;
-
-  if (!userId) throw new Error("User not authenticated");
-
-  const user = await db.user.findUnique({
-    where: { id: userId },
-    include: {
-      projects: true,
-    },
-  });
-
-  if (!user) throw new Error("User not found");
-
-  const projects = user.projects.map((project) => ({
-    id: project.id,
-    name: project.name,
-    startDate: project.startDate,
-    status: project.status || undefined,
-  }));
-
-  const totalTests = await db.security_test_results.count({
-    where: {
-      project: {
-        users: {
-          some: { id: userId },
+    const session = await getSession();
+    const userId = session?.id;
+  
+    if (!userId) throw new Error("User not authenticated");
+  
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      include: {
+        team: true,
+        projects: {
+          include: {
+            users: {
+              select: { id: true, username: true },
+            },
+            testResults: {
+              orderBy: { timestamp: "desc" },
+              take: 1,
+              select: {
+                repository: true,
+                status: true,
+                timestamp: true,
+                vulnerability_found: true,
+              },
+            },
+          },
         },
       },
-    },
-  });
-
-  const passedTests = await db.security_test_results.count({
-    where: {
-      project: {
-        users: {
-          some: { id: userId },
-        },
-      },
-      status: "passed",
-    },
-  });
-
-  const failedTests = totalTests - passedTests;
-
-  const testActivity = Array(5).fill(0);
-  const now = new Date();
-
-  const recentTests = await db.security_test_results.findMany({
-    where: {
-      project: {
-        users: {
-          some: { id: userId },
-        },
-      },
-    },
-    orderBy: { timestamp: "desc" },
-  });
-
-  recentTests.forEach((test) => {
-    const date = new Date(test.timestamp);
-    const diff = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-    if (diff >= 0 && diff < 5) {
-      testActivity[4 - diff]++;
-    }
-  });
-
-  return {
-    projects,
-    securityTests: {
-      totalTests,
-      passedTests,
-      failedTests,
-      testActivity,
-    },
-  };
+    });
+  
+    if (!user) throw new Error("User not found");
+  
+    const projects = user.projects.map((project) => ({
+      id: project.id,
+      name: project.name,
+      startDate: project.startDate,
+      status: project.status ?? undefined,
+      repository: project.testResults[0]?.repository ?? "unknown",
+      latestStatus: project.testResults[0]?.status ?? "UNKNOWN",
+      vulnFound: project.testResults[0]?.vulnerability_found ?? false,
+      lastTestDate: project.testResults[0]?.timestamp ?? null,
+      members: project.users,
+    }));
+  
+    return {
+      projects,
+    };
 }

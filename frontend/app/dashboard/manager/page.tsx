@@ -21,9 +21,11 @@ import {
 interface User {
   id: number;
   username: string;
+  role : string;
   teamId?: number | null;
   projects: { id: number; name: string }[];
 }
+
 
 interface Team {
   id: number;
@@ -84,6 +86,20 @@ export default function ManagerDashboard() {
     const slug = repoName.toLowerCase().replace(/\s+/g, "-");
     return `http://localhost:4000/d/software-test-dashboard/software-test-dashboards?orgId=1&var-repository=${slug}`;
   };
+
+  const getRoleBadgeClass = (role: string) => {
+    switch (role.toLowerCase()) {
+      case "software engineer":
+        return "bg-emerald-200 text-emerald-800";
+      case "security engineer":
+        return "bg-sky-200 text-sky-800";
+      case "manager":
+        return "bg-violet-200 text-violet-800";
+      default:
+        return "bg-gray-200 text-gray-800";
+    }
+  };
+  
   
 
   return (
@@ -227,124 +243,130 @@ export default function ManagerDashboard() {
         )}
 
 {tab === "manageTeams" && (
-  <div className="space-y-4">
-    <h2 className="text-2xl font-semibold mb-4 text-center">Manage Teams</h2>
-    <input
-      type="text"
-      placeholder="Search users..."
-      value={userSearch}
-      onChange={(e) => setUserSearch(e.target.value)}
-      className="w-full mb-6 px-4 py-2 rounded-lg bg-gray-700 text-white"
-    />
-    
-    {/* Column headers with dividers */}
-    <div className="grid grid-cols-3 gap-4 items-center bg-gray-900 p-2 rounded-lg">
-      <div className="text-center font-semibold border-r border-gray-700">User Name</div>
-      <div className="text-center font-semibold border-r border-gray-700">Team Assignment</div>
-      <div className="text-center font-semibold">Project Management</div>
-    </div>
-    
-    <div className="grid gap-4">
-      {data.users
-        .filter((u) =>
-          u.username.toLowerCase().includes(userSearch.toLowerCase())
-        )
-        .map((user) => (
-          <div key={user.id} className="bg-gray-700 p-4 rounded-lg">
-            <div className="grid grid-cols-3 gap-4 items-center">
-              {/* Username with right border */}
-              <div className="text-center font-medium border-r border-gray-600 pr-4">
-                {user.username}
-              </div>
-              
-              {/* Team Selection with right border */}
-              <div className="text-center border-r border-gray-600 pr-4">
-                <select
-                  value={user.teamId ?? ""}
-                  onChange={async (e) => {
-                    const newTeamId = e.target.value
-                      ? Number(e.target.value)
-                      : null;
-                    await assignUserToTeam(user.id, newTeamId);
-                    const updated = await getManagerDashboardData();
-                    setData(updated);
-                  }}
-                  className="bg-gray-800 text-white rounded px-3 py-1 w-full max-w-xs border border-gray-600"
-                >
-                  <option value="">No Team</option>
-                  {data.teams.map((team) => (
-                    <option key={team.id} value={team.id}>
-                      {team.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
-              {/* Projects Toggle */}
-              <div className="text-center">
-                <button
-                  onClick={() =>
-                    setExpandedUserId(
-                      expandedUserId === user.id ? null : user.id
-                    )
-                  }
-                  className="px-3 py-1 bg-pink-600 hover:bg-pink-500 rounded text-sm flex items-center justify-center mx-auto"
-                >
-                  {expandedUserId === user.id ? (
-                    <ChevronUp className="w-4 h-4 mr-1" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 mr-1" />
-                  )}
-                  Projects
-                </button>
-              </div>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold mb-4 text-center">Manage Teams</h2>
+            <input
+              type="text"
+              placeholder="Search users..."
+              value={userSearch}
+              onChange={(e) => setUserSearch(e.target.value)}
+              className="w-full mb-6 px-4 py-2 rounded-lg bg-gray-700 text-white"
+            />
+
+            {/* Column headers */}
+            <div className="grid grid-cols-3 gap-4 items-center bg-gray-900 p-2 rounded-lg">
+              <div className="text-center font-semibold border-r border-gray-700">User Name</div>
+              <div className="text-center font-semibold border-r border-gray-700">Team Assignment</div>
+              <div className="text-center font-semibold">Project Management</div>
             </div>
-            
-            {/* Expanded Projects Section */}
-            {expandedUserId === user.id && (
-              <div className="mt-4 pt-3 border-t border-gray-600">
-                <div className="p-3 bg-gray-800 rounded-lg">
-                  <h3 className="text-sm font-semibold mb-2 text-center">
-                    Project Assignment (Check/Uncheck to assign)
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                    {data.projects.map((project) => {
-                      const isAssigned = user.projects.some(
-                        (p) => p.id === project.id
-                      );
-                      return (
-                        <label
-                          key={project.id}
-                          className="flex items-center space-x-2 text-sm"
+
+            <div className="grid gap-4">
+              {data.users
+                .filter((u) =>
+                  u.username.toLowerCase().includes(userSearch.toLowerCase())
+                )
+                .map((user) => (
+                  <div key={user.id} className="bg-gray-700 p-4 rounded-lg">
+                    <div className="grid grid-cols-3 gap-4 items-center">
+                      {/* Role + Username */}
+                      <div className="text-center font-medium border-r border-gray-600 pr-4">
+                        <span
+                          className={`${getRoleBadgeClass(user.role)} text-xs font-semibold px-2 py-0.5 rounded-full mr-2`}
                         >
-                          <input
-                            type="checkbox"
-                            checked={isAssigned}
-                            onChange={async (e) => {
-                              const updatedProjects = e.target.checked
-                                ? [...user.projects.map((p) => p.id), project.id]
-                                : user.projects
-                                    .map((p) => p.id)
-                                    .filter((id) => id !== project.id);
-                              await assignUserToProject(user.id, updatedProjects);
-                              const updated = await getManagerDashboardData();
-                              setData(updated);
-                            }}
-                            className="form-checkbox h-4 w-4 text-pink-500 rounded"
-                          />
-                          <span>{project.name}</span>
-                        </label>
-                      );
-                    })}
+                          {user.role}
+                        </span>
+                        {user.username}
+                      </div>
+
+
+                      {/* Team selection */}
+                      <div className="text-center border-r border-gray-600 pr-4">
+                        <select
+                          value={user.teamId ?? ""}
+                          onChange={async (e) => {
+                            const newTeamId = e.target.value
+                              ? Number(e.target.value)
+                              : null;
+                            await assignUserToTeam(user.id, newTeamId);
+                            const updated = await getManagerDashboardData();
+                            setData(updated);
+                          }}
+                          className="bg-gray-800 text-white rounded px-3 py-1 w-full max-w-xs border border-gray-600"
+                        >
+                          <option value="">No Team</option>
+                          {data.teams.map((team) => (
+                            <option key={team.id} value={team.id}>
+                              {team.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Projects toggle */}
+                      <div className="text-center">
+                        <button
+                          onClick={() =>
+                            setExpandedUserId(
+                              expandedUserId === user.id ? null : user.id
+                            )
+                          }
+                          className="px-3 py-1 bg-pink-600 hover:bg-pink-500 rounded text-sm flex items-center justify-center mx-auto"
+                        >
+                          {expandedUserId === user.id ? (
+                            <ChevronUp className="w-4 h-4 mr-1" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4 mr-1" />
+                          )}
+                          Projects
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Expanded Project section */}
+                    {expandedUserId === user.id && (
+                      <div className="mt-4 pt-3 border-t border-gray-600">
+                        <div className="p-3 bg-gray-800 rounded-lg">
+                          <h3 className="text-sm font-semibold mb-2 text-center">
+                            Project Assignment (Check/Uncheck to assign)
+                          </h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                            {data.projects.map((project) => {
+                              const isAssigned = user.projects.some(
+                                (p) => p.id === project.id
+                              );
+                              return (
+                                <label
+                                  key={project.id}
+                                  className="flex items-center space-x-2 text-sm"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={isAssigned}
+                                    onChange={async (e) => {
+                                      const updatedProjects = e.target.checked
+                                        ? [...user.projects.map((p) => p.id), project.id]
+                                        : user.projects
+                                            .map((p) => p.id)
+                                            .filter((id) => id !== project.id);
+                                      await assignUserToProject(user.id, updatedProjects);
+                                      const updated = await getManagerDashboardData();
+                                      setData(updated);
+                                    }}
+                                    className="form-checkbox h-4 w-4 text-pink-500 rounded"
+                                  />
+                                  <span>{project.name}</span>
+                                </label>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              </div>
-            )}
+                ))}
+            </div>
           </div>
-        ))}
-    </div>
-  </div>
-)}
+        )}
       </div>
     </div>
   );
