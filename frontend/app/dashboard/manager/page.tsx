@@ -40,6 +40,7 @@ interface Project {
   id: number;
   name: string;
   users: SimpleUser[];
+  repository: string;
 }
 
 interface Vulnerability {
@@ -79,11 +80,11 @@ export default function ManagerDashboard() {
 
   const noTeamUsers = data.users.filter((u) => !u.teamId);
 
-  const getGrafanaUrl = (projectName: string) => {
-    const base = "http://localhost:4000/d/security-";
-    const slug = projectName.toLowerCase().replace(/\s+/g, "-");
-    return `${base}${slug}-dashboard/security-${slug}-dashboard?orgId=1`;
+  const getGrafanaUrl = (repoName: string) => {
+    const slug = repoName.toLowerCase().replace(/\s+/g, "-");
+    return `http://localhost:4000/d/software-test-dashboard/software-test-dashboards?orgId=1&var-repository=${slug}`;
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-800 to-purple-600 text-white">
@@ -144,7 +145,7 @@ export default function ManagerDashboard() {
                       <p className="text-sm text-gray-400">
                         {project.users.map((u) => u.username).join(", ") || "None"}
                       </p>
-                      <Link href={getGrafanaUrl(project.name)} target="_blank">
+                      <Link href={getGrafanaUrl(project.repository)} target="_blank">
                         <button className="mt-2 px-4 py-1 bg-pink-700 hover:bg-pink-600 text-sm rounded shadow">
                           View Grafana
                         </button>

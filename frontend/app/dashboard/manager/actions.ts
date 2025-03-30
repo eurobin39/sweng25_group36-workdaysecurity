@@ -1,9 +1,8 @@
 'use server';
 import db from "@/lib/db";
 
-
 export async function getManagerDashboardData() {
-  const [users, teams, projects, assertions] = await Promise.all([
+  const [users, teams, rawProjects, assertions] = await Promise.all([
     db.user.findMany({
       select: {
         id: true,
@@ -32,6 +31,13 @@ export async function getManagerDashboardData() {
             teamId: true,
           },
         },
+        testResults: {
+          orderBy: { timestamp: "desc" },
+          take: 1,
+          select: {
+            repository: true,
+          },
+        },
       },
     }),
     db.assertions.findMany({
@@ -48,6 +54,13 @@ export async function getManagerDashboardData() {
     }),
   ]);
 
+  const projects = rawProjects.map((project) => ({
+    id: project.id,
+    name: project.name,
+    users: project.users,
+    repository: project.testResults[0]?.repository ?? "unknown", // ✅ 필수 필드로 가공
+  }));
+
   const vulnerabilities = assertions.map((a) => ({
     id: a.id,
     title: a.name,
@@ -62,6 +75,7 @@ export async function getManagerDashboardData() {
     vulnerabilities,
   };
 }
+
 
 
 export async function assignUserToTeam(userId: number, teamId: number | null) {
