@@ -70,7 +70,7 @@ export const FileUpload = ({
         {/* Removed GridPattern */}
         <div className="absolute inset-0 bg-blue-600 opacity-0"></div> {/* Solid color background */}
         <div className="flex flex-col items-center justify-center">
-          <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-4xl">
+          <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-xl">
             Upload script(s) below
           </p>
           <p className="relative z-20 font-sans font-normal text-neutral-700 dark:text-neutral-300 text-base mt-2">
