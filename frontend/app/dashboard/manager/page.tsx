@@ -225,22 +225,111 @@ export default function ManagerDashboard() {
           </div>
         )}
 
-        {tab === "noTeamUsers" && (
-          <>
-            <h2 className="text-2xl font-semibold mb-4">Users Without Teams</h2>
-            {noTeamUsers.length === 0 ? (
-              <p className="text-gray-400">All users are assigned to teams.</p>
-            ) : (
-              <ul className="space-y-3">
-                {noTeamUsers.map((user) => (
-                  <li key={user.id} className="bg-gray-700 p-3 rounded-lg">
-                    {user.username}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </>
-        )}
+{tab === "noTeamUsers" && (
+  <div className="space-y-4">
+    <h2 className="text-2xl font-semibold mb-4 text-center">
+      Users Without Team or Projects
+    </h2>
+
+    <input
+      type="text"
+      placeholder="Search users..."
+      value={userSearch}
+      onChange={(e) => setUserSearch(e.target.value)}
+      className="w-full mb-6 px-4 py-2 rounded-lg bg-gray-700 text-white"
+    />
+
+    {data.users
+      .filter(
+        (u) =>
+          (!u.teamId || u.projects.length === 0) &&
+          u.username.toLowerCase().includes(userSearch.toLowerCase())
+      )
+      .map((user) => (
+        <div key={user.id} className="bg-gray-700 p-4 rounded-lg space-y-3">
+          {/* Username + Role */}
+          <div className="text-center font-medium">
+            <span
+              className={`${getRoleBadgeClass(
+                user.role
+              )} text-xs font-semibold px-2 py-0.5 rounded-full mr-2`}
+            >
+              {user.role}
+            </span>
+            {user.username}
+          </div>
+
+          {/* Team Selection */}
+          <div className="text-center">
+            <label className="block text-sm mb-1 text-gray-300">
+              Assign to Team:
+            </label>
+            <select
+              value={user.teamId ?? ""}
+              onChange={async (e) => {
+                const newTeamId = e.target.value
+                  ? Number(e.target.value)
+                  : null;
+                await assignUserToTeam(user.id, newTeamId);
+                const updated = await getManagerDashboardData();
+                setData(updated);
+              }}
+              className="bg-gray-800 text-white rounded px-3 py-1 w-full max-w-xs border border-gray-600"
+            >
+              <option value="">No Team</option>
+              {data.teams.map((team) => (
+                <option key={team.id} value={team.id}>
+                  {team.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Project Assignment */}
+          <div>
+            <label className="block text-sm mb-1 text-gray-300 text-center">
+              Assign to Projects:
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 px-2">
+              {data.projects.map((project) => {
+                const isAssigned = user.projects.some(
+                  (p) => p.id === project.id
+                );
+                return (
+                  <label
+                    key={project.id}
+                    className="flex items-center space-x-2 text-sm"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isAssigned}
+                      onChange={async (e) => {
+                        const updatedProjects = e.target.checked
+                          ? [...user.projects.map((p) => p.id), project.id]
+                          : user.projects
+                              .map((p) => p.id)
+                              .filter((id) => id !== project.id);
+                        await assignUserToProject(user.id, updatedProjects);
+                        const updated = await getManagerDashboardData();
+                        setData(updated);
+                      }}
+                      className="form-checkbox h-4 w-4 text-pink-500 rounded"
+                    />
+                    <span>{project.name}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      ))}
+    {data.users.filter((u) => !u.teamId || u.projects.length === 0).length === 0 && (
+      <p className="text-gray-400 text-center">
+        All users have teams and project assignments.
+      </p>
+    )}
+  </div>
+)}
 
 {tab === "manageTeams" && (
           <div className="space-y-4">
