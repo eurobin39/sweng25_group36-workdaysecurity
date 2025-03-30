@@ -25,11 +25,12 @@ model User {
 }
 
 model Project {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  users     User[]
-  startDate DateTime @default(now())
-  status    String?
+  id             Int                   @id @default(autoincrement())
+  name           String                @unique
+  users          User[]
+  startDate      DateTime              @default(now())
+  status         String?
+  testResults    security_test_results[]
 }
 
 model Team {
@@ -45,14 +46,17 @@ model security_test_results {
   repository          String
   branch              String
   runner              String
-  project_id          String
   test_name           String
   test_type           String
   test_category       String
   status              String
   duration            Float
   vulnerability_found Boolean
-  assertions          assertions[]
+
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int
+
+  assertions assertions[]
 }
 
 model assertions {
