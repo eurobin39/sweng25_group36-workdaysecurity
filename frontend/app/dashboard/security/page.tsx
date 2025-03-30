@@ -95,7 +95,8 @@ export default function SecurityEngineerDashboard() {
                   {userData.projects.map((project) => (
                     <div
                       key={project.id}
-                      className={`p-4 border border-gray-700 rounded-md cursor-pointer transition-colors ${selectedProject === project.name ? "bg-gray-700" : "hover:bg-gray-700"}`}
+                      className={`p-4 border border-gray-700 rounded-md cursor-pointer transition-colors ${
+                        selectedProject === project.name ? "bg-gray-700" : "hover:bg-gray-700"}`}
                       onClick={() => setSelectedProject(project.name)}
                     >
                       <div className="grid grid-cols-2 gap-2">
@@ -128,7 +129,7 @@ export default function SecurityEngineerDashboard() {
             </div>
           )}
 
-          {tab === "upload" && (
+          {tab === "upload" && userData && (
             <>
               <FileUpload onChange={handleFileUpload} />
               {files.length > 0 && (
@@ -162,15 +163,15 @@ export default function SecurityEngineerDashboard() {
         </div>
 
         <div className="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
-          {selectedProject ? (
+          {(tab === "projects" && selectedProject) || (tab === "upload" && selectedProject) ? (
             <>
               <h2 className="text-xl font-semibold mb-6">{selectedProject} Security Data</h2>
-              <p>Please select a project to view data.</p>
+              <p>Failed Tests %:</p>
             </>
           ) : (
             <div className="text-center text-gray-400">
               <BarChart2 className="w-12 h-12 mb-3 mx-auto" />
-              <p>Please select a project to view project statistics.</p>
+              <p>Please select a project to view project data.</p>
             </div>
           )}
         </div>
