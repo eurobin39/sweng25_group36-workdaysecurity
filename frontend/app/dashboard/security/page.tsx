@@ -129,7 +129,7 @@ export default function SecurityEngineerDashboard() {
             </div>
           )}
 
-          {tab === "upload" && userData && (
+          {tab === "upload" && /*userData && */(
             <>
               <FileUpload onChange={handleFileUpload} />
               {files.length > 0 && (
@@ -163,7 +163,8 @@ export default function SecurityEngineerDashboard() {
         </div>
 
         <div className="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
-          {(tab === "projects" && selectedProject) || (tab === "upload" && selectedProject) ? (
+          {/*(tab === "projects" && selectedProject) || (tab === "upload" && selectedProject)*/
+           selectedProject ? (
             <>
               <h2 className="text-xl font-semibold mb-6">{selectedProject} Security Data</h2>
               <p>Failed Tests %:</p>
